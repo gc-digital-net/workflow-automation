@@ -118,8 +118,8 @@ export default async function SoftwareReviewPage({ params }: Props) {
                   </p>
                   <div className="flex items-center gap-4 mt-4">
                     {software.categories?.map((category: any) => (
-                      <span key={category.name} className="px-3 py-1 bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400 rounded-full text-sm">
-                        {category.name}
+                      <span key={category?._id || category?.name || Math.random()} className="px-3 py-1 bg-primary-100 text-primary-700 dark:bg-primary-900/30 dark:text-primary-400 rounded-full text-sm">
+                        {category?.name || 'Uncategorized'}
                       </span>
                     ))}
                   </div>

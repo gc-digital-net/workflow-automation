@@ -1,39 +1,15 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import { getPosts } from '@/lib/sanity-queries';
+import { urlFor } from '@/lib/sanity';
 
 export const metadata: Metadata = {
   title: 'Blog | Workflow Automation Insights',
   description: 'Expert insights, guides, and tips on workflow automation, business process management, and productivity tools.',
 };
 
-export default function BlogPage() {
-  // Mock data for now
-  const posts = [
-    {
-      id: 1,
-      title: 'Getting Started with Workflow Automation',
-      excerpt: 'Learn the basics of workflow automation and how it can transform your business operations.',
-      date: '2024-01-15',
-      author: 'Admin',
-      slug: 'getting-started-workflow-automation'
-    },
-    {
-      id: 2,
-      title: 'Top 10 Automation Tools for Small Business',
-      excerpt: 'Discover the best automation tools that are perfect for small business needs and budgets.',
-      date: '2024-01-10',
-      author: 'Admin',
-      slug: 'top-10-automation-tools'
-    },
-    {
-      id: 3,
-      title: 'ROI of Workflow Automation: A Complete Guide',
-      excerpt: 'Understanding how to calculate and maximize the return on investment from automation.',
-      date: '2024-01-05',
-      author: 'Admin',
-      slug: 'roi-workflow-automation'
-    }
-  ];
+export default async function BlogPage() {
+  const posts = await getPosts();
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -56,12 +32,21 @@ export default function BlogPage() {
           {/* Main Content */}
           <main className="lg:col-span-8">
             <div className="space-y-12">
-              {posts.map((post) => (
-                <article key={post.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+              {posts.map((post: any) => (
+                <article key={post._id} className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden">
+                  {post.featuredImage && (
+                    <Link href={`/blog/${post.slug.current}`}>
+                      <img 
+                        src={urlFor(post.featuredImage).width(800).height(400).url()} 
+                        alt={post.title}
+                        className="w-full h-64 object-cover hover:opacity-90 transition-opacity"
+                      />
+                    </Link>
+                  )}
                   <div className="p-6">
                     <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-2">
-                      <time dateTime={post.date}>
-                        {new Date(post.date).toLocaleDateString('en-US', {
+                      <time dateTime={post.publishedAt}>
+                        {new Date(post.publishedAt).toLocaleDateString('en-US', {
                           year: 'numeric',
                           month: 'long',
                           day: 'numeric'
@@ -69,10 +54,16 @@ export default function BlogPage() {
                       </time>
                       <span className="mx-2">•</span>
                       <span>{post.author}</span>
+                      {post.categories && post.categories.length > 0 && (
+                        <>
+                          <span className="mx-2">•</span>
+                          <span>{post.categories[0]}</span>
+                        </>
+                      )}
                     </div>
                     <h2 className="text-2xl font-bold mb-3">
                       <Link 
-                        href={`/blog/${post.slug}`}
+                        href={`/blog/${post.slug.current}`}
                         className="text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400"
                       >
                         {post.title}
@@ -82,7 +73,7 @@ export default function BlogPage() {
                       {post.excerpt}
                     </p>
                     <Link 
-                      href={`/blog/${post.slug}`}
+                      href={`/blog/${post.slug.current}`}
                       className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
                     >
                       Read more →

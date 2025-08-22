@@ -213,7 +213,7 @@ export default async function HomePage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Latest Insights</h2>
-            <p className="mt-2 text-gray-600 dark:text-gray-400">Expert guides, listicles, and automation tips</p>
+            <p className="mt-2 text-gray-600 dark:text-gray-400">Expert guides, comparisons, and automation tips</p>
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -268,18 +268,18 @@ export default async function HomePage() {
                 </Link>
               </div>
 
-              {/* Featured Listicles */}
-              {data?.featuredListicles && data.featuredListicles.length > 0 && (
+              {/* Featured Best Of Guides */}
+              {data?.featuredGuides && data.featuredGuides.length > 0 && (
                 <div className="bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-700 p-6">
-                  <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Top Listicles</h3>
+                  <h3 className="text-lg font-bold mb-4 text-gray-900 dark:text-white">Top Guides</h3>
                   <ul className="space-y-3">
-                    {data.featuredListicles.slice(0, 2).map((listicle: any) => (
-                      <li key={listicle._id}>
+                    {data.featuredGuides.slice(0, 2).map((guide: any) => (
+                      <li key={guide._id}>
                         <Link 
-                          href={`/listicles/${listicle.slug?.current}`}
+                          href={`/best/${guide.slug?.current}`}
                           className="text-gray-600 dark:text-gray-300 hover:text-primary-600 dark:hover:text-primary-400"
                         >
-                          {listicle.title}
+                          {guide.title}
                         </Link>
                       </li>
                     ))}

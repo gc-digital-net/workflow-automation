@@ -69,9 +69,9 @@ export const softwareBySlugQuery = `
   }
 `
 
-// Listicle queries
-export const listiclesQuery = `
-  *[_type == "listicle"] | order(publishedAt desc) {
+// Best Of Guide queries
+export const bestOfGuidesQuery = `
+  *[_type == "bestOfGuide"] | order(publishedAt desc) {
     _id,
     title,
     slug,
@@ -83,8 +83,8 @@ export const listiclesQuery = `
   }
 `
 
-export const listicleBySlugQuery = `
-  *[_type == "listicle" && slug.current == $slug][0] {
+export const bestOfGuideBySlugQuery = `
+  *[_type == "bestOfGuide" && slug.current == $slug][0] {
     _id,
     title,
     slug,
@@ -128,7 +128,7 @@ export const homepageDataQuery = `{
     featuredImage,
     "author": author->name
   },
-  "featuredListicles": *[_type == "listicle"] | order(publishedAt desc)[0...2] {
+  "featuredGuides": *[_type == "bestOfGuide"] | order(publishedAt desc)[0...2] {
     _id,
     title,
     slug,
@@ -202,12 +202,12 @@ export async function getSoftwareBySlug(slug: string) {
   return await client.fetch(softwareBySlugQuery, { slug })
 }
 
-export async function getListicles() {
-  return await client.fetch(listiclesQuery)
+export async function getBestOfGuides() {
+  return await client.fetch(bestOfGuidesQuery)
 }
 
-export async function getListicleBySlug(slug: string) {
-  return await client.fetch(listicleBySlugQuery, { slug })
+export async function getBestOfGuideBySlug(slug: string) {
+  return await client.fetch(bestOfGuideBySlugQuery, { slug })
 }
 
 export async function getHomepageData() {

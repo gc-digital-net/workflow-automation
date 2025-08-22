@@ -39,26 +39,6 @@ Build a comprehensive workflow automation website using Next.js 15, replacing th
 │   │   ├── page.tsx                # Listicle articles listing
 │   │   ├── [slug]/page.tsx         # Individual listicle articles
 │   │   └── category/[slug]/page.tsx # Listicle category pages
-│   ├── learn/
-│   │   ├── page.tsx                # Learning hub
-│   │   ├── certification/page.tsx  # Main certification course
-│   │   ├── mini-courses/
-│   │   │   ├── page.tsx           # Mini-courses listing
-│   │   │   └── [slug]/page.tsx    # Individual mini-course
-│   │   ├── templates/page.tsx      # Template library
-│   │   └── resources/page.tsx      # Free resources
-│   ├── community/
-│   │   ├── page.tsx                # Community overview
-│   │   ├── membership/page.tsx     # Membership signup
-│   │   ├── events/page.tsx         # Live events listing
-│   │   └── podcast/
-│   │       ├── page.tsx           # Podcast homepage
-│   │       └── [slug]/page.tsx    # Individual episodes
-│   ├── services/
-│   │   ├── page.tsx                # Services overview
-│   │   ├── consultation/page.tsx   # Software consultation
-│   │   ├── audit/page.tsx          # Workflow audit service
-│   │   └── training/page.tsx       # Team training
 │   ├── tools/
 │   │   ├── page.tsx                # Tools listing
 │   │   ├── roi-calculator/page.tsx # ROI calculator
@@ -69,8 +49,6 @@ Build a comprehensive workflow automation website using Next.js 15, replacing th
 │   │   ├── newsletter/route.ts     # Newsletter signup
 │   │   ├── contact/route.ts        # Contact form handler
 │   │   ├── analytics/route.ts      # Custom analytics
-│   │   ├── payment/route.ts        # Stripe integration
-│   │   ├── membership/route.ts     # Community access
 │   │   └── webhook/route.ts        # Sanity webhook
 │   ├── globals.css
 │   ├── layout.tsx
@@ -222,44 +200,6 @@ Build a comprehensive workflow automation website using Next.js 15, replacing th
 - Export options (PDF, image)
 - Software recommendations based on workflow complexity
 
-**Educational Content Hub:**
-
-#### **Certification Course: "Master Workflow Automation"**
-- **7-module comprehensive course** covering:
-  1. Workflow Automation Fundamentals
-  2. Process Analysis and Optimization
-  3. Software Selection and Implementation
-  4. Integration Strategies
-  5. ROI Measurement and KPIs
-  6. Change Management
-  7. Advanced Automation Techniques
-- **Hands-on assignments** with real scenarios
-- **Certificate upon completion** (LinkedIn credential)
-- **Community access** included
-- **Live monthly Q&A** sessions
-
-#### **Mini-Course Library**
-- **"Automation ROI Mastery"** (60 minutes, $67)
-- **"Software Selection Framework"** (45 minutes, $47)
-- **"Change Management for Automation"** (90 minutes, $97)
-- **"Integration Best Practices"** (60 minutes, $67)
-- **"AI-Powered Workflow Design"** (75 minutes, $87)
-
-#### **Template & Resource Library**
-- **Workflow audit checklists**
-- **Software evaluation scorecards**
-- **ROI calculation spreadsheets**
-- **Implementation project plans**
-- **Change management communications**
-- **Training materials and guides**
-
-**Podcast: "The Workflow Automation Show"**
-- **Bi-weekly episodes** (30-45 minutes)
-- **Expert interviews** with automation leaders
-- **Software deep-dives** and reviews
-- **Member spotlights** and success stories
-- **Industry trends** and news analysis
-- **Q&A episodes** from community questions
 
 ### 6. Monetization Features
 
@@ -271,39 +211,21 @@ Build a comprehensive workflow automation website using Next.js 15, replacing th
 - **Deal pages** with exclusive discounts
 - **Email sequences** promoting top tools
 
-#### **2. Educational Products (High-Value)**
-- **Workflow Automation Certification Course** ($497-$797)
-- **Mini-courses** on specific topics (45-60 minutes, $49-$97 each)
-- **"Master AI for Workflow Automation"** course
-- **Team training packages** with custom pricing
-- **Templates and toolkit libraries**
+#### **2. Digital Products**
+- **Premium guides and ebooks**
+- **Workflow templates and checklists**
 
-#### **3. Community Membership (Recurring)**
-- **Premium membership** ($15-$25/month) including:
-  - Exclusive Slack community access
-  - 100+ workflow templates and examples
-  - Monthly live Q&A sessions
-  - Early access to reviews and content
-  - Member-only webinars and workshops
-  - Career guidance and networking
+#### **3. Newsletter & Premium Content**
+- **Premium newsletter subscription**
+- **Early access to reviews and comparisons**
+- **Exclusive deals and discounts**
 
-#### **4. Service-Based Revenue (High-Value)**
-- **Software selection consultation** ($200-$500/session)
-- **Workflow audit and optimization** services
-- **Team training and workshops**
-- **Custom automation strategy** consulting
 
-#### **5. Content Partnerships (Secondary)**
+#### **4. Content Partnerships**
 - **Sponsored reviews** and case studies
 - **Webinar partnerships** with software vendors
 - **Newsletter sponsorships**
-- **Speaking engagements** and events
 
-#### **6. Advanced Content Products**
-- **Annual workflow automation report** ($97-$197)
-- **Industry-specific automation guides** ($47-$97)
-- **Executive briefings** on automation trends
-- **White-label training** for agencies
 
 ### 7. SEO & Performance
 

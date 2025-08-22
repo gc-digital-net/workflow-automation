@@ -19,20 +19,19 @@ export const NAVIGATION_ITEMS = [
       { name: 'Categories', href: '/categories' },
       { name: 'Compare Tools', href: '/reviews/compare' },
       { name: 'Top Rated', href: '/reviews/top-rated' },
-      { name: 'Guides', href: '/blog/category/guides' },
     ],
   },
   {
-    name: 'Blog',
+    name: 'Resources',
     href: '/blog',
     children: [
-      { name: 'All Posts', href: '/blog' },
+      { name: 'Blog', href: '/blog' },
+      { name: 'Listicles', href: '/listicles' },
+      { name: 'Guides', href: '/blog/category/guides' },
       { name: 'News', href: '/blog/category/news' },
+      { name: 'Templates', href: '/learn/templates' },
+      { name: 'All Resources', href: '/learn/resources' },
     ],
-  },
-  {
-    name: 'Listicles',
-    href: '/listicles',
   },
   {
     name: 'Tools',
@@ -51,10 +50,6 @@ export const NAVIGATION_ITEMS = [
       { name: 'Mini Courses', href: '/learn/mini-courses' },
       { name: 'Templates', href: '/learn/templates' },
     ],
-  },
-  {
-    name: 'Resources',
-    href: '/blog',
   },
   {
     name: 'Community',

@@ -222,18 +222,33 @@ export default async function SoftwareReviewPage({ params }: Props) {
                       Integrations
                     </span>
                     <span className="text-sm font-bold text-gray-900 dark:text-white">
-                      {software.integrations || '500+'}
+                      {typeof software.integrations === 'object' 
+                        ? software.integrations?.count || '500+'
+                        : software.integrations || '500+'}
                     </span>
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                      <UsersIcon className="h-4 w-4" />
-                      Team Size
-                    </span>
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">
-                      All sizes
-                    </span>
-                  </div>
+                  {software.companyInfo?.employeeCount && (
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                        <UsersIcon className="h-4 w-4" />
+                        Company Size
+                      </span>
+                      <span className="text-sm font-bold text-gray-900 dark:text-white">
+                        {software.companyInfo.employeeCount}
+                      </span>
+                    </div>
+                  )}
+                  {software.companyInfo?.foundedYear && (
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                        <ChartBarIcon className="h-4 w-4" />
+                        Founded
+                      </span>
+                      <span className="text-sm font-bold text-gray-900 dark:text-white">
+                        {software.companyInfo.foundedYear}
+                      </span>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between">
                     <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <ShieldCheckIcon className="h-4 w-4" />
@@ -254,6 +269,81 @@ export default async function SoftwareReviewPage({ params }: Props) {
                   </div>
                 </div>
               </div>
+
+              {/* User Ratings */}
+              {software.userRatings && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">User Ratings</h3>
+                  <div className="space-y-3">
+                    {software.userRatings.g2Score && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">G2</span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center">
+                            {[...Array(5)].map((_, i) => (
+                              <StarIcon 
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < Math.floor(software.userRatings.g2Score)
+                                    ? 'text-yellow-400'
+                                    : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-sm font-bold text-gray-900 dark:text-white">
+                            {software.userRatings.g2Score}/5
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {software.userRatings.capterraScore && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">Capterra</span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center">
+                            {[...Array(5)].map((_, i) => (
+                              <StarIcon 
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < Math.floor(software.userRatings.capterraScore)
+                                    ? 'text-yellow-400'
+                                    : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-sm font-bold text-gray-900 dark:text-white">
+                            {software.userRatings.capterraScore}/5
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                    {software.userRatings.trustRadiusScore && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm text-gray-600 dark:text-gray-400">TrustRadius</span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center">
+                            {[...Array(5)].map((_, i) => (
+                              <StarIcon 
+                                key={i}
+                                className={`h-4 w-4 ${
+                                  i < Math.floor(software.userRatings.trustRadiusScore / 2)
+                                    ? 'text-yellow-400'
+                                    : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-sm font-bold text-gray-900 dark:text-white">
+                            {software.userRatings.trustRadiusScore}/10
+                          </span>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
 
               {/* Deal Alert */}
               {software.dealInformation?.hasActiveDeal && (

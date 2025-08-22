@@ -26,7 +26,7 @@ export const NAVIGATION_ITEMS = [
     href: '/blog',
     children: [
       { name: 'Blog', href: '/blog' },
-      { name: 'Best Of Guides', href: '/best' },
+      { name: 'Top Software', href: '/top' },
       { name: 'Guides', href: '/blog/category/guides' },
       { name: 'News', href: '/blog/category/news' },
       { name: 'Templates', href: '/learn/templates' },

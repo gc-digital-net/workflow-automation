@@ -3,7 +3,7 @@ import author from './author'
 import category from './category'
 import blogPost from './blogPost'
 import software from './software'
-import bestOfGuide from './bestOfGuide'
+import topSoftware from './topSoftware'
 import comparison from './comparison'
 import faq from './faq'
 import testimonial from './testimonial'
@@ -17,7 +17,7 @@ export const schemaTypes = [
   category,
   blogPost,
   software,
-  bestOfGuide,
+  topSoftware,
   
   // Supporting content
   comparison,

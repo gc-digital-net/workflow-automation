@@ -386,6 +386,20 @@ export default defineType({
         {name: 'professionalServices', title: 'Professional Services Available', type: 'boolean'},
       ]
     }),
+    defineField({
+      name: 'resources',
+      title: 'Resource Links',
+      type: 'object',
+      group: 'support',
+      fields: [
+        {name: 'documentation', title: 'Documentation URL', type: 'url'},
+        {name: 'videoTutorials', title: 'Video Tutorials URL', type: 'url'},
+        {name: 'communityForum', title: 'Community Forum URL', type: 'url'},
+        {name: 'blog', title: 'Blog URL', type: 'url'},
+        {name: 'apiDocs', title: 'API Documentation URL', type: 'url'},
+        {name: 'statusPage', title: 'Status Page URL', type: 'url'},
+      ]
+    }),
 
     // ========== MEDIA ==========
     defineField({
@@ -424,6 +438,28 @@ export default defineType({
       type: 'array',
       group: 'comparisons',
       of: [{type: 'reference', to: [{type: 'software'}]}]
+    }),
+    defineField({
+      name: 'competitiveAdvantages',
+      title: 'Competitive Advantages',
+      type: 'array',
+      group: 'comparisons',
+      of: [{type: 'string'}],
+      description: 'Key advantages over competitors'
+    }),
+    defineField({
+      name: 'whenToChoose',
+      title: 'When to Choose This Software',
+      type: 'text',
+      group: 'comparisons',
+      description: 'Guidance on when this is the best choice'
+    }),
+    defineField({
+      name: 'whenNotToChoose',
+      title: 'When Not to Choose',
+      type: 'text',
+      group: 'comparisons',
+      description: 'When to consider alternatives instead'
     }),
     defineField({
       name: 'comparisonNotes',

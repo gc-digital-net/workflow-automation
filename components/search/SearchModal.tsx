@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/react/24/outline';
 import { debounce } from '@/lib/utils';
@@ -23,6 +24,11 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   // Mock search function - replace with actual search implementation
   const performSearch = useCallback(
@@ -121,119 +127,130 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
     }
   };
 
-  if (!isOpen) return null;
+  if (!mounted || !isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 z-[9999] overflow-y-auto">
-      <div className="flex min-h-screen items-start justify-center px-4 pt-20 pb-20">
-        <div
-          className="fixed inset-0 bg-gray-500 dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75 transition-opacity"
-          onClick={onClose}
-        />
-
-        <div className="relative z-[10000] w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow-xl transition-all">
-          <div className="border-b border-gray-200 dark:border-gray-700 px-4 py-3">
-            <div className="flex items-center">
-              <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 mr-3" />
-              <input
-                type="text"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search for software, guides, or tools..."
-                className="flex-1 bg-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none"
-                autoFocus
-              />
-              <button
-                onClick={onClose}
-                className="ml-3 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-              >
-                <XMarkIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
-              </button>
+  const modalContent = (
+    <>
+      {/* Backdrop */}
+      <div 
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={onClose}
+        style={{ zIndex: 9998 }}
+      />
+      
+      {/* Modal Container */}
+      <div className="fixed inset-0 overflow-y-auto" style={{ zIndex: 9999 }}>
+        <div className="flex min-h-full items-start justify-center p-4 pt-[10vh]">
+          <div className="relative w-full max-w-2xl transform overflow-hidden rounded-xl bg-white dark:bg-gray-800 shadow-2xl transition-all">
+            {/* Search Input */}
+            <div className="border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+              <div className="flex items-center">
+                <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 mr-3" />
+                <input
+                  type="text"
+                  value={query}
+                  onChange={(e) => setQuery(e.target.value)}
+                  placeholder="Search for software, guides, or tools..."
+                  className="flex-1 bg-transparent text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none"
+                  autoFocus
+                />
+                <button
+                  onClick={onClose}
+                  className="ml-3 p-1 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                >
+                  <XMarkIcon className="h-5 w-5 text-gray-500 dark:text-gray-400" />
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="max-h-96 overflow-y-auto">
-            {isLoading ? (
-              <div className="p-8 text-center">
-                <div className="inline-flex items-center justify-center w-8 h-8 mb-2">
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 dark:border-blue-400"></div>
+            {/* Search Results */}
+            <div className="max-h-[60vh] overflow-y-auto">
+              {isLoading ? (
+                <div className="p-8 text-center">
+                  <div className="inline-flex items-center justify-center w-8 h-8 mb-2">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-600 dark:border-primary-400"></div>
+                  </div>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">Searching...</p>
                 </div>
-                <p className="text-sm text-gray-500 dark:text-gray-400">Searching...</p>
-              </div>
-            ) : results.length > 0 ? (
-              <div className="py-2">
-                {results.map((result) => (
-                  <button
-                    key={result.id}
-                    onClick={() => handleResultClick(result.url)}
-                    className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                  >
-                    <div className="flex items-start">
-                      <div className="flex-1">
-                        <div className="flex items-center mb-1">
-                          <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium mr-2 ${getTypeColor(result.type)}`}>
-                            {getTypeLabel(result.type)}
-                          </span>
-                          <h3 className="text-sm font-medium text-gray-900 dark:text-white">
-                            {result.title}
-                          </h3>
-                        </div>
-                        <p className="text-sm text-gray-600 dark:text-gray-400">
-                          {result.description}
-                        </p>
-                      </div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            ) : query.trim() ? (
-              <div className="p-8 text-center">
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  No results found for "{query}"
-                </p>
-                <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
-                  Try searching for software names, features, or guides
-                </p>
-              </div>
-            ) : (
-              <div className="p-8">
-                <p className="text-sm font-medium text-gray-900 dark:text-white mb-4">
-                  Popular Searches
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {['Zapier', 'Project Management', 'ROI Calculator', 'Workflow Builder', 'CRM Software'].map((term) => (
+              ) : results.length > 0 ? (
+                <div className="py-2">
+                  {results.map((result) => (
                     <button
-                      key={term}
-                      onClick={() => setQuery(term)}
-                      className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      key={result.id}
+                      onClick={() => handleResultClick(result.url)}
+                      className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
                     >
-                      {term}
+                      <div className="flex items-start">
+                        <div className="flex-1">
+                          <div className="flex items-center mb-1">
+                            <span className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium mr-2 ${getTypeColor(result.type)}`}>
+                              {getTypeLabel(result.type)}
+                            </span>
+                            <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                              {result.title}
+                            </h3>
+                          </div>
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
+                            {result.description}
+                          </p>
+                        </div>
+                      </div>
                     </button>
                   ))}
                 </div>
-              </div>
-            )}
-          </div>
+              ) : query.trim() ? (
+                <div className="p-8 text-center">
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    No results found for "{query}"
+                  </p>
+                  <p className="text-xs text-gray-400 dark:text-gray-500 mt-2">
+                    Try searching for software names, features, or guides
+                  </p>
+                </div>
+              ) : (
+                <div className="p-8">
+                  <p className="text-sm font-medium text-gray-900 dark:text-white mb-4">
+                    Popular Searches
+                  </p>
+                  <div className="flex flex-wrap gap-2">
+                    {['Zapier', 'Project Management', 'ROI Calculator', 'Workflow Builder', 'CRM Software'].map((term) => (
+                      <button
+                        key={term}
+                        onClick={() => setQuery(term)}
+                        className="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                      >
+                        {term}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
-          <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-3">
-            <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-              <div className="flex items-center space-x-4">
-                <span className="flex items-center">
-                  <kbd className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 mr-1">↵</kbd>
-                  to select
-                </span>
-                <span className="flex items-center">
-                  <kbd className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 mr-1">ESC</kbd>
-                  to close
+            {/* Footer */}
+            <div className="border-t border-gray-200 dark:border-gray-700 px-4 py-3">
+              <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                <div className="flex items-center space-x-4">
+                  <span className="flex items-center">
+                    <kbd className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 mr-1">↵</kbd>
+                    to select
+                  </span>
+                  <span className="flex items-center">
+                    <kbd className="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 mr-1">ESC</kbd>
+                    to close
+                  </span>
+                </div>
+                <span>
+                  Powered by Workflow Automation
                 </span>
               </div>
-              <span>
-                Powered by Workflow Automation
-              </span>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
+
+  // Use React Portal to render modal at document body level
+  return createPortal(modalContent, document.body);
 }

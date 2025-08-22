@@ -1,148 +1,14 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { StarIcon, SparklesIcon, ClockIcon, ShieldCheckIcon, CurrencyDollarIcon, BeakerIcon } from '@heroicons/react/24/solid';
+import { StarIcon, SparklesIcon, CurrencyDollarIcon, BeakerIcon } from '@heroicons/react/24/solid';
 import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { getSoftware } from '@/lib/sanity-queries';
+import { urlFor } from '@/lib/sanity';
 
 export const metadata: Metadata = {
   title: 'Software Reviews | In-Depth Analysis & Ratings',
   description: 'Comprehensive reviews of workflow automation, project management, and business software. Compare features, pricing, and find the perfect tool for your needs.',
 };
-
-// Mock data - will be replaced with Sanity queries
-const softwareReviews = [
-  {
-    id: 1,
-    name: 'ClickUp',
-    tagline: 'One app to replace them all',
-    logo: '/logos/clickup.png',
-    category: 'Project Management',
-    overallScore: 9.2,
-    scores: {
-      features: 9.5,
-      easeOfUse: 8.8,
-      value: 9.3,
-      support: 8.9,
-    },
-    pricing: 'Free - $19/user/mo',
-    integrations: 1000,
-    freeTier: true,
-    slug: 'clickup',
-    pros: ['Highly customizable', 'Great free tier', 'All-in-one solution'],
-    cons: ['Steep learning curve', 'Can be overwhelming'],
-    bestFor: 'Teams wanting maximum flexibility',
-    updatedAt: '2024-01-20',
-  },
-  {
-    id: 2,
-    name: 'Monday.com',
-    tagline: 'Work OS that powers teams',
-    logo: '/logos/monday.png',
-    category: 'Work Management',
-    overallScore: 8.9,
-    scores: {
-      features: 9.0,
-      easeOfUse: 9.2,
-      value: 8.5,
-      support: 9.0,
-    },
-    pricing: '$8 - $24/user/mo',
-    integrations: 200,
-    freeTier: false,
-    slug: 'monday-com',
-    pros: ['Intuitive interface', 'Great visualizations', 'Strong automation'],
-    cons: ['No true free plan', 'Can get expensive'],
-    bestFor: 'Visual teams and creative agencies',
-    updatedAt: '2024-01-18',
-  },
-  {
-    id: 3,
-    name: 'Zapier',
-    tagline: 'Automation that moves you forward',
-    logo: '/logos/zapier.png',
-    category: 'Automation',
-    overallScore: 9.0,
-    scores: {
-      features: 9.3,
-      easeOfUse: 8.7,
-      value: 8.8,
-      support: 9.1,
-    },
-    pricing: 'Free - $140/mo',
-    integrations: 5000,
-    freeTier: true,
-    slug: 'zapier',
-    pros: ['Massive app library', 'No-code automation', 'Reliable performance'],
-    cons: ['Can get expensive at scale', 'Limited free tier'],
-    bestFor: 'Businesses needing to connect multiple apps',
-    updatedAt: '2024-01-15',
-  },
-  {
-    id: 4,
-    name: 'Asana',
-    tagline: 'Manage your team\'s work, projects, & tasks',
-    logo: '/logos/asana.png',
-    category: 'Project Management',
-    overallScore: 8.7,
-    scores: {
-      features: 8.8,
-      easeOfUse: 9.0,
-      value: 8.6,
-      support: 8.5,
-    },
-    pricing: 'Free - $30.49/user/mo',
-    integrations: 270,
-    freeTier: true,
-    slug: 'asana',
-    pros: ['Clean interface', 'Great for beginners', 'Strong mobile apps'],
-    cons: ['Limited customization', 'Basic reporting'],
-    bestFor: 'Teams prioritizing simplicity',
-    updatedAt: '2024-01-12',
-  },
-  {
-    id: 5,
-    name: 'Notion',
-    tagline: 'Your wiki, docs, & projects. Together.',
-    logo: '/logos/notion.png',
-    category: 'Knowledge Management',
-    overallScore: 8.8,
-    scores: {
-      features: 9.1,
-      easeOfUse: 8.3,
-      value: 9.2,
-      support: 8.2,
-    },
-    pricing: 'Free - $18/user/mo',
-    integrations: 100,
-    freeTier: true,
-    slug: 'notion',
-    pros: ['Extremely flexible', 'Great for documentation', 'Database features'],
-    cons: ['Performance issues at scale', 'Learning curve'],
-    bestFor: 'Teams needing docs + project management',
-    updatedAt: '2024-01-10',
-  },
-  {
-    id: 6,
-    name: 'Airtable',
-    tagline: 'Create apps that perfectly fit your team',
-    logo: '/logos/airtable.png',
-    category: 'Database',
-    overallScore: 8.6,
-    scores: {
-      features: 9.0,
-      easeOfUse: 8.5,
-      value: 8.3,
-      support: 8.6,
-    },
-    pricing: 'Free - $45/user/mo',
-    integrations: 450,
-    freeTier: true,
-    slug: 'airtable',
-    pros: ['Powerful database features', 'Great views', 'Strong API'],
-    cons: ['Expensive for larger teams', 'Limited automation'],
-    bestFor: 'Data-driven teams and workflows',
-    updatedAt: '2024-01-08',
-  },
-];
 
 const categories = [
   'All Software',
@@ -154,14 +20,6 @@ const categories = [
   'Database',
   'Communication',
   'HR Tools',
-];
-
-const sortOptions = [
-  { label: 'Highest Rated', value: 'rating-desc' },
-  { label: 'Recently Updated', value: 'updated' },
-  { label: 'Most Integrations', value: 'integrations' },
-  { label: 'Best Value', value: 'value' },
-  { label: 'Easiest to Use', value: 'ease' },
 ];
 
 function ScoreBar({ score, label }: { score: number; label: string }) {
@@ -180,7 +38,34 @@ function ScoreBar({ score, label }: { score: number; label: string }) {
   );
 }
 
-export default function ReviewsPage() {
+export default async function ReviewsPage() {
+  // Fetch real data from Sanity
+  const softwareData = await getSoftware();
+  
+  // Transform Sanity data to match our component structure
+  const softwareReviews = softwareData.map((software: any) => ({
+    id: software._id,
+    name: software.name,
+    tagline: software.tagline || 'Powerful automation software',
+    logo: software.logo,
+    category: software.categories?.[0] || 'Software',
+    overallScore: software.overallScore || 8.0,
+    scores: {
+      features: software.scores?.features || 8.0,
+      easeOfUse: software.scores?.easeOfUse || 8.0,
+      value: software.scores?.pricing || software.scores?.value || 8.0,
+      support: software.scores?.support || 8.0,
+    },
+    pricing: software.pricing && software.pricing.length > 0 && software.pricing[0].price 
+      ? `$${software.pricing[0].price}/mo` 
+      : 'Free',
+    integrations: software.integrations?.count || 100,
+    freeTier: software.pricingDetails?.hasFreeTier || software.hasFreeTrial || false,
+    slug: software.slug?.current || software.name.toLowerCase().replace(/\s+/g, '-'),
+    bestFor: software.verdict || 'Teams looking for powerful automation',
+    updatedAt: software.lastUpdated || new Date().toISOString(),
+  }));
+
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* Hero Section */}
@@ -191,7 +76,7 @@ export default function ReviewsPage() {
               Software Reviews & Ratings
             </h1>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-              In-depth analysis of 300+ business software tools. Compare features, pricing, and find your perfect match.
+              In-depth analysis of top business software tools. Compare features, pricing, and find your perfect match.
             </p>
             
             {/* Search Bar */}
@@ -217,7 +102,7 @@ export default function ReviewsPage() {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">300+</div>
+              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">{softwareReviews.length}</div>
               <div className="text-sm text-gray-600 dark:text-gray-400">Software Reviewed</div>
             </div>
             <div className="text-center">
@@ -276,108 +161,124 @@ export default function ReviewsPage() {
       {/* Software Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {softwareReviews.map((software) => (
-              <Link
-                key={software.id}
-                href={`/reviews/${software.slug}`}
-                className="group block"
-              >
-                <article className="h-full flex flex-col bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  {/* Header */}
-                  <div className="p-6 border-b border-gray-100 dark:border-gray-700">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-lg flex items-center justify-center">
-                          <SparklesIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
-                            {software.name}
-                          </h3>
-                          <p className="text-xs text-gray-500 dark:text-gray-400">{software.category}</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                          {software.overallScore}
-                        </div>
-                        <div className="flex items-center gap-0.5">
-                          {[...Array(5)].map((_, i) => (
-                            <StarIcon 
-                              key={i} 
-                              className={`h-3 w-3 ${
-                                i < Math.floor(software.overallScore / 2)
-                                  ? 'text-yellow-400'
-                                  : 'text-gray-300 dark:text-gray-600'
-                              }`}
+          {softwareReviews.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 dark:text-gray-400">No software reviews available yet.</p>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {softwareReviews.map((software) => (
+                <Link
+                  key={software.id}
+                  href={`/reviews/${software.slug}`}
+                  className="group block"
+                >
+                  <article className="h-full flex flex-col bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                    {/* Header */}
+                    <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className="flex items-center gap-3">
+                          {software.logo ? (
+                            <img 
+                              src={urlFor(software.logo).width(48).height(48).url()} 
+                              alt={software.name}
+                              className="w-12 h-12 object-contain bg-white rounded-lg p-1"
                             />
-                          ))}
+                          ) : (
+                            <div className="w-12 h-12 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-lg flex items-center justify-center">
+                              <SparklesIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
+                            </div>
+                          )}
+                          <div>
+                            <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                              {software.name}
+                            </h3>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">{software.category}</p>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                            {software.overallScore.toFixed(1)}
+                          </div>
+                          <div className="flex items-center gap-0.5">
+                            {[...Array(5)].map((_, i) => (
+                              <StarIcon 
+                                key={i} 
+                                className={`h-3 w-3 ${
+                                  i < Math.floor(software.overallScore / 2)
+                                    ? 'text-yellow-400'
+                                    : 'text-gray-300 dark:text-gray-600'
+                                }`}
+                              />
+                            ))}
+                          </div>
                         </div>
                       </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
+                        {software.tagline}
+                      </p>
                     </div>
-                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                      {software.tagline}
-                    </p>
-                  </div>
-                  
-                  {/* Scores */}
-                  <div className="p-6 space-y-3 flex-1">
-                    <ScoreBar score={software.scores.features} label="Features" />
-                    <ScoreBar score={software.scores.easeOfUse} label="Ease of Use" />
-                    <ScoreBar score={software.scores.value} label="Value" />
-                    <ScoreBar score={software.scores.support} label="Support" />
-                  </div>
-                  
-                  {/* Quick Info */}
-                  <div className="p-6 pt-0">
-                    <div className="flex items-center justify-between text-sm mb-4">
-                      <div className="flex items-center gap-4">
-                        <div className="flex items-center gap-1">
-                          <CurrencyDollarIcon className="h-4 w-4 text-gray-400" />
-                          <span className="text-gray-600 dark:text-gray-400">{software.pricing}</span>
+                    
+                    {/* Scores */}
+                    <div className="p-6 space-y-3 flex-1">
+                      <ScoreBar score={software.scores.features} label="Features" />
+                      <ScoreBar score={software.scores.easeOfUse} label="Ease of Use" />
+                      <ScoreBar score={software.scores.value} label="Value" />
+                      <ScoreBar score={software.scores.support} label="Support" />
+                    </div>
+                    
+                    {/* Quick Info */}
+                    <div className="p-6 pt-0">
+                      <div className="flex items-center justify-between text-sm mb-4">
+                        <div className="flex items-center gap-4">
+                          <div className="flex items-center gap-1">
+                            <CurrencyDollarIcon className="h-4 w-4 text-gray-400" />
+                            <span className="text-gray-600 dark:text-gray-400">{software.pricing}</span>
+                          </div>
+                          {software.freeTier && (
+                            <span className="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs rounded-full">
+                              Free Tier
+                            </span>
+                          )}
                         </div>
-                        {software.freeTier && (
-                          <span className="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs rounded-full">
-                            Free Tier
-                          </span>
-                        )}
+                        <div className="flex items-center gap-1">
+                          <BeakerIcon className="h-4 w-4 text-gray-400" />
+                          <span className="text-gray-600 dark:text-gray-400">{software.integrations}+</span>
+                        </div>
                       </div>
-                      <div className="flex items-center gap-1">
-                        <BeakerIcon className="h-4 w-4 text-gray-400" />
-                        <span className="text-gray-600 dark:text-gray-400">{software.integrations}+</span>
+                      
+                      {/* Best For */}
+                      <div className="p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
+                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Best For:</p>
+                        <p className="text-sm text-gray-700 dark:text-gray-300">{software.bestFor}</p>
                       </div>
                     </div>
                     
-                    {/* Best For */}
-                    <div className="p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
-                      <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Best For:</p>
-                      <p className="text-sm text-gray-700 dark:text-gray-300">{software.bestFor}</p>
+                    {/* Footer */}
+                    <div className="px-6 py-3 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs text-gray-500 dark:text-gray-400">
+                          Updated {new Date(software.updatedAt).toLocaleDateString()}
+                        </span>
+                        <span className="text-sm font-medium text-primary-600 dark:text-primary-400 group-hover:underline">
+                          Read Review →
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  
-                  {/* Footer */}
-                  <div className="px-6 py-3 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-gray-500 dark:text-gray-400">
-                        Updated {new Date(software.updatedAt).toLocaleDateString()}
-                      </span>
-                      <span className="text-sm font-medium text-primary-600 dark:text-primary-400 group-hover:underline">
-                        Read Review →
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              </Link>
-            ))}
-          </div>
+                  </article>
+                </Link>
+              ))}
+            </div>
+          )}
           
-          {/* Load More */}
-          <div className="mt-12 text-center">
-            <button className="px-8 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium">
-              Load More Reviews
-            </button>
-          </div>
+          {/* Load More - only show if we have reviews */}
+          {softwareReviews.length > 0 && softwareReviews.length >= 6 && (
+            <div className="mt-12 text-center">
+              <button className="px-8 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium">
+                Load More Reviews
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

@@ -80,12 +80,14 @@ export default defineType({
       type: 'object',
       group: 'basic',
       fields: [
-        {name: 'founded', title: 'Founded Year', type: 'number'},
+        {name: 'foundedYear', title: 'Founded Year', type: 'number'},
         {name: 'headquarters', title: 'Headquarters', type: 'string'},
-        {name: 'employees', title: 'Employee Range', type: 'string'},
-        {name: 'funding', title: 'Funding Info', type: 'string'},
+        {name: 'employeeCount', title: 'Employee Count', type: 'string'},
+        {name: 'funding', title: 'Funding Information', type: 'string'},
+        {name: 'valuation', title: 'Valuation', type: 'string'},
+        {name: 'revenue', title: 'Revenue', type: 'string'},
+        {name: 'customers', title: 'Customer Count', type: 'string'},
         {name: 'website', title: 'Official Website', type: 'url'},
-        {name: 'users', title: 'Number of Users', type: 'string'},
         {name: 'marketShare', title: 'Market Share', type: 'string'},
         {name: 'notableClients', title: 'Notable Clients', type: 'array', of: [{type: 'string'}]}
       ]
@@ -194,6 +196,14 @@ export default defineType({
       of: [{type: 'string'}],
       description: 'Who should look elsewhere'
     }),
+    defineField({
+      name: 'popularIntegrations',
+      title: 'Popular Integrations',
+      type: 'array',
+      group: 'features',
+      of: [{type: 'string'}],
+      description: 'List of popular integration names'
+    }),
 
     // ========== FEATURES ==========
     defineField({
@@ -218,14 +228,8 @@ export default defineType({
       group: 'features',
       fields: [
         {name: 'count', title: 'Total Integration Count', type: 'number'},
-        {name: 'native', title: 'Native Integrations', type: 'array', of: [{type: 'string'}]},
-        {name: 'categories', title: 'Integration Categories', type: 'array', of: [{
-          type: 'object',
-          fields: [
-            {name: 'category', title: 'Category', type: 'string'},
-            {name: 'tools', title: 'Tools', type: 'array', of: [{type: 'string'}]}
-          ]
-        }]},
+        {name: 'native', title: 'Native Integration Count', type: 'number'},
+        {name: 'categories', title: 'Integration Categories', type: 'array', of: [{type: 'string'}]},
         {name: 'hasZapier', title: 'Zapier Support', type: 'boolean'},
         {name: 'hasAPI', title: 'API Available', type: 'boolean'},
         {name: 'hasWebhooks', title: 'Webhook Support', type: 'boolean'},
@@ -281,6 +285,30 @@ export default defineType({
 
     // ========== TECHNICAL DETAILS ==========
     defineField({
+      name: 'supportedPlatforms',
+      title: 'Supported Platforms',
+      type: 'array',
+      group: 'technical',
+      of: [{type: 'string'}],
+      description: 'e.g., web, windows, macos, ios, android, api'
+    }),
+    defineField({
+      name: 'deploymentOptions',
+      title: 'Deployment Options',
+      type: 'array',
+      group: 'technical',
+      of: [{type: 'string'}],
+      description: 'e.g., cloud, on-premise, hybrid'
+    }),
+    defineField({
+      name: 'dataExportFormats',
+      title: 'Data Export Formats',
+      type: 'array',
+      group: 'technical',
+      of: [{type: 'string'}],
+      description: 'e.g., CSV, Excel, PDF, JSON'
+    }),
+    defineField({
       name: 'technical',
       title: 'Technical Specifications',
       type: 'object',
@@ -323,6 +351,19 @@ export default defineType({
     }),
 
     // ========== SUPPORT ==========
+    defineField({
+      name: 'supportInfo',
+      title: 'Support Information',
+      type: 'object',
+      group: 'support',
+      fields: [
+        {name: 'channels', title: 'Support Channels', type: 'array', of: [{type: 'string'}]},
+        {name: 'responseTime', title: 'Average Response Time', type: 'string'},
+        {name: 'languages', title: 'Support Languages', type: 'array', of: [{type: 'string'}]},
+        {name: 'training', title: 'Training Resources', type: 'array', of: [{type: 'string'}]},
+        {name: 'sla', title: 'SLA Available', type: 'boolean'},
+      ]
+    }),
     defineField({
       name: 'support',
       title: 'Customer Support',
@@ -417,6 +458,13 @@ export default defineType({
       type: 'datetime',
       group: 'seo',
       initialValue: () => new Date().toISOString()
+    }),
+    defineField({
+      name: 'nextReviewDate',
+      title: 'Next Review Date',
+      type: 'datetime',
+      group: 'seo',
+      description: 'When this review should be updated next'
     }),
     defineField({
       name: 'seo',

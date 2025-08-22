@@ -1,8 +1,7 @@
-import { groq } from 'groq'
 import { client } from './sanity'
 
 // Blog queries
-export const postsQuery = groq`
+export const postsQuery = `
   *[_type == "post"] | order(publishedAt desc) {
     _id,
     title,
@@ -15,7 +14,7 @@ export const postsQuery = groq`
   }
 `
 
-export const postBySlugQuery = groq`
+export const postBySlugQuery = `
   *[_type == "post" && slug.current == $slug][0] {
     _id,
     title,
@@ -31,7 +30,7 @@ export const postBySlugQuery = groq`
 `
 
 // Software queries
-export const softwareQuery = groq`
+export const softwareQuery = `
   *[_type == "software"] | order(overallScore desc) {
     _id,
     name,
@@ -46,7 +45,7 @@ export const softwareQuery = groq`
   }
 `
 
-export const softwareBySlugQuery = groq`
+export const softwareBySlugQuery = `
   *[_type == "software" && slug.current == $slug][0] {
     _id,
     name,
@@ -71,7 +70,7 @@ export const softwareBySlugQuery = groq`
 `
 
 // Listicle queries
-export const listiclesQuery = groq`
+export const listiclesQuery = `
   *[_type == "listicle"] | order(publishedAt desc) {
     _id,
     title,
@@ -84,7 +83,7 @@ export const listiclesQuery = groq`
   }
 `
 
-export const listicleBySlugQuery = groq`
+export const listicleBySlugQuery = `
   *[_type == "listicle" && slug.current == $slug][0] {
     _id,
     title,
@@ -110,7 +109,7 @@ export const listicleBySlugQuery = groq`
 `
 
 // Homepage queries
-export const homepageDataQuery = groq`{
+export const homepageDataQuery = `{
   "featuredSoftware": *[_type == "software"] | order(overallScore desc)[0...6] {
     _id,
     name,
@@ -153,7 +152,7 @@ export const homepageDataQuery = groq`{
 }`
 
 // Category queries
-export const categoriesQuery = groq`
+export const categoriesQuery = `
   *[_type == "category"] {
     _id,
     name,
@@ -164,7 +163,7 @@ export const categoriesQuery = groq`
 `
 
 // Comparison queries
-export const comparisonsQuery = groq`
+export const comparisonsQuery = `
   *[_type == "comparison"] | order(publishedAt desc) {
     _id,
     title,
@@ -176,7 +175,7 @@ export const comparisonsQuery = groq`
 `
 
 // FAQ queries
-export const faqsQuery = groq`
+export const faqsQuery = `
   *[_type == "faq"] | order(order asc) {
     _id,
     question,

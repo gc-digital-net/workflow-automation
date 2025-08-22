@@ -146,22 +146,82 @@ export default defineType({
       type: 'object',
       group: 'review',
       fields: [
-        {name: 'whatIsIt', title: 'What is this software?', type: 'blockContent'},
-        {name: 'keyDifferentiators', title: 'Key Differentiators', type: 'blockContent'},
-        {name: 'idealFor', title: 'Ideal For', type: 'blockContent'},
+        {name: 'introduction', title: 'Introduction', type: 'blockContent'},
+        {name: 'keyHighlights', title: 'Key Highlights', type: 'array', of: [{
+          type: 'object',
+          fields: [
+            {name: 'feature', title: 'Feature', type: 'string'},
+            {name: 'description', title: 'Description', type: 'text'}
+          ]
+        }]},
+        {name: 'targetAudience', title: 'Target Audience', type: 'blockContent'},
       ]
     }),
     defineField({
       name: 'detailedReview',
-      title: 'Detailed Review Sections',
+      title: 'Detailed Review Section',
       type: 'object',
       group: 'review',
       fields: [
         {name: 'userInterface', title: 'User Interface & Experience', type: 'blockContent'},
-        {name: 'performance', title: 'Performance & Reliability', type: 'blockContent'},
-        {name: 'security', title: 'Security & Compliance', type: 'blockContent'},
-        {name: 'implementation', title: 'Implementation & Setup', type: 'blockContent'},
-        {name: 'learningCurve', title: 'Learning Curve', type: 'blockContent'},
+        {name: 'featuresAnalysis', title: 'Features Analysis', type: 'blockContent'},
+        {name: 'integrationCapabilities', title: 'Integration Capabilities', type: 'blockContent'},
+        {name: 'performanceReliability', title: 'Performance & Reliability', type: 'blockContent'},
+        {name: 'securityCompliance', title: 'Security & Compliance', type: 'blockContent'},
+        {name: 'customerSupport', title: 'Customer Support', type: 'blockContent'},
+      ]
+    }),
+    defineField({
+      name: 'pricingSection',
+      title: 'Pricing Analysis',
+      type: 'object',
+      group: 'review',
+      fields: [
+        {name: 'pricingOverview', title: 'Pricing Overview', type: 'blockContent'},
+        {name: 'valueForMoney', title: 'Value for Money Analysis', type: 'blockContent'},
+        {name: 'competitiveComparison', title: 'Competitive Pricing Comparison', type: 'blockContent'},
+      ]
+    }),
+    defineField({
+      name: 'useCasesSection',
+      title: 'Use Cases & Implementation',
+      type: 'object',
+      group: 'review',
+      fields: [
+        {name: 'idealUseCases', title: 'Ideal Use Cases', type: 'blockContent'},
+        {name: 'implementationGuide', title: 'Implementation Guide', type: 'blockContent'},
+        {name: 'realWorldExamples', title: 'Real-world Examples', type: 'array', of: [{
+          type: 'object',
+          fields: [
+            {name: 'company', title: 'Company/Scenario', type: 'string'},
+            {name: 'challenge', title: 'Challenge', type: 'text'},
+            {name: 'solution', title: 'Solution', type: 'text'},
+            {name: 'results', title: 'Results', type: 'text'}
+          ]
+        }]},
+      ]
+    }),
+    defineField({
+      name: 'competitorAnalysis',
+      title: 'Competitor Analysis',
+      type: 'object',
+      group: 'review',
+      fields: [
+        {name: 'mainCompetitors', title: 'Main Competitors', type: 'array', of: [{type: 'reference', to: [{type: 'software'}]}]},
+        {name: 'competitiveAdvantages', title: 'Competitive Advantages', type: 'blockContent'},
+        {name: 'competitiveDisadvantages', title: 'Areas for Improvement', type: 'blockContent'},
+      ]
+    }),
+    defineField({
+      name: 'finalVerdict',
+      title: 'Final Verdict Section',
+      type: 'object',
+      group: 'review',
+      fields: [
+        {name: 'summary', title: 'Summary', type: 'blockContent'},
+        {name: 'recommendation', title: 'Recommendation', type: 'blockContent'},
+        {name: 'whoShouldUse', title: 'Who Should Use This Software', type: 'blockContent'},
+        {name: 'whoShouldAvoid', title: 'Who Should Consider Alternatives', type: 'blockContent'},
       ]
     }),
     defineField({

@@ -55,9 +55,5 @@ export default defineType({
         }
       ]
     }),
-    defineArrayMember({
-      type: 'code',
-      title: 'Code Block',
-    }),
   ],
 })

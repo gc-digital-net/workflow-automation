@@ -10,7 +10,8 @@
     "build": "sanity build",
     "deploy": "sanity deploy",
     "deploy-graphql": "sanity graphql deploy",
-    "seed": "tsx scripts/seedData.ts"
+    "seed": "tsx scripts/seedData.ts",
+    "fix-keys": "tsx scripts/fixArrayKeys.ts"
   },
   "keywords": [
     "sanity"

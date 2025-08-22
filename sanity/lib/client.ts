@@ -1,15 +1,17 @@
 import { createClient } from 'next-sanity';
 import imageUrlBuilder from '@sanity/image-url';
+import { sanityConfig } from '../config';
 
-export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'x1zu4x72';
-export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production';
-export const apiVersion = '2024-01-01';
+// Use hardcoded values for build time
+export const projectId = sanityConfig.projectId;
+export const dataset = sanityConfig.dataset;
+export const apiVersion = sanityConfig.apiVersion;
 
 export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  useCdn: process.env.NODE_ENV === 'production',
+  useCdn: sanityConfig.useCdn,
 });
 
 const builder = imageUrlBuilder(client);

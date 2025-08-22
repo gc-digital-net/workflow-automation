@@ -124,14 +124,14 @@ export default function SearchModal({ isOpen, onClose }: SearchModalProps) {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto">
+    <div className="fixed inset-0 z-[9999] overflow-y-auto">
       <div className="flex min-h-screen items-start justify-center px-4 pt-20 pb-20">
         <div
           className="fixed inset-0 bg-gray-500 dark:bg-gray-900 bg-opacity-75 dark:bg-opacity-75 transition-opacity"
           onClick={onClose}
         />
 
-        <div className="relative w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow-xl transition-all">
+        <div className="relative z-[10000] w-full max-w-2xl transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 shadow-xl transition-all">
           <div className="border-b border-gray-200 dark:border-gray-700 px-4 py-3">
             <div className="flex items-center">
               <MagnifyingGlassIcon className="h-5 w-5 text-gray-400 mr-3" />

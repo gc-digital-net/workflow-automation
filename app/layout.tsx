@@ -3,7 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
-import { BackgroundBlobs, FloatingShapes } from "@/components/ui/BackgroundEffects";
+import { BackgroundBlobs, FloatingShapes, MeshGradient } from "@/components/ui/BackgroundEffects";
 import "./globals.css";
 
 const inter = Inter({
@@ -63,7 +63,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider>
-          {/* Background effects */}
+          {/* Background effects - layered for depth */}
+          <MeshGradient />
           <BackgroundBlobs />
           <FloatingShapes />
           

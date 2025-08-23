@@ -97,7 +97,7 @@
   
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-600 via-primary-500 to-accent-purple bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-600 via-primary-500 to-cyan-500 bg-clip-text text-transparent;
   }
   
   /* Section spacing */
@@ -115,11 +115,11 @@
   }
   
   .blob-secondary {
-    @apply bg-accent-purple dark:bg-accent-purple;
+    @apply bg-cyan-400 dark:bg-cyan-600;
   }
   
   .blob-accent {
-    @apply bg-accent-pink dark:bg-accent-pink;
+    @apply bg-indigo-400 dark:bg-indigo-600;
   }
 }
 
@@ -269,4 +269,21 @@
 /* Selection color */
 ::selection {
   @apply bg-primary-500/20 text-primary-900 dark:bg-primary-500/30 dark:text-primary-100;
+}
+
+/* Animation delay classes for background effects */
+.animation-delay-1000 {
+  animation-delay: 1s;
+}
+.animation-delay-2000 {
+  animation-delay: 2s;
+}
+.animation-delay-3000 {
+  animation-delay: 3s;
+}
+.animation-delay-4000 {
+  animation-delay: 4s;
+}
+.animation-delay-5000 {
+  animation-delay: 5s;
 }

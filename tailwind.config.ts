@@ -10,40 +10,40 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Modern purple-based primary palette
+        // Deep ocean blue primary palette
         primary: {
-          50: '#faf5ff',
-          100: '#f3e8ff',
-          200: '#e9d5ff',
-          300: '#d8b4fe',
-          400: '#c084fc',
-          500: '#a855f7',
-          600: '#9333ea',
-          700: '#7e22ce',
-          800: '#6b21a8',
-          900: '#581c87',
-          950: '#3b0764',
+          50: '#eff6ff',
+          100: '#dbeafe',
+          200: '#bfdbfe',
+          300: '#93c5fd',
+          400: '#60a5fa',
+          500: '#3b82f6',
+          600: '#2563eb',
+          700: '#1d4ed8',
+          800: '#1e40af',
+          900: '#1e3a8a',
+          950: '#172554',
         },
-        // Neutral grays with slight purple tint
+        // Neutral grays with slight blue tint
         secondary: {
-          50: '#fafafb',
-          100: '#f4f4f5',
-          200: '#e4e4e7',
-          300: '#d1d1d6',
-          400: '#a1a1aa',
-          500: '#71717a',
-          600: '#52525b',
-          700: '#3f3f46',
-          800: '#27272a',
-          900: '#18181b',
-          950: '#09090b',
+          50: '#f8fafc',
+          100: '#f1f5f9',
+          200: '#e2e8f0',
+          300: '#cbd5e1',
+          400: '#94a3b8',
+          500: '#64748b',
+          600: '#475569',
+          700: '#334155',
+          800: '#1e293b',
+          900: '#0f172a',
+          950: '#020617',
         },
         // Accent colors for various states
         accent: {
+          cyan: '#06b6d4',
           blue: '#3b82f6',
-          purple: '#8b5cf6',
-          pink: '#ec4899',
           indigo: '#6366f1',
+          teal: '#14b8a6',
         },
         success: {
           50: '#f0fdf4',

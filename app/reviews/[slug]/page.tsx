@@ -4,8 +4,17 @@ import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 import { getSoftwareBySlug, getSoftware } from '@/lib/sanity-queries'
 import { urlFor } from '@/lib/sanity'
-import { StarIcon, CheckIcon, XMarkIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid'
-import { CurrencyDollarIcon, BeakerIcon, ShieldCheckIcon, ClockIcon, UsersIcon, ChartBarIcon, BuildingOfficeIcon, CalendarIcon } from '@heroicons/react/24/outline'
+import { StarIcon, CheckIcon, XMarkIcon, ArrowLeftIcon, ArrowRightIcon, SparklesIcon } from '@heroicons/react/24/solid'
+import { CurrencyDollarIcon, BeakerIcon, ShieldCheckIcon, ClockIcon, UsersIcon, ChartBarIcon, BuildingOfficeIcon, CalendarIcon, CommandLineIcon, CpuChipIcon, ServerIcon } from '@heroicons/react/24/outline'
+import { 
+  HeroImagePlaceholder, 
+  FeatureScreenshotPlaceholder, 
+  IntegrationLogosPlaceholder,
+  ComparisonChartPlaceholder,
+  DashboardScreenshotPlaceholder,
+  WorkflowDiagramPlaceholder,
+  gridPatternStyles 
+} from '@/components/ReviewPlaceholders'
 
 type Props = {
   params: { slug: string }
@@ -71,23 +80,25 @@ export default async function SoftwareReviewPage({ params }: Props) {
   const scores = software.scores || {}
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      {/* Breadcrumb */}
-      <div className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav className="flex items-center gap-2 text-sm">
-            <Link href="/" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-              Home
-            </Link>
-            <span className="text-gray-400">/</span>
-            <Link href="/reviews" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-              Reviews
-            </Link>
-            <span className="text-gray-400">/</span>
-            <span className="text-gray-900 dark:text-white font-medium">{software.name}</span>
-          </nav>
+    <>
+      <style jsx global>{gridPatternStyles}</style>
+      <div className="min-h-screen bg-white dark:bg-gray-900">
+        {/* Breadcrumb */}
+        <div className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <nav className="flex items-center gap-2 text-sm">
+              <Link href="/" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                Home
+              </Link>
+              <span className="text-gray-400">/</span>
+              <Link href="/reviews" className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                Reviews
+              </Link>
+              <span className="text-gray-400">/</span>
+              <span className="text-gray-900 dark:text-white font-medium">{software.name}</span>
+            </nav>
+          </div>
         </div>
-      </div>
 
       {/* Header Section */}
       <section className="py-12 bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900">
@@ -307,6 +318,13 @@ export default async function SoftwareReviewPage({ params }: Props) {
         </div>
       </section>
 
+      {/* Hero Image Section */}
+      <section className="relative -mt-8 mb-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <HeroImagePlaceholder name={software.name} />
+        </div>
+      </section>
+
       {/* Table of Contents */}
       <section className="py-8 border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -348,6 +366,12 @@ export default async function SoftwareReviewPage({ params }: Props) {
                   </div>
                 </div>
               )}
+              
+              {/* Dashboard Screenshot */}
+              <div className="mt-12">
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 text-center">See {software.name} in Action</h3>
+                <DashboardScreenshotPlaceholder />
+              </div>
             </div>
           </div>
         </section>
@@ -382,20 +406,36 @@ export default async function SoftwareReviewPage({ params }: Props) {
       {software.keyFeatures && software.keyFeatures.length > 0 && (
         <section id="features" className="py-12">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-6xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Key Features</h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {software.keyFeatures.map((feature: any, index: number) => (
-                  <div key={feature._key || index} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{feature.name}</h3>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm">{feature.description}</p>
-                    {feature.category && (
-                      <span className="inline-block mt-3 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 text-xs rounded">
-                        {feature.category}
-                      </span>
-                    )}
+            <div className="max-w-7xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">Key Features</h2>
+              <p className="text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+                Discover the powerful capabilities that make {software.name} stand out in the market
+              </p>
+              
+              {/* Feature Grid with Visual Enhancement */}
+              <div className="grid md:grid-cols-2 gap-8 mb-12">
+                {software.keyFeatures.slice(0, 6).map((feature: any, index: number) => (
+                  <div key={feature._key || index} className="group">
+                    <FeatureScreenshotPlaceholder feature={feature.name} index={index} />
+                    <div className="mt-4">
+                      <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{feature.name}</h3>
+                      <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
+                      {feature.category && (
+                        <span className="inline-block mt-3 px-3 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 text-sm rounded-full">
+                          {feature.category}
+                        </span>
+                      )}
+                    </div>
                   </div>
                 ))}
+              </div>
+              
+              {/* Workflow Diagram */}
+              <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 p-8">
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 text-center">
+                  How {software.name} Streamlines Your Workflow
+                </h3>
+                <WorkflowDiagramPlaceholder />
               </div>
             </div>
           </div>
@@ -485,23 +525,31 @@ export default async function SoftwareReviewPage({ params }: Props) {
       )}
 
       {/* Pros and Cons */}
-      <section id="pros-cons" className="py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+      <section id="pros-cons" className="py-16 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-green-50 via-white to-red-50 dark:from-gray-900 dark:via-gray-900 dark:to-gray-900 opacity-50"></div>
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="max-w-6xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Pros & Cons</h2>
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">Pros & Cons</h2>
+            <p className="text-gray-600 dark:text-gray-400 text-center mb-12">
+              A balanced view of {software.name}'s strengths and areas for improvement
+            </p>
             <div className="grid lg:grid-cols-2 gap-8">
               {/* Pros */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                  <CheckIcon className="h-6 w-6 text-green-500" />
-                  Pros
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/10 dark:to-emerald-900/10 rounded-2xl border-2 border-green-200 dark:border-green-800 p-8 shadow-lg hover:shadow-xl transition-shadow">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
+                  <div className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
+                    <CheckIcon className="h-6 w-6 text-white" />
+                  </div>
+                  What We Love
                 </h3>
-                <ul className="space-y-3">
+                <ul className="space-y-4">
                   {software.pros && software.pros.length > 0 && 
                     software.pros.map((pro: string, index: number) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <CheckIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">{pro}</span>
+                      <li key={index} className="flex items-start gap-3 group">
+                        <div className="w-6 h-6 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mt-0.5 group-hover:bg-green-200 dark:group-hover:bg-green-800/30 transition-colors">
+                          <CheckIcon className="h-4 w-4 text-green-600 dark:text-green-400" />
+                        </div>
+                        <span className="text-gray-700 dark:text-gray-300 flex-1">{pro}</span>
                       </li>
                     ))
                   }
@@ -509,17 +557,21 @@ export default async function SoftwareReviewPage({ params }: Props) {
               </div>
 
               {/* Cons */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                  <XMarkIcon className="h-6 w-6 text-red-500" />
-                  Cons
+              <div className="bg-gradient-to-br from-red-50 to-orange-50 dark:from-red-900/10 dark:to-orange-900/10 rounded-2xl border-2 border-red-200 dark:border-red-800 p-8 shadow-lg hover:shadow-xl transition-shadow">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-3">
+                  <div className="w-10 h-10 bg-red-500 rounded-full flex items-center justify-center">
+                    <XMarkIcon className="h-6 w-6 text-white" />
+                  </div>
+                  Room for Improvement
                 </h3>
-                <ul className="space-y-3">
+                <ul className="space-y-4">
                   {software.cons && software.cons.length > 0 &&
                     software.cons.map((con: string, index: number) => (
-                      <li key={index} className="flex items-start gap-3">
-                        <XMarkIcon className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700 dark:text-gray-300">{con}</span>
+                      <li key={index} className="flex items-start gap-3 group">
+                        <div className="w-6 h-6 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mt-0.5 group-hover:bg-red-200 dark:group-hover:bg-red-800/30 transition-colors">
+                          <XMarkIcon className="h-4 w-4 text-red-600 dark:text-red-400" />
+                        </div>
+                        <span className="text-gray-700 dark:text-gray-300 flex-1">{con}</span>
                       </li>
                     ))
                   }
@@ -652,30 +704,65 @@ export default async function SoftwareReviewPage({ params }: Props) {
         </section>
       )}
 
+      {/* Integrations Section */}
+      {software.popularIntegrations && software.popularIntegrations.length > 0 && (
+        <section className="py-12 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">Integrations</h2>
+              <p className="text-gray-600 dark:text-gray-400 text-center mb-8">
+                Connect {software.name} with {software.integrations?.count || '500+'} tools to power your workflow
+              </p>
+              <IntegrationLogosPlaceholder />
+              <div className="mt-8 text-center">
+                <p className="text-gray-600 dark:text-gray-400 mb-4">Popular integrations include:</p>
+                <div className="flex flex-wrap justify-center gap-3">
+                  {software.popularIntegrations.slice(0, 12).map((integration: string, i: number) => (
+                    <span key={i} className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300">
+                      {integration}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Competitor Analysis */}
       {software.competitorAnalysis && (
         <section id="competitors" className="py-12 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Competitor Analysis</h2>
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">Competitor Analysis</h2>
               
-              {software.competitorAnalysis.competitiveAdvantages && (
-                <div className="mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Competitive Advantages</h3>
-                  <div className="prose prose-lg dark:prose-invert max-w-none">
-                    <PortableText value={software.competitorAnalysis.competitiveAdvantages} />
-                  </div>
-                </div>
-              )}
+              {/* Comparison Chart */}
+              <div className="mb-12">
+                <ComparisonChartPlaceholder />
+              </div>
               
-              {software.competitorAnalysis.competitiveDisadvantages && (
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Areas for Improvement</h3>
-                  <div className="prose prose-lg dark:prose-invert max-w-none">
-                    <PortableText value={software.competitorAnalysis.competitiveDisadvantages} />
+              <div className="grid md:grid-cols-2 gap-8">
+                {software.competitorAnalysis.competitiveAdvantages && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-2">
+                      <SparklesIcon className="h-6 w-6 text-yellow-500" />
+                      Competitive Advantages
+                    </h3>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <PortableText value={software.competitorAnalysis.competitiveAdvantages} />
+                    </div>
                   </div>
-                </div>
-              )}
+                )}
+                
+                {software.competitorAnalysis.competitiveDisadvantages && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Areas for Improvement</h3>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <PortableText value={software.competitorAnalysis.competitiveDisadvantages} />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>
@@ -768,6 +855,7 @@ export default async function SoftwareReviewPage({ params }: Props) {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </>
   )
 }

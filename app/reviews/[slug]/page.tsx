@@ -5,7 +5,7 @@ import { PortableText } from '@portabletext/react'
 import { getSoftwareBySlug, getSoftware } from '@/lib/sanity-queries'
 import { urlFor } from '@/lib/sanity'
 import { StarIcon, CheckIcon, XMarkIcon, ArrowLeftIcon, ArrowRightIcon } from '@heroicons/react/24/solid'
-import { CurrencyDollarIcon, BeakerIcon, ShieldCheckIcon, ClockIcon, UsersIcon, ChartBarIcon } from '@heroicons/react/24/outline'
+import { CurrencyDollarIcon, BeakerIcon, ShieldCheckIcon, ClockIcon, UsersIcon, ChartBarIcon, BuildingOfficeIcon, CalendarIcon } from '@heroicons/react/24/outline'
 
 type Props = {
   params: { slug: string }
@@ -31,7 +31,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   return {
-    title: `${software.name} Review - Features, Pricing & Alternatives`,
+    title: `${software.name} Review 2024 - Features, Pricing & Alternatives`,
     description: software.seo?.metaDescription || `In-depth review of ${software.name}. ${software.tagline}. Compare features, pricing, pros and cons.`,
     keywords: software.seo?.keywords || [],
   }
@@ -39,12 +39,19 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 function ScoreBar({ score, label }: { score: number; label: string }) {
   const percentage = (score / 10) * 100;
+  const getScoreColor = (score: number) => {
+    if (score >= 9) return 'from-green-500 to-green-600'
+    if (score >= 7) return 'from-blue-500 to-blue-600'
+    if (score >= 5) return 'from-yellow-500 to-yellow-600'
+    return 'from-red-500 to-red-600'
+  }
+  
   return (
     <div className="flex items-center gap-3">
-      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-32">{label}</span>
+      <span className="text-sm font-medium text-gray-700 dark:text-gray-300 w-36">{label}</span>
       <div className="flex-1 h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
         <div 
-          className="h-full bg-gradient-to-r from-primary-500 to-primary-600 transition-all duration-500"
+          className={`h-full bg-gradient-to-r ${getScoreColor(score)} transition-all duration-500`}
           style={{ width: `${percentage}%` }}
         />
       </div>
@@ -61,23 +68,7 @@ export default async function SoftwareReviewPage({ params }: Props) {
   }
 
   // Default scores if not provided
-  const scores = software.scores || {
-    easeOfUse: 8.5,
-    features: 9.0,
-    integrations: 8.8,
-    pricing: 8.0,
-    support: 8.5,
-    security: 9.0,
-    scalability: 8.7,
-    performance: 8.9,
-    mobile: 8.0,
-    documentation: 8.5,
-    learningCurve: 7.5,
-    customization: 8.0,
-    reporting: 8.5,
-    freeTier: 9.0,
-    overallValue: 8.5,
-  }
+  const scores = software.scores || {}
 
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
@@ -114,7 +105,7 @@ export default async function SoftwareReviewPage({ params }: Props) {
                 )}
                 <div className="flex-1">
                   <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                    {software.name} Review
+                    {software.name} Review {new Date().getFullYear()}
                   </h1>
                   <p className="text-xl text-gray-600 dark:text-gray-400">
                     {software.tagline}
@@ -128,6 +119,14 @@ export default async function SoftwareReviewPage({ params }: Props) {
                   </div>
                 </div>
               </div>
+
+              {/* Verdict Box */}
+              {software.verdict && (
+                <div className="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-xl p-6 mb-6 border border-primary-200 dark:border-primary-800">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Our Verdict</h3>
+                  <p className="text-gray-700 dark:text-gray-300">{software.verdict}</p>
+                </div>
+              )}
 
               {/* Overall Score */}
               <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 mb-6">
@@ -152,7 +151,7 @@ export default async function SoftwareReviewPage({ params }: Props) {
                   </div>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">
-                  {software.shortDescription || `${software.name} is a comprehensive workflow automation platform that helps teams streamline their processes and boost productivity.`}
+                  {software.shortDescription}
                 </p>
               </div>
 
@@ -170,55 +169,32 @@ export default async function SoftwareReviewPage({ params }: Props) {
                   </a>
                 )}
                 <Link 
-                  href="/reviews/compare"
+                  href="#pricing"
                   className="flex-1 inline-flex items-center justify-center px-6 py-3 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 font-semibold"
                 >
-                  Compare Alternatives
+                  View Pricing
                 </Link>
               </div>
             </div>
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {/* Pricing Card */}
+              {/* Quick Stats Card */}
               <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Pricing</h3>
-                {software.pricing && software.pricing.length > 0 ? (
-                  <div className="space-y-3">
-                    {software.pricing.slice(0, 3).map((plan: any, index: number) => (
-                      <div key={index} className="flex items-center justify-between">
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{plan.name}</span>
-                        <span className="text-sm font-bold text-gray-900 dark:text-white">
-                          ${plan.price}/mo
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Starting from</span>
-                      <span className="text-lg font-bold text-gray-900 dark:text-white">Free</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-gray-600 dark:text-gray-400">Pro plans from</span>
-                      <span className="text-lg font-bold text-gray-900 dark:text-white">$19/mo</span>
-                    </div>
-                  </div>
-                )}
-                {software.hasFreeTrial && (
-                  <div className="mt-4 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg">
-                    <p className="text-sm font-medium text-green-700 dark:text-green-400">
-                      ✓ Free trial available
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              {/* Key Stats */}
-              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Key Stats</h3>
+                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Quick Stats</h3>
                 <div className="space-y-3">
+                  {software.pricingDetails?.hasFreeTier && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Free Plan</span>
+                      <span className="text-sm font-bold text-green-600 dark:text-green-400">✓ Available</span>
+                    </div>
+                  )}
+                  {software.pricingDetails?.freeTrialDays && (
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Free Trial</span>
+                      <span className="text-sm font-bold text-gray-900 dark:text-white">{software.pricingDetails.freeTrialDays} days</span>
+                    </div>
+                  )}
                   <div className="flex items-center justify-between">
                     <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
                       <BeakerIcon className="h-4 w-4" />
@@ -230,21 +206,10 @@ export default async function SoftwareReviewPage({ params }: Props) {
                         : software.integrations || '500+'}
                     </span>
                   </div>
-                  {software.companyInfo?.employeeCount && (
-                    <div className="flex items-center justify-between">
-                      <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                        <UsersIcon className="h-4 w-4" />
-                        Company Size
-                      </span>
-                      <span className="text-sm font-bold text-gray-900 dark:text-white">
-                        {software.companyInfo.employeeCount}
-                      </span>
-                    </div>
-                  )}
                   {software.companyInfo?.foundedYear && (
                     <div className="flex items-center justify-between">
                       <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                        <ChartBarIcon className="h-4 w-4" />
+                        <CalendarIcon className="h-4 w-4" />
                         Founded
                       </span>
                       <span className="text-sm font-bold text-gray-900 dark:text-white">
@@ -252,24 +217,28 @@ export default async function SoftwareReviewPage({ params }: Props) {
                       </span>
                     </div>
                   )}
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                      <ShieldCheckIcon className="h-4 w-4" />
-                      Security
-                    </span>
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">
-                      SOC 2, GDPR
-                    </span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
-                      <ClockIcon className="h-4 w-4" />
-                      Last Updated
-                    </span>
-                    <span className="text-sm font-bold text-gray-900 dark:text-white">
-                      {software.lastUpdated ? new Date(software.lastUpdated).toLocaleDateString() : 'Recently'}
-                    </span>
-                  </div>
+                  {software.companyInfo?.headquarters && (
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                        <BuildingOfficeIcon className="h-4 w-4" />
+                        HQ
+                      </span>
+                      <span className="text-sm font-bold text-gray-900 dark:text-white">
+                        {software.companyInfo.headquarters}
+                      </span>
+                    </div>
+                  )}
+                  {software.security?.certifications && (
+                    <div className="flex items-center justify-between">
+                      <span className="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                        <ShieldCheckIcon className="h-4 w-4" />
+                        Security
+                      </span>
+                      <span className="text-sm font-bold text-gray-900 dark:text-white">
+                        {software.security.certifications.slice(0, 2).join(', ')}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -325,173 +294,187 @@ export default async function SoftwareReviewPage({ params }: Props) {
                     {software.userRatings.trustRadiusScore && (
                       <div className="flex items-center justify-between">
                         <span className="text-sm text-gray-600 dark:text-gray-400">TrustRadius</span>
-                        <div className="flex items-center gap-2">
-                          <div className="flex items-center">
-                            {[...Array(5)].map((_, i) => (
-                              <StarIcon 
-                                key={i}
-                                className={`h-4 w-4 ${
-                                  i < Math.floor(software.userRatings.trustRadiusScore / 2)
-                                    ? 'text-yellow-400'
-                                    : 'text-gray-300'
-                                }`}
-                              />
-                            ))}
-                          </div>
-                          <span className="text-sm font-bold text-gray-900 dark:text-white">
-                            {software.userRatings.trustRadiusScore}/10
-                          </span>
-                        </div>
+                        <span className="text-sm font-bold text-gray-900 dark:text-white">
+                          {software.userRatings.trustRadiusScore}/10
+                        </span>
                       </div>
                     )}
                   </div>
                 </div>
               )}
-
-              {/* Deal Alert */}
-              {software.dealInformation?.hasActiveDeal && (
-                <div className="bg-gradient-to-r from-orange-500 to-red-500 rounded-xl p-6 text-white">
-                  <h3 className="text-lg font-bold mb-2">🎉 Special Deal</h3>
-                  <p className="text-sm mb-3">{software.dealInformation.dealDescription}</p>
-                  {software.dealInformation.dealCode && (
-                    <div className="bg-white/20 rounded-lg p-3 text-center">
-                      <p className="text-xs mb-1">Use code:</p>
-                      <p className="text-lg font-bold">{software.dealInformation.dealCode}</p>
-                    </div>
-                  )}
-                </div>
-              )}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Detailed Scores */}
-      <section className="py-12 bg-gray-50 dark:bg-gray-800">
+      {/* Table of Contents */}
+      <section className="py-8 border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Detailed Scoring</h2>
-          <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
-            <div className="grid md:grid-cols-2 gap-6">
-              <ScoreBar score={scores.easeOfUse} label="Ease of Use" />
-              <ScoreBar score={scores.features} label="Feature Set" />
-              <ScoreBar score={scores.integrations} label="Integrations" />
-              <ScoreBar score={scores.pricing} label="Pricing Value" />
-              <ScoreBar score={scores.support} label="Customer Support" />
-              <ScoreBar score={scores.security} label="Security" />
-              <ScoreBar score={scores.scalability} label="Scalability" />
-              <ScoreBar score={scores.performance} label="Performance" />
-              <ScoreBar score={scores.mobile} label="Mobile Access" />
-              <ScoreBar score={scores.documentation} label="Documentation" />
-              <ScoreBar score={scores.learningCurve} label="Learning Curve" />
-              <ScoreBar score={scores.customization} label="Customization" />
-              <ScoreBar score={scores.reporting} label="Reporting" />
-              <ScoreBar score={scores.freeTier} label="Free Tier" />
+          <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">In This Review</h3>
+            <div className="grid md:grid-cols-3 gap-4">
+              <a href="#overview" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Overview</a>
+              <a href="#scores" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Detailed Scores</a>
+              <a href="#features" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Key Features</a>
+              <a href="#pricing" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Pricing Analysis</a>
+              <a href="#pros-cons" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Pros & Cons</a>
+              <a href="#use-cases" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Use Cases</a>
+              <a href="#detailed-review" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Detailed Review</a>
+              <a href="#competitors" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Competitors</a>
+              <a href="#verdict" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Final Verdict</a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Pros and Cons */}
-      <section className="py-12">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-8">
-            {/* Pros */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                <CheckIcon className="h-6 w-6 text-green-500" />
-                Pros
-              </h3>
-              <ul className="space-y-3">
-                {software.pros && software.pros.length > 0 ? (
-                  software.pros.map((pro: string, index: number) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <CheckIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300">{pro}</span>
-                    </li>
-                  ))
-                ) : (
-                  <>
-                    <li className="flex items-start gap-3">
-                      <CheckIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300">Excellent automation capabilities</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300">User-friendly interface</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <CheckIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300">Strong integration ecosystem</span>
-                    </li>
-                  </>
-                )}
-              </ul>
-            </div>
-
-            {/* Cons */}
-            <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
-                <XMarkIcon className="h-6 w-6 text-red-500" />
-                Cons
-              </h3>
-              <ul className="space-y-3">
-                {software.cons && software.cons.length > 0 ? (
-                  software.cons.map((con: string, index: number) => (
-                    <li key={index} className="flex items-start gap-3">
-                      <XMarkIcon className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300">{con}</span>
-                    </li>
-                  ))
-                ) : (
-                  <>
-                    <li className="flex items-start gap-3">
-                      <XMarkIcon className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300">Can be expensive for larger teams</span>
-                    </li>
-                    <li className="flex items-start gap-3">
-                      <XMarkIcon className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300">Learning curve for advanced features</span>
-                    </li>
-                  </>
-                )}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Detailed Review Content */}
-      {(software.overview || software.detailedReview) && (
-        <section className="py-12 bg-gray-50 dark:bg-gray-800">
+      {/* Overview Section */}
+      {software.overview && (
+        <section id="overview" className="py-12">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
-              {software.overview?.introduction && (
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Overview</h2>
+              
+              {software.overview.introduction && (
                 <div className="prose prose-lg dark:prose-invert max-w-none mb-8">
-                  <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Overview</h2>
                   <PortableText value={software.overview.introduction} />
                 </div>
               )}
               
-              {software.detailedReview && (
-                <div className="space-y-8">
-                  {software.detailedReview.userInterface && (
-                    <div className="prose prose-lg dark:prose-invert max-w-none">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">User Interface & Experience</h3>
-                      <PortableText value={software.detailedReview.userInterface} />
+              {software.overview.targetAudience && (
+                <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6 mt-8">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Who Is {software.name} For?</h3>
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <PortableText value={software.overview.targetAudience} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Detailed Scores */}
+      {scores && Object.keys(scores).length > 0 && (
+        <section id="scores" className="py-12 bg-gray-50 dark:bg-gray-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Detailed Scoring</h2>
+              <div className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
+                <div className="space-y-4">
+                  {scores.features && <ScoreBar score={scores.features} label="Feature Set" />}
+                  {scores.easeOfUse && <ScoreBar score={scores.easeOfUse} label="Ease of Use" />}
+                  {scores.integrations && <ScoreBar score={scores.integrations} label="Integrations" />}
+                  {scores.pricing && <ScoreBar score={scores.pricing} label="Pricing Value" />}
+                  {scores.support && <ScoreBar score={scores.support} label="Customer Support" />}
+                  {scores.security && <ScoreBar score={scores.security} label="Security" />}
+                  {scores.scalability && <ScoreBar score={scores.scalability} label="Scalability" />}
+                  {scores.performance && <ScoreBar score={scores.performance} label="Performance" />}
+                  {scores.customization && <ScoreBar score={scores.customization} label="Customization" />}
+                  {scores.reporting && <ScoreBar score={scores.reporting} label="Reporting" />}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Key Features */}
+      {software.keyFeatures && software.keyFeatures.length > 0 && (
+        <section id="features" className="py-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Key Features</h2>
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {software.keyFeatures.map((feature: any, index: number) => (
+                  <div key={feature._key || index} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">{feature.name}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm">{feature.description}</p>
+                    {feature.category && (
+                      <span className="inline-block mt-3 px-2 py-1 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 text-xs rounded">
+                        {feature.category}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Pricing Section */}
+      {(software.pricing || software.pricingSection) && (
+        <section id="pricing" className="py-12 bg-gray-50 dark:bg-gray-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-6xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Pricing & Plans</h2>
+              
+              {/* Pricing Plans Grid */}
+              {software.pricing && software.pricing.length > 0 && (
+                <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 mb-12">
+                  {software.pricing.map((plan: any, index: number) => (
+                    <div key={plan._key || index} className={`bg-white dark:bg-gray-900 rounded-xl border-2 ${plan.recommended ? 'border-primary-500' : 'border-gray-200 dark:border-gray-700'} p-6 relative`}>
+                      {plan.mostPopular && (
+                        <span className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-primary-600 text-white text-xs rounded-full">
+                          Most Popular
+                        </span>
+                      )}
+                      <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">{plan.name}</h3>
+                      <div className="mb-4">
+                        {plan.price !== null ? (
+                          <>
+                            <span className="text-3xl font-bold text-gray-900 dark:text-white">${plan.price}</span>
+                            <span className="text-gray-600 dark:text-gray-400">/mo</span>
+                          </>
+                        ) : (
+                          <span className="text-2xl font-bold text-gray-900 dark:text-white">Custom</span>
+                        )}
+                      </div>
+                      {plan.userLimit && (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">{plan.userLimit}</p>
+                      )}
+                      {plan.features && (
+                        <ul className="space-y-2">
+                          {plan.features.slice(0, 5).map((feature: string, i: number) => (
+                            <li key={i} className="text-sm text-gray-600 dark:text-gray-400 flex items-start gap-2">
+                              <CheckIcon className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                              <span>{feature}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+              
+              {/* Pricing Analysis */}
+              {software.pricingSection && (
+                <div className="space-y-8 max-w-4xl mx-auto">
+                  {software.pricingSection.pricingOverview && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Pricing Overview</h3>
+                      <div className="prose prose-lg dark:prose-invert max-w-none">
+                        <PortableText value={software.pricingSection.pricingOverview} />
+                      </div>
                     </div>
                   )}
                   
-                  {software.detailedReview.featuresAnalysis && (
-                    <div className="prose prose-lg dark:prose-invert max-w-none">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features Analysis</h3>
-                      <PortableText value={software.detailedReview.featuresAnalysis} />
+                  {software.pricingSection.valueForMoney && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Value for Money</h3>
+                      <div className="prose prose-lg dark:prose-invert max-w-none">
+                        <PortableText value={software.pricingSection.valueForMoney} />
+                      </div>
                     </div>
                   )}
                   
-                  {software.detailedReview.integrationCapabilities && (
-                    <div className="prose prose-lg dark:prose-invert max-w-none">
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Integration Capabilities</h3>
-                      <PortableText value={software.detailedReview.integrationCapabilities} />
+                  {software.pricingSection.competitiveComparison && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Pricing vs Competitors</h3>
+                      <div className="prose prose-lg dark:prose-invert max-w-none">
+                        <PortableText value={software.pricingSection.competitiveComparison} />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -501,26 +484,252 @@ export default async function SoftwareReviewPage({ params }: Props) {
         </section>
       )}
 
-      {/* Screenshots Gallery */}
-      {software.screenshots && software.screenshots.length > 0 && (
-        <section className="py-12">
+      {/* Pros and Cons */}
+      <section id="pros-cons" className="py-12">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="max-w-6xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Pros & Cons</h2>
+            <div className="grid lg:grid-cols-2 gap-8">
+              {/* Pros */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                  <CheckIcon className="h-6 w-6 text-green-500" />
+                  Pros
+                </h3>
+                <ul className="space-y-3">
+                  {software.pros && software.pros.length > 0 && 
+                    software.pros.map((pro: string, index: number) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <CheckIcon className="h-5 w-5 text-green-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700 dark:text-gray-300">{pro}</span>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+
+              {/* Cons */}
+              <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-8">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 flex items-center gap-2">
+                  <XMarkIcon className="h-6 w-6 text-red-500" />
+                  Cons
+                </h3>
+                <ul className="space-y-3">
+                  {software.cons && software.cons.length > 0 &&
+                    software.cons.map((con: string, index: number) => (
+                      <li key={index} className="flex items-start gap-3">
+                        <XMarkIcon className="h-5 w-5 text-red-500 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700 dark:text-gray-300">{con}</span>
+                      </li>
+                    ))
+                  }
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Use Cases Section */}
+      {software.useCasesSection && (
+        <section id="use-cases" className="py-12 bg-gray-50 dark:bg-gray-800">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Screenshots</h2>
-            <div className="grid md:grid-cols-2 gap-6">
-              {software.screenshots.map((screenshot: any, index: number) => (
-                <div key={index} className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
-                  <img 
-                    src={urlFor(screenshot.image).width(800).height(500).url()} 
-                    alt={screenshot.altText || screenshot.caption || `${software.name} screenshot ${index + 1}`}
-                    className="w-full h-auto"
-                  />
-                  {screenshot.caption && (
-                    <p className="p-4 text-sm text-gray-600 dark:text-gray-400">
-                      {screenshot.caption}
-                    </p>
-                  )}
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Use Cases & Implementation</h2>
+              
+              {software.useCasesSection.idealUseCases && (
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Ideal Use Cases</h3>
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <PortableText value={software.useCasesSection.idealUseCases} />
+                  </div>
                 </div>
-              ))}
+              )}
+              
+              {software.useCasesSection.implementationGuide && (
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Implementation Guide</h3>
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <PortableText value={software.useCasesSection.implementationGuide} />
+                  </div>
+                </div>
+              )}
+              
+              {software.useCasesSection.realWorldExamples && software.useCasesSection.realWorldExamples.length > 0 && (
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Real-World Examples</h3>
+                  <div className="space-y-6">
+                    {software.useCasesSection.realWorldExamples.map((example: any, index: number) => (
+                      <div key={example._key || index} className="bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-700 p-6">
+                        <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">{example.company}</h4>
+                        <div className="space-y-2">
+                          <div>
+                            <span className="font-medium text-gray-700 dark:text-gray-300">Challenge:</span>
+                            <p className="text-gray-600 dark:text-gray-400">{example.challenge}</p>
+                          </div>
+                          <div>
+                            <span className="font-medium text-gray-700 dark:text-gray-300">Solution:</span>
+                            <p className="text-gray-600 dark:text-gray-400">{example.solution}</p>
+                          </div>
+                          <div>
+                            <span className="font-medium text-gray-700 dark:text-gray-300">Results:</span>
+                            <p className="text-gray-600 dark:text-gray-400">{example.results}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Detailed Review Content */}
+      {software.detailedReview && (
+        <section id="detailed-review" className="py-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Detailed Review</h2>
+              <div className="space-y-8">
+                {software.detailedReview.userInterface && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">User Interface & Experience</h3>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <PortableText value={software.detailedReview.userInterface} />
+                    </div>
+                  </div>
+                )}
+                
+                {software.detailedReview.featuresAnalysis && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features Analysis</h3>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <PortableText value={software.detailedReview.featuresAnalysis} />
+                    </div>
+                  </div>
+                )}
+                
+                {software.detailedReview.integrationCapabilities && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Integration Capabilities</h3>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <PortableText value={software.detailedReview.integrationCapabilities} />
+                    </div>
+                  </div>
+                )}
+                
+                {software.detailedReview.performanceReliability && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Performance & Reliability</h3>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <PortableText value={software.detailedReview.performanceReliability} />
+                    </div>
+                  </div>
+                )}
+                
+                {software.detailedReview.securityCompliance && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Security & Compliance</h3>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <PortableText value={software.detailedReview.securityCompliance} />
+                    </div>
+                  </div>
+                )}
+                
+                {software.detailedReview.customerSupport && (
+                  <div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Customer Support</h3>
+                    <div className="prose prose-lg dark:prose-invert max-w-none">
+                      <PortableText value={software.detailedReview.customerSupport} />
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Competitor Analysis */}
+      {software.competitorAnalysis && (
+        <section id="competitors" className="py-12 bg-gray-50 dark:bg-gray-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Competitor Analysis</h2>
+              
+              {software.competitorAnalysis.competitiveAdvantages && (
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Competitive Advantages</h3>
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <PortableText value={software.competitorAnalysis.competitiveAdvantages} />
+                  </div>
+                </div>
+              )}
+              
+              {software.competitorAnalysis.competitiveDisadvantages && (
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Areas for Improvement</h3>
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <PortableText value={software.competitorAnalysis.competitiveDisadvantages} />
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Final Verdict */}
+      {software.finalVerdict && (
+        <section id="verdict" className="py-12">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Final Verdict</h2>
+              
+              {software.finalVerdict.summary && (
+                <div className="mb-8">
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <PortableText value={software.finalVerdict.summary} />
+                  </div>
+                </div>
+              )}
+              
+              {software.finalVerdict.recommendation && (
+                <div className="bg-gradient-to-r from-primary-50 to-blue-50 dark:from-primary-900/20 dark:to-blue-900/20 rounded-xl p-6 mb-8 border border-primary-200 dark:border-primary-800">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">Our Recommendation</h3>
+                  <div className="prose prose-lg dark:prose-invert max-w-none">
+                    <PortableText value={software.finalVerdict.recommendation} />
+                  </div>
+                </div>
+              )}
+              
+              <div className="grid md:grid-cols-2 gap-6">
+                {software.finalVerdict.whoShouldUse && (
+                  <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-6 border border-green-200 dark:border-green-800">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                      <CheckIcon className="h-5 w-5 text-green-600 dark:text-green-400" />
+                      Who Should Use {software.name}
+                    </h3>
+                    <div className="prose prose-sm dark:prose-invert max-w-none">
+                      <PortableText value={software.finalVerdict.whoShouldUse} />
+                    </div>
+                  </div>
+                )}
+                
+                {software.finalVerdict.whoShouldAvoid && (
+                  <div className="bg-red-50 dark:bg-red-900/20 rounded-xl p-6 border border-red-200 dark:border-red-800">
+                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                      <XMarkIcon className="h-5 w-5 text-red-600 dark:text-red-400" />
+                      Who Should Consider Alternatives
+                    </h3>
+                    <div className="prose prose-sm dark:prose-invert max-w-none">
+                      <PortableText value={software.finalVerdict.whoShouldAvoid} />
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </section>
@@ -533,7 +742,9 @@ export default async function SoftwareReviewPage({ params }: Props) {
             Ready to Try {software.name}?
           </h2>
           <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-            Start your free trial today and see how {software.name} can transform your workflow.
+            {software.pricingDetails?.freeTrialDays 
+              ? `Start your ${software.pricingDetails.freeTrialDays}-day free trial today and see how ${software.name} can transform your workflow.`
+              : `Start today and see how ${software.name} can transform your workflow.`}
           </p>
           <div className="flex gap-4 justify-center">
             {software.affiliateLink && (

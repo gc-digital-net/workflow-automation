@@ -17,6 +17,8 @@ import {
 import FAQSection from '@/components/review/FAQSection'
 import AtAGlanceBox from '@/components/review/AtAGlanceBox'
 import LongFormContent from '@/components/review/LongFormContent'
+import RealScreenshots, { InlineScreenshot } from '@/components/review/RealScreenshots'
+import ClickUpScreenshots from '@/components/review/ClickUpScreenshots'
 
 type Props = {
   params: { slug: string }
@@ -349,10 +351,14 @@ export default async function SoftwareReviewPage({ params }: Props) {
         </div>
       </section>
 
-      {/* Hero Image Section */}
+      {/* Hero Image Section - Now with Real Screenshots */}
       <section className="relative -mt-8 mb-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <HeroImagePlaceholder name={software.name} />
+          {software.name.toLowerCase() === 'clickup' ? (
+            <ClickUpScreenshots />
+          ) : (
+            <RealScreenshots software={software.name} feature="dashboard" />
+          )}
         </div>
       </section>
 

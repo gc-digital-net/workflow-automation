@@ -1,4 +1,5 @@
 import React from 'react'
+import { InlineScreenshot } from '@/components/review/RealScreenshots'
 
 interface LongFormContentProps {
   automatedContent: any
@@ -105,6 +106,13 @@ export default function LongFormContent({ automatedContent, software }: LongForm
                   The platform's modular approach means you can enable or disable features based on your specific requirements, 
                   avoiding the feature bloat that plagues many all-in-one solutions.
                 </p>
+                
+                {/* Add real screenshot of features */}
+                <InlineScreenshot 
+                  software={software.name} 
+                  type="listView"
+                  caption={`${software.name}'s customizable list view showing task management capabilities`}
+                />
               </>
             )}
           </div>
@@ -150,6 +158,13 @@ export default function LongFormContent({ automatedContent, software }: LongForm
               {software.integrations?.hasWebhooks && 'Real-time webhooks ensure that data flows seamlessly between systems, keeping all your tools synchronized. '}
               {software.integrations?.hasZapier && 'For non-technical users, Zapier integration opens up thousands of additional connection possibilities without writing a single line of code.'}
             </p>
+            
+            {/* Integration screenshot */}
+            <InlineScreenshot 
+              software={software.name} 
+              type="integrations"
+              caption={`${software.name} integration ecosystem - connect with your favorite tools`}
+            />
           </div>
         </section>
       )}

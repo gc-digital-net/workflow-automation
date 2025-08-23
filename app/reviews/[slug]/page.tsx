@@ -16,6 +16,7 @@ import {
 } from '@/components/ReviewPlaceholders'
 import FAQSection from '@/components/review/FAQSection'
 import AtAGlanceBox from '@/components/review/AtAGlanceBox'
+import LongFormContent from '@/components/review/LongFormContent'
 
 type Props = {
   params: { slug: string }
@@ -379,17 +380,20 @@ export default async function SoftwareReviewPage({ params }: Props) {
       <section className="py-8 border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-gray-50 dark:bg-gray-800 rounded-xl p-6">
-            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">In This Review</h3>
+            <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">What We'll Cover</h3>
             <div className="grid md:grid-cols-3 gap-4">
-              <a href="#overview" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Overview</a>
-              <a href="#scores" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Detailed Scores</a>
-              <a href="#features" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Key Features</a>
-              <a href="#pricing" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Pricing Analysis</a>
+              <a href="#overview" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Platform Overview</a>
+              <a href="#scores" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Performance Scores</a>
+              <a href="#features" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Feature Analysis</a>
+              <a href="#pricing" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Pricing & Plans</a>
               <a href="#pros-cons" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Pros & Cons</a>
               <a href="#use-cases" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Use Cases</a>
-              <a href="#detailed-review" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Detailed Review</a>
-              <a href="#competitors" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Competitors</a>
+              <a href="#detailed-review" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ In-Depth Analysis</a>
+              <a href="#competitors" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Alternatives</a>
+              <a href="#faqs" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ FAQs</a>
               <a href="#verdict" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Final Verdict</a>
+              <a href="#integrations" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Integrations</a>
+              <a href="#support" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Support Options</a>
             </div>
           </div>
         </div>
@@ -693,7 +697,7 @@ export default async function SoftwareReviewPage({ params }: Props) {
         <section id="detailed-review" className="py-12">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Detailed Review</h2>
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Comprehensive Analysis</h2>
               
               {/* Manual Content Mode */}
               {software.contentMode === 'manual' && software.manualContent && (
@@ -702,58 +706,9 @@ export default async function SoftwareReviewPage({ params }: Props) {
                 </div>
               )}
               
-              {/* Automated Content Mode */}
+              {/* Automated Content Mode - Now using LongFormContent component */}
               {software.contentMode === 'automated' && software.automatedContent && (
-                <div className="space-y-8">
-                  {software.automatedContent.overview && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Overview</h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.overview}</p>
-                    </div>
-                  )}
-                  {software.automatedContent.featuresAnalysis && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features Analysis</h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.featuresAnalysis}</p>
-                    </div>
-                  )}
-                  {software.automatedContent.integrationsAnalysis && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Integration Capabilities</h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.integrationsAnalysis}</p>
-                    </div>
-                  )}
-                  {software.automatedContent.performanceNotes && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Performance & Reliability</h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.performanceNotes}</p>
-                    </div>
-                  )}
-                  {software.automatedContent.securityAnalysis && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Security & Compliance</h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.securityAnalysis}</p>
-                    </div>
-                  )}
-                  {software.automatedContent.supportAnalysis && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Customer Support</h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.supportAnalysis}</p>
-                    </div>
-                  )}
-                  {software.automatedContent.pricingAnalysis && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Pricing Analysis</h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.pricingAnalysis}</p>
-                    </div>
-                  )}
-                  {software.automatedContent.competitorComparison && (
-                    <div>
-                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Competitor Comparison</h3>
-                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.competitorComparison}</p>
-                    </div>
-                  )}
-                </div>
+                <LongFormContent automatedContent={software.automatedContent} software={software} />
               )}
               
               {/* Legacy Detailed Review (fallback) */}

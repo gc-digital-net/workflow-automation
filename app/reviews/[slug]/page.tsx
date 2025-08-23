@@ -12,8 +12,7 @@ import {
   IntegrationLogosPlaceholder,
   ComparisonChartPlaceholder,
   DashboardScreenshotPlaceholder,
-  WorkflowDiagramPlaceholder,
-  gridPatternStyles 
+  WorkflowDiagramPlaceholder
 } from '@/components/ReviewPlaceholders'
 
 type Props = {
@@ -80,9 +79,7 @@ export default async function SoftwareReviewPage({ params }: Props) {
   const scores = software.scores || {}
 
   return (
-    <>
-      <style jsx global>{gridPatternStyles}</style>
-      <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
         {/* Breadcrumb */}
         <div className="bg-gray-50 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
@@ -855,7 +852,6 @@ export default async function SoftwareReviewPage({ params }: Props) {
           </div>
         </div>
       </section>
-      </div>
-    </>
+    </div>
   )
 }

@@ -155,17 +155,4 @@ export function WorkflowDiagramPlaceholder() {
   );
 }
 
-// Add CSS for grid pattern
-export const gridPatternStyles = `
-  .bg-grid-pattern {
-    background-image: 
-      linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
-    background-size: 20px 20px;
-  }
-  .dark .bg-grid-pattern {
-    background-image: 
-      linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
-  }
-`;
+// Grid pattern styles are now inline in the component

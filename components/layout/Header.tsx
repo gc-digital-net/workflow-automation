@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, ChevronDownIcon, SparklesIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import SearchButton from '@/components/search/SearchButton';
@@ -33,10 +33,9 @@ export default function Header() {
   const handleMouseLeave = () => {
     dropdownTimeoutRef.current = setTimeout(() => {
       setOpenDropdown(null);
-    }, 150); // 150ms delay before closing
+    }, 150);
   };
 
-  // Cleanup timeout on unmount
   useEffect(() => {
     return () => {
       if (dropdownTimeoutRef.current) {
@@ -46,22 +45,34 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md dark:border-gray-800 dark:bg-gray-900/80">
-      <nav className="container mx-auto px-4 sm:px-6 lg:px-8" aria-label="Global">
-        <div className="flex h-16 items-center justify-between">
-          <div className="flex lg:flex-1">
-            <Link href="/" className="-m-1.5 p-1.5">
-              <span className="text-xl font-bold text-primary-600 dark:text-primary-400">
-                Workflow Automation
-              </span>
+    <header className="sticky top-0 z-50 w-full glass border-b border-secondary-200/20 dark:border-secondary-800/20">
+      <nav className="container mx-auto h-20" aria-label="Global">
+        <div className="flex h-full items-center justify-between">
+          {/* Logo Section with space for company logo */}
+          <div className="flex items-center gap-4 lg:flex-1">
+            <Link href="/" className="flex items-center gap-3 group">
+              {/* Logo placeholder - you can replace with actual logo */}
+              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/25 group-hover:shadow-xl group-hover:shadow-primary-500/30 transition-all duration-300">
+                <SparklesIcon className="h-7 w-7 text-white" />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-xl font-bold gradient-text">
+                  Workflow
+                </span>
+                <span className="text-xs text-secondary-500 dark:text-secondary-400 -mt-1">
+                  Automation Hub
+                </span>
+              </div>
             </Link>
           </div>
           
-          <div className="flex lg:hidden">
+          {/* Mobile menu button */}
+          <div className="flex items-center gap-3 lg:hidden">
+            <SearchButton />
             <ThemeToggle />
             <button
               type="button"
-              className="-m-2.5 ml-2 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700 dark:text-gray-200"
+              className="inline-flex items-center justify-center rounded-xl p-2.5 text-secondary-700 hover:bg-secondary-100 dark:text-secondary-200 dark:hover:bg-secondary-800 transition-colors"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             >
               <span className="sr-only">Open main menu</span>
@@ -73,7 +84,8 @@ export default function Header() {
             </button>
           </div>
 
-          <div className="hidden lg:flex lg:gap-x-8">
+          {/* Desktop navigation */}
+          <div className="hidden lg:flex lg:gap-x-10">
             {NAVIGATION_ITEMS.map((item) => (
               <div
                 key={item.name}
@@ -83,15 +95,20 @@ export default function Header() {
               >
                 <Link
                   href={item.href}
-                  className={`inline-flex items-center text-sm font-semibold leading-6 transition-colors ${
+                  className={`inline-flex items-center text-sm font-semibold leading-6 transition-all duration-200 ${
                     isActive(item.href)
                       ? 'text-primary-600 dark:text-primary-400'
-                      : 'text-gray-900 hover:text-primary-600 dark:text-gray-100 dark:hover:text-primary-400'
+                      : 'text-secondary-700 hover:text-primary-600 dark:text-secondary-300 dark:hover:text-primary-400'
                   }`}
                 >
                   {item.name}
                   {item.children && (
-                    <ChevronDownIcon className="ml-1 h-4 w-4" aria-hidden="true" />
+                    <ChevronDownIcon 
+                      className={`ml-1 h-4 w-4 transition-transform duration-200 ${
+                        openDropdown === item.name ? 'rotate-180' : ''
+                      }`} 
+                      aria-hidden="true" 
+                    />
                   )}
                 </Link>
 
@@ -102,7 +119,7 @@ export default function Header() {
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: -10 }}
                       transition={{ duration: 0.2 }}
-                      className="absolute left-0 z-10 mt-2 w-56 origin-top-left rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 dark:bg-gray-800"
+                      className="absolute left-0 z-10 mt-3 w-64 origin-top-left rounded-2xl glass shadow-xl ring-1 ring-black/5 dark:ring-white/5 p-2"
                       onMouseEnter={() => handleMouseEnter(item.name)}
                       onMouseLeave={handleMouseLeave}
                     >
@@ -110,7 +127,7 @@ export default function Header() {
                         <Link
                           key={subItem.name}
                           href={subItem.href}
-                          className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-700"
+                          className="block px-4 py-3 text-sm text-secondary-700 hover:bg-primary-50 dark:text-secondary-200 dark:hover:bg-primary-900/20 rounded-xl transition-colors"
                         >
                           {subItem.name}
                         </Link>
@@ -122,12 +139,13 @@ export default function Header() {
             ))}
           </div>
 
+          {/* Right side actions */}
           <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:gap-x-4">
             <SearchButton />
             <ThemeToggle />
             <Link
               href="/tools/software-finder"
-              className="rounded-md bg-primary-600 px-4 py-2 text-sm font-semibold text-white shadow-sm hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+              className="btn btn-primary"
             >
               Find Your Software
             </Link>
@@ -142,29 +160,29 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden"
+            className="lg:hidden glass-subtle"
           >
-            <div className="space-y-1 px-4 pb-3 pt-2">
+            <div className="space-y-2 px-6 py-6">
               {NAVIGATION_ITEMS.map((item) => (
                 <div key={item.name}>
                   <Link
                     href={item.href}
-                    className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                    className={`block rounded-xl px-4 py-3 text-base font-semibold ${
                       isActive(item.href)
-                        ? 'bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
-                        : 'text-gray-900 hover:bg-gray-50 dark:text-gray-100 dark:hover:bg-gray-800'
+                        ? 'bg-primary-100 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400'
+                        : 'text-secondary-900 hover:bg-secondary-100 dark:text-secondary-100 dark:hover:bg-secondary-800'
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     {item.name}
                   </Link>
                   {item.children && (
-                    <div className="ml-4 space-y-1">
+                    <div className="ml-4 mt-2 space-y-1">
                       {item.children.map((subItem) => (
                         <Link
                           key={subItem.name}
                           href={subItem.href}
-                          className="block rounded-lg px-3 py-2 text-sm text-gray-600 hover:bg-gray-50 dark:text-gray-400 dark:hover:bg-gray-800"
+                          className="block rounded-lg px-4 py-2 text-sm text-secondary-600 hover:bg-secondary-100 dark:text-secondary-400 dark:hover:bg-secondary-800"
                           onClick={() => setMobileMenuOpen(false)}
                         >
                           {subItem.name}
@@ -176,7 +194,7 @@ export default function Header() {
               ))}
               <Link
                 href="/tools/software-finder"
-                className="mt-4 block w-full rounded-md bg-primary-600 px-3 py-2 text-center text-base font-semibold text-white shadow-sm hover:bg-primary-500"
+                className="btn btn-primary w-full mt-4"
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Find Your Software

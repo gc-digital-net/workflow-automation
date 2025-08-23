@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { BackgroundBlobs, FloatingShapes } from "@/components/ui/BackgroundEffects";
 import "./globals.css";
 
 const inter = Inter({
@@ -62,9 +63,13 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} font-sans antialiased`}>
         <ThemeProvider>
-          <div className="flex min-h-screen flex-col">
+          {/* Background effects */}
+          <BackgroundBlobs />
+          <FloatingShapes />
+          
+          <div className="relative flex min-h-screen flex-col">
             <Header />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 relative z-10">{children}</main>
             <Footer />
           </div>
         </ThemeProvider>

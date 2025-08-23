@@ -144,6 +144,19 @@ async function fixArrayKeys() {
         }
       }
       
+      // Fix FAQs array
+      if (doc.faqs && Array.isArray(doc.faqs)) {
+        const fixedFaqs = doc.faqs.map((faq: any) => ({
+          ...faq,
+          _key: faq._key || generateKey()
+        }))
+        
+        if (JSON.stringify(fixedFaqs) !== JSON.stringify(doc.faqs)) {
+          updates.faqs = fixedFaqs
+          needsUpdate = true
+        }
+      }
+      
       // Fix categories and tags arrays (references need keys)
       if (doc.categories && Array.isArray(doc.categories)) {
         const fixedCategories = doc.categories.map((cat: any) => ({

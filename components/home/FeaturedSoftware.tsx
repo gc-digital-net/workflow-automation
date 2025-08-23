@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { StarIcon } from '@heroicons/react/24/solid';
 import { motion } from 'framer-motion';
+import { GlossyCard, GradientText } from '@/components/ui/GradientEffects';
 
 const featuredSoftware = [
   {

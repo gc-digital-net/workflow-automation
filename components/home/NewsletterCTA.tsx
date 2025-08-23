@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { EnvelopeIcon, CheckCircleIcon, SparklesIcon } from '@heroicons/react/24/outline'
+import { GradientOrb, GradientText } from '@/components/ui/GradientEffects'
 
 export default function NewsletterCTA() {
   const [email, setEmail] = useState('')
@@ -22,8 +23,13 @@ export default function NewsletterCTA() {
 
   return (
     <section className="relative py-24 overflow-hidden">
-      {/* Background Gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-primary-700 to-cyan-700" />
+      {/* Multi-layer gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary-600 via-cyan-600 to-indigo-700" />
+      
+      {/* Animated gradient orbs for depth */}
+      <GradientOrb size="lg" color="primary" className="top-10 right-10 opacity-30" animate />
+      <GradientOrb size="md" color="cyan" className="bottom-10 left-10 opacity-30" />
+      <GradientOrb size="xl" color="mixed" className="top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-20" animate />
       
       {/* Pattern Overlay */}
       <div className="absolute inset-0 opacity-10">
@@ -40,14 +46,14 @@ export default function NewsletterCTA() {
           viewport={{ once: true }}
           className="max-w-3xl mx-auto text-center"
         >
-          {/* Icon */}
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-white/10 backdrop-blur-sm rounded-2xl mb-6">
+          {/* Glossy Icon */}
+          <div className="inline-flex items-center justify-center w-16 h-16 glass-effect rounded-2xl mb-6 border border-white/20">
             <EnvelopeIcon className="h-8 w-8 text-white" />
           </div>
 
-          {/* Heading */}
+          {/* Heading with gradient */}
           <h2 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Stay Ahead of the Automation Curve
+            Stay Ahead of the <GradientText gradient="from-cyan-300 to-indigo-300">Automation Curve</GradientText>
           </h2>
           
           {/* Subheading */}

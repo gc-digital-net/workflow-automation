@@ -6,6 +6,7 @@ export default defineType({
   type: 'document',
   groups: [
     {name: 'basic', title: 'Basic Info'},
+    {name: 'quickinfo', title: 'Quick Info & At-a-Glance'},
     {name: 'scores', title: 'Scores & Ratings'},
     {name: 'review', title: 'Review Content'},
     {name: 'features', title: 'Features & Functionality'},
@@ -14,6 +15,7 @@ export default defineType({
     {name: 'support', title: 'Support & Resources'},
     {name: 'media', title: 'Media & Screenshots'},
     {name: 'comparisons', title: 'Comparisons'},
+    {name: 'faq', title: 'FAQs'},
     {name: 'seo', title: 'SEO & Marketing'},
   ],
   fields: [
@@ -90,6 +92,50 @@ export default defineType({
         {name: 'website', title: 'Official Website', type: 'url'},
         {name: 'marketShare', title: 'Market Share', type: 'string'},
         {name: 'notableClients', title: 'Notable Clients', type: 'array', of: [{type: 'string'}]}
+      ]
+    }),
+
+    // ========== QUICK INFO & AT-A-GLANCE ==========
+    defineField({
+      name: 'contentMode',
+      title: 'Content Generation Mode',
+      type: 'string',
+      group: 'quickinfo',
+      options: {
+        list: [
+          {title: 'Automated (API/Scraped)', value: 'automated'},
+          {title: 'Manual (Written)', value: 'manual'},
+          {title: 'Hybrid (Both)', value: 'hybrid'}
+        ],
+        layout: 'radio'
+      },
+      initialValue: 'automated',
+      description: 'How is the content for this review generated?'
+    }),
+    defineField({
+      name: 'atAGlance',
+      title: 'At-a-Glance Summary',
+      type: 'object',
+      group: 'quickinfo',
+      fields: [
+        {name: 'bottomLine', title: 'Bottom Line (2-3 sentences)', type: 'text', validation: Rule => Rule.max(300)},
+        {name: 'setupTime', title: 'Setup Time', type: 'string', description: 'e.g., "15 minutes", "1-2 hours"'},
+        {name: 'bestForCompanySize', title: 'Best For (Company Size)', type: 'string', description: 'e.g., "10-500 employees"'},
+        {name: 'industryFocus', title: 'Industry Focus', type: 'array', of: [{type: 'string'}], description: 'Target industries'},
+        {name: 'standoutFeature', title: 'Standout Feature', type: 'string', description: 'The #1 differentiator'},
+      ]
+    }),
+    defineField({
+      name: 'quickStats',
+      title: 'Quick Stats',
+      type: 'object',
+      group: 'quickinfo',
+      fields: [
+        {name: 'totalUsers', title: 'Total Users/Companies', type: 'string', description: 'e.g., "2M+ users", "10,000+ companies"'},
+        {name: 'founded', title: 'Year Founded', type: 'number'},
+        {name: 'lastFundingRound', title: 'Last Funding', type: 'string', description: 'e.g., "Series C - $400M"'},
+        {name: 'awards', title: 'Awards & Recognition', type: 'array', of: [{type: 'string'}]},
+        {name: 'uptimePercentage', title: 'Uptime %', type: 'number', description: 'e.g., 99.9'},
       ]
     }),
 
@@ -255,6 +301,31 @@ export default defineType({
       group: 'review',
       of: [{type: 'string'}],
       description: 'Who should look elsewhere'
+    }),
+    defineField({
+      name: 'automatedContent',
+      title: 'Automated Content (for programmatic generation)',
+      type: 'object',
+      group: 'review',
+      hidden: ({document}) => document?.contentMode === 'manual',
+      fields: [
+        {name: 'overview', title: 'Overview Text', type: 'text'},
+        {name: 'featuresAnalysis', title: 'Features Analysis', type: 'text'},
+        {name: 'pricingAnalysis', title: 'Pricing Analysis', type: 'text'},
+        {name: 'integrationsAnalysis', title: 'Integrations Analysis', type: 'text'},
+        {name: 'supportAnalysis', title: 'Support Analysis', type: 'text'},
+        {name: 'securityAnalysis', title: 'Security Analysis', type: 'text'},
+        {name: 'performanceNotes', title: 'Performance Notes', type: 'text'},
+        {name: 'competitorComparison', title: 'Competitor Comparison', type: 'text'},
+      ]
+    }),
+    defineField({
+      name: 'manualContent',
+      title: 'Manual Review Content (for writers)',
+      type: 'blockContent',
+      group: 'review',
+      hidden: ({document}) => document?.contentMode === 'automated',
+      description: 'Write the full review content here with sections, headings, etc.'
     }),
     defineField({
       name: 'popularIntegrations',
@@ -527,6 +598,28 @@ export default defineType({
       type: 'blockContent',
       group: 'comparisons',
       description: 'When to choose this vs alternatives'
+    }),
+
+    // ========== FAQs ==========
+    defineField({
+      name: 'faqs',
+      title: 'Frequently Asked Questions',
+      type: 'array',
+      group: 'faq',
+      of: [{
+        type: 'object',
+        fields: [
+          {name: 'question', title: 'Question', type: 'string', validation: Rule => Rule.required()},
+          {name: 'answer', title: 'Answer', type: 'text', validation: Rule => Rule.required()},
+        ],
+        preview: {
+          select: {
+            title: 'question',
+            subtitle: 'answer'
+          }
+        }
+      }],
+      description: 'Add 8-12 FAQs for better SEO and user experience'
     }),
 
     // ========== SEO & MARKETING ==========

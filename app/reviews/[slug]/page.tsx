@@ -14,6 +14,8 @@ import {
   DashboardScreenshotPlaceholder,
   WorkflowDiagramPlaceholder
 } from '@/components/ReviewPlaceholders'
+import FAQSection from '@/components/review/FAQSection'
+import AtAGlanceBox from '@/components/review/AtAGlanceBox'
 
 type Props = {
   params: { slug: string }
@@ -125,6 +127,37 @@ export default async function SoftwareReviewPage({ params }: Props) {
                       </span>
                     ))}
                   </div>
+                  {/* Quick Stats Bar */}
+                  {software.quickStats && (
+                    <div className="flex flex-wrap gap-4 mt-4 text-sm">
+                      {software.quickStats.totalUsers && (
+                        <div className="flex items-center gap-2">
+                          <UsersIcon className="h-4 w-4 text-gray-400" />
+                          <span className="text-gray-600 dark:text-gray-400">{software.quickStats.totalUsers}</span>
+                        </div>
+                      )}
+                      {software.quickStats.founded && (
+                        <div className="flex items-center gap-2">
+                          <CalendarIcon className="h-4 w-4 text-gray-400" />
+                          <span className="text-gray-600 dark:text-gray-400">Since {software.quickStats.founded}</span>
+                        </div>
+                      )}
+                      {software.quickStats.awards && software.quickStats.awards.length > 0 && (
+                        <div className="flex items-center gap-2">
+                          <StarIcon className="h-4 w-4 text-yellow-400" />
+                          <span className="text-gray-600 dark:text-gray-400">{software.quickStats.awards[0]}</span>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {/* Updated Badge */}
+                  {software.lastUpdated && (
+                    <div className="mt-4 inline-flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400">
+                      <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 rounded">
+                        ✓ Updated {new Date(software.lastUpdated).toLocaleDateString('en-US', { month: 'short', year: 'numeric' })}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -321,6 +354,26 @@ export default async function SoftwareReviewPage({ params }: Props) {
           <HeroImagePlaceholder name={software.name} />
         </div>
       </section>
+
+      {/* At-a-Glance Box */}
+      {(software.atAGlance || software.pros || software.cons) && (
+        <section className="py-8">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-5xl mx-auto">
+              <AtAGlanceBox
+                bottomLine={software.atAGlance?.bottomLine}
+                setupTime={software.atAGlance?.setupTime}
+                bestForCompanySize={software.atAGlance?.bestForCompanySize}
+                standoutFeature={software.atAGlance?.standoutFeature}
+                pros={software.pros}
+                cons={software.cons}
+                bestFor={software.bestFor}
+                notIdealFor={software.notIdealFor}
+              />
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Table of Contents */}
       <section className="py-8 border-b border-gray-200 dark:border-gray-700">
@@ -635,13 +688,77 @@ export default async function SoftwareReviewPage({ params }: Props) {
         </section>
       )}
 
-      {/* Detailed Review Content */}
-      {software.detailedReview && (
+      {/* Detailed Review Content - Dual Mode Support */}
+      {(software.detailedReview || software.automatedContent || software.manualContent) && (
         <section id="detailed-review" className="py-12">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">Detailed Review</h2>
-              <div className="space-y-8">
+              
+              {/* Manual Content Mode */}
+              {software.contentMode === 'manual' && software.manualContent && (
+                <div className="prose prose-lg dark:prose-invert max-w-none">
+                  <PortableText value={software.manualContent} />
+                </div>
+              )}
+              
+              {/* Automated Content Mode */}
+              {software.contentMode === 'automated' && software.automatedContent && (
+                <div className="space-y-8">
+                  {software.automatedContent.overview && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Overview</h3>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.overview}</p>
+                    </div>
+                  )}
+                  {software.automatedContent.featuresAnalysis && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Features Analysis</h3>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.featuresAnalysis}</p>
+                    </div>
+                  )}
+                  {software.automatedContent.integrationsAnalysis && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Integration Capabilities</h3>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.integrationsAnalysis}</p>
+                    </div>
+                  )}
+                  {software.automatedContent.performanceNotes && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Performance & Reliability</h3>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.performanceNotes}</p>
+                    </div>
+                  )}
+                  {software.automatedContent.securityAnalysis && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Security & Compliance</h3>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.securityAnalysis}</p>
+                    </div>
+                  )}
+                  {software.automatedContent.supportAnalysis && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Customer Support</h3>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.supportAnalysis}</p>
+                    </div>
+                  )}
+                  {software.automatedContent.pricingAnalysis && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Pricing Analysis</h3>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.pricingAnalysis}</p>
+                    </div>
+                  )}
+                  {software.automatedContent.competitorComparison && (
+                    <div>
+                      <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Competitor Comparison</h3>
+                      <p className="text-gray-700 dark:text-gray-300 leading-relaxed">{software.automatedContent.competitorComparison}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+              
+              {/* Legacy Detailed Review (fallback) */}
+              {software.contentMode !== 'manual' && software.contentMode !== 'automated' && software.detailedReview && (
+                <div className="space-y-8">
                 {software.detailedReview.userInterface && (
                   <div>
                     <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">User Interface & Experience</h3>
@@ -695,7 +812,8 @@ export default async function SoftwareReviewPage({ params }: Props) {
                     </div>
                   </div>
                 )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -817,6 +935,11 @@ export default async function SoftwareReviewPage({ params }: Props) {
             </div>
           </div>
         </section>
+      )}
+
+      {/* FAQ Section */}
+      {software.faqs && software.faqs.length > 0 && (
+        <FAQSection faqs={software.faqs} softwareName={software.name} />
       )}
 
       {/* Bottom CTA */}

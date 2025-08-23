@@ -47,39 +47,8 @@ export const softwareQuery = `
 
 export const softwareBySlugQuery = `
   *[_type == "software" && slug.current == $slug][0] {
-    _id,
-    name,
-    slug,
-    logo,
-    tagline,
-    shortDescription,
-    overview,
-    detailedReview,
-    pricingSection,
-    useCasesSection,
-    competitorAnalysis,
-    finalVerdict,
-    pros,
-    cons,
-    overallScore,
-    scores,
-    userRatings,
-    pricing,
-    screenshots,
-    videoReview,
-    integrations,
-    popularIntegrations,
-    supportedPlatforms,
-    deploymentOptions,
-    companyInfo,
-    supportInfo,
-    "categories": categories[]->{_id, name, slug},
-    affiliateLink,
-    dealInformation,
-    hasFreeTrial,
-    lastUpdated,
-    nextReviewDate,
-    seo
+    ...,
+    "categories": categories[]->{_id, name, slug}
   }
 `
 

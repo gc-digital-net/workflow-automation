@@ -10,19 +10,19 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // Deep ocean blue primary palette
+        // Custom brand colors - deep navy blue primary
         primary: {
-          50: '#eff6ff',
-          100: '#dbeafe',
-          200: '#bfdbfe',
-          300: '#93c5fd',
-          400: '#60a5fa',
-          500: '#3b82f6',
-          600: '#2563eb',
-          700: '#1d4ed8',
-          800: '#1e40af',
-          900: '#1e3a8a',
-          950: '#172554',
+          50: '#f0f0ff',
+          100: '#e0e1ff',
+          200: '#c1c3ff',
+          300: '#9195ff',
+          400: '#5a5fff',
+          500: '#2d32ff',
+          600: '#1a1fe6',
+          700: '#1418b3',
+          800: '#0d084d', // Main brand color
+          900: '#0a0640',
+          950: '#050320',
         },
         // Neutral grays with slight blue tint
         secondary: {
@@ -43,6 +43,7 @@ const config: Config = {
         },
         // Accent colors for various states
         accent: {
+          green: '#b1ffc2', // Extreme accent color
           cyan: '#06b6d4',
           blue: '#3b82f6',
           indigo: '#6366f1',

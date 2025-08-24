@@ -8,8 +8,7 @@ import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
 
-// Import ReviewTabs component
-import ReviewTabsSimple from '@/components/review/ReviewTabsSimple'
+// No tabs component needed for now
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600
@@ -542,12 +541,15 @@ export default async function G2StyleReviewPage({ params }: { params: { slug: st
               </section>
             )}
             
-            {/* Tabbed Content */}
-            <ReviewTabsSimple 
-              content={software.content || []}
-              portableTextComponents={portableTextComponents}
-              PortableText={PortableText}
-            />
+            {/* Main Content - Direct Portable Text */}
+            {software.content && (
+              <article className="prose prose-lg dark:prose-invert max-w-none">
+                <PortableText
+                  value={software.content}
+                  components={portableTextComponents}
+                />
+              </article>
+            )}
             
             {/* Screenshot Gallery */}
             {software.screenshotGallery && software.screenshotGallery.length > 0 && (

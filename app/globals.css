@@ -88,16 +88,20 @@
   }
   
   .btn-primary {
-    @apply bg-gradient-to-r from-primary-600 to-primary-700 text-white hover:from-primary-700 hover:to-primary-800 shadow-lg shadow-primary-600/25;
+    @apply bg-primary-800 text-white hover:bg-primary-900 shadow-lg shadow-primary-800/25 border border-primary-700;
   }
   
   .btn-secondary {
     @apply bg-secondary-100 text-secondary-900 hover:bg-secondary-200 dark:bg-secondary-800 dark:text-secondary-100 dark:hover:bg-secondary-700;
   }
   
+  .btn-accent {
+    @apply bg-accent-green text-primary-900 hover:bg-accent-green/90 shadow-lg shadow-accent-green/25 font-bold;
+  }
+  
   /* Gradient text */
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-600 via-primary-500 to-cyan-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-800 via-primary-600 to-accent-green bg-clip-text text-transparent;
   }
   
   /* Section spacing */

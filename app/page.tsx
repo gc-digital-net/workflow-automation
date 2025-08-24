@@ -17,19 +17,19 @@ export default async function HomePage() {
   const data = await getHomepageData()
 
   return (
-    <div className="min-h-screen relative overflow-hidden">
-      {/* Smooth gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-        {/* Glossy effect overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-50/10 via-transparent to-primary-100/10 dark:from-primary-900/10 dark:via-transparent dark:to-primary-800/10" />
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 via-gray-50/50 to-white dark:from-gray-900 dark:via-gray-850 dark:to-gray-900">
+      {/* Seamless gradient overlay */}
+      <div className="fixed inset-0 pointer-events-none">
+        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-primary-50/5 to-transparent dark:from-transparent dark:via-primary-900/5 dark:to-transparent" />
         
-        {/* Subtle animated gradient orbs */}
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-gradient-to-br from-primary-200/20 to-transparent rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gradient-to-tl from-primary-300/20 to-transparent rounded-full blur-3xl animate-pulse delay-700" />
+        {/* Very subtle animated gradient orbs for depth */}
+        <div className="absolute top-20 left-1/3 w-[500px] h-[500px] bg-gradient-radial from-primary-100/10 to-transparent rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-40 right-1/3 w-[600px] h-[600px] bg-gradient-radial from-cyan-100/10 to-transparent rounded-full blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-indigo-100/5 to-transparent rounded-full blur-3xl" />
       </div>
       
-      {/* Content with relative positioning */}
-      <div className="relative z-10">
+      {/* Content */}
+      <div className="relative">
         {/* Hero Section with animated background */}
         <HeroSection />
         

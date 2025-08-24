@@ -46,18 +46,18 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full glass border-b border-secondary-200/20 dark:border-secondary-800/20">
-      <nav className="container mx-auto h-20" aria-label="Global">
+    <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
+      <nav className="w-full px-4 lg:px-8 h-20" aria-label="Global">
         <div className="flex h-full items-center justify-between">
           {/* Logo Section with space for company logo */}
           <div className="flex items-center gap-4 lg:flex-1">
             <Link href="/" className="flex items-center gap-3 group">
               {/* Logo placeholder - you can replace with actual logo */}
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-primary-600 shadow-lg shadow-primary-500/25 group-hover:shadow-xl group-hover:shadow-primary-500/30 transition-all duration-300">
-                <SparklesIcon className="h-7 w-7 text-white" />
+              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 shadow-md group-hover:shadow-lg transition-all duration-300">
+                <SparklesIcon className="h-6 w-6 text-white" />
               </div>
               <div className="flex flex-col">
-                <span className="text-xl font-bold gradient-text">
+                <span className="text-xl font-bold text-gray-900 dark:text-white">
                   Workflow
                 </span>
                 <span className="text-xs text-secondary-500 dark:text-secondary-400 -mt-1">

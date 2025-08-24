@@ -38,6 +38,9 @@ const config: Config = {
           900: '#0f172a',
           950: '#020617',
         },
+        gray: {
+          850: '#151f2e',
+        },
         // Accent colors for various states
         accent: {
           cyan: '#06b6d4',
@@ -71,6 +74,9 @@ const config: Config = {
       },
       fontSize: {
         '2xs': '0.625rem',
+      },
+      backgroundImage: {
+        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',

@@ -3,8 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
 import { StarIcon, CheckIcon, XMarkIcon, ArrowRightIcon } from '@heroicons/react/24/solid'
-import { client } from '@/lib/sanity'
-import { urlForImage } from '@/lib/image'
+import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
 
@@ -12,7 +11,7 @@ import ScreenshotGallery from '@/components/review/ScreenshotGallery'
 const portableTextComponents = {
   types: {
     screenshot: ({ value }: any) => {
-      const imageUrl = urlForImage(value.image)
+      const imageUrl = urlFor(value.image).url()
       const size = value.size || 'large'
       
       const sizeClasses = {
@@ -343,7 +342,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     openGraph: {
       title: software.seo?.metaTitle || `${software.name} Review`,
       description: software.seo?.metaDescription || software.excerpt,
-      images: software.logo ? [urlForImage(software.logo)] : [],
+      images: software.logo ? [urlFor(software.logo).url()] : [],
     }
   }
 }
@@ -366,7 +365,7 @@ export default async function SimplifiedReviewPage({ params }: { params: { slug:
               <div className="flex-shrink-0">
                 <div className="relative w-24 h-24 rounded-lg overflow-hidden bg-white shadow-lg">
                   <Image
-                    src={urlForImage(software.logo)}
+                    src={urlFor(software.logo).url()}
                     alt={`${software.name} logo`}
                     fill
                     className="object-contain p-2"

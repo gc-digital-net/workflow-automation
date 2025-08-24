@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import Image from 'next/image'
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid'
-import { urlForImage } from '@/lib/image'
+import { urlFor } from '@/lib/sanity'
 
 export default function ScreenshotGallery({ screenshots }: { screenshots: any[] }) {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -26,7 +26,7 @@ export default function ScreenshotGallery({ screenshots }: { screenshots: any[] 
         {/* Main Screenshot Display */}
         <div className="relative aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           <Image
-            src={urlForImage(screenshots[currentIndex].image)}
+            src={urlFor(screenshots[currentIndex].image).url()}
             alt={screenshots[currentIndex].caption || `Screenshot ${currentIndex + 1}`}
             fill
             className="object-contain"
@@ -70,7 +70,7 @@ export default function ScreenshotGallery({ screenshots }: { screenshots: any[] 
               }`}
             >
               <Image
-                src={urlForImage(screenshot.image)}
+                src={urlFor(screenshot.image).url()}
                 alt={`Thumbnail ${idx + 1}`}
                 fill
                 className="object-cover"

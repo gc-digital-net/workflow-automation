@@ -1,13 +1,19 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { PortableText } from '@portabletext/react'
 import { StarIcon, CheckIcon, XMarkIcon, ArrowRightIcon, BuildingOfficeIcon, UsersIcon, CalendarIcon, ShieldCheckIcon } from '@heroicons/react/24/solid'
 import { ChartBarIcon, ClockIcon, CurrencyDollarIcon, GlobeAltIcon, DocumentTextIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
-import ReviewTabs from '@/components/review/ReviewTabs'
+
+// Dynamic import to avoid SSR issues
+const ReviewTabs = dynamic(() => import('@/components/review/ReviewTabs'), {
+  ssr: false,
+  loading: () => <div className="animate-pulse h-96 bg-gray-100 dark:bg-gray-800 rounded-xl"></div>
+})
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600

@@ -1,0 +1,17 @@
+{
+  "Slack": "/logos/integrations/slack.png",
+  "Google Drive": "/logos/integrations/google-drive.png",
+  "Gmail": "/logos/integrations/gmail.png",
+  "GitHub": "/logos/integrations/github.png",
+  "GitLab": "/logos/integrations/gitlab.png",
+  "Figma": "/logos/integrations/figma.png",
+  "Zoom": "/logos/integrations/zoom.png",
+  "Microsoft Teams": "/logos/integrations/microsoft-teams.png",
+  "Dropbox": "/logos/integrations/dropbox.png",
+  "HubSpot": "/logos/integrations/hubspot.png",
+  "Salesforce": "/logos/integrations/salesforce.png",
+  "Intercom": "/logos/integrations/intercom.png",
+  "Stripe": "/logos/integrations/stripe.png",
+  "QuickBooks": "/logos/integrations/quickbooks.png",
+  "Loom": "/logos/integrations/loom.png"
+}

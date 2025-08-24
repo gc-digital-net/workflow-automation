@@ -9,11 +9,11 @@ import { CurrencyDollarIcon, BeakerIcon, ShieldCheckIcon, ClockIcon, UsersIcon, 
 import { 
   HeroImagePlaceholder, 
   FeatureScreenshotPlaceholder, 
-  IntegrationLogosPlaceholder,
   ComparisonChartPlaceholder,
   DashboardScreenshotPlaceholder,
   WorkflowDiagramPlaceholder
 } from '@/components/ReviewPlaceholders'
+import IntegrationLogos from '@/components/review/IntegrationLogos'
 import FAQSection from '@/components/review/FAQSection'
 import AtAGlanceBox from '@/components/review/AtAGlanceBox'
 import LongFormContent from '@/components/review/LongFormContent'
@@ -841,19 +841,9 @@ export default async function SoftwareReviewPage({ params }: Props) {
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">Integrations</h2>
               <p className="text-gray-600 dark:text-gray-400 text-center mb-8">
-                Connect {software.name} with {software.integrations?.count || '500+'} tools to power your workflow
+                Connect {software.name} with {software.integrations || '500+'} tools to power your workflow
               </p>
-              <IntegrationLogosPlaceholder />
-              <div className="mt-8 text-center">
-                <p className="text-gray-600 dark:text-gray-400 mb-4">Popular integrations include:</p>
-                <div className="flex flex-wrap justify-center gap-3">
-                  {software.popularIntegrations.slice(0, 12).map((integration: string, i: number) => (
-                    <span key={i} className="px-4 py-2 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 text-sm font-medium text-gray-700 dark:text-gray-300">
-                      {integration}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <IntegrationLogos integrations={software.popularIntegrations} />
             </div>
           </div>
         </section>

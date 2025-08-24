@@ -13,5 +13,10 @@
   "Intercom": "/logos/integrations/intercom.png",
   "Stripe": "/logos/integrations/stripe.png",
   "QuickBooks": "/logos/integrations/quickbooks.png",
-  "Loom": "/logos/integrations/loom.png"
+  "Loom": "/logos/integrations/loom.png",
+  "Zapier": "/logos/integrations/zapier.png",
+  "Jira": "/logos/integrations/jira.png",
+  "Trello": "/logos/integrations/trello.png",
+  "Asana": "/logos/integrations/asana.png",
+  "Monday.com": "/logos/integrations/monday-com.png"
 }

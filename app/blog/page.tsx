@@ -16,9 +16,12 @@ import {
   ArrowRightIcon,
   SparklesIcon,
   FireIcon,
-  BookOpenIcon
+  BookOpenIcon,
+  ClockIcon,
+  TagIcon
 } from '@heroicons/react/24/outline';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
+import { GlossyCard, GradientText, GradientOrb } from '@/components/ui/GradientEffects';
 
 export const metadata: Metadata = {
   title: 'Blog | Workflow Automation Insights & Guides',
@@ -28,66 +31,77 @@ export const metadata: Metadata = {
 export default async function BlogPage() {
   const posts = await getPosts();
   const featuredPost = posts[0];
-  const recentPosts = posts.slice(1);
+  const recentPosts = posts.slice(1, 9);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-900">
-      {/* Hero Section */}
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-primary-950 to-slate-900">
+      {/* Hero Section with Glossy Effects */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-purple-50 to-pink-50 dark:from-gray-800 dark:via-gray-900 dark:to-gray-900 opacity-50"></div>
-        <div className="relative py-20">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-600/10 via-cyan-600/10 to-primary-600/10"></div>
+        
+        {/* Animated gradient orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          <GradientOrb size="xl" color="primary" className="absolute -top-20 -left-20" animate />
+          <GradientOrb size="lg" color="cyan" className="absolute top-40 right-10" animate />
+          <GradientOrb size="md" color="primary" className="absolute bottom-20 left-1/3" animate />
+        </div>
+        
+        <div className="relative py-24">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center max-w-4xl mx-auto">
-              <div className="inline-flex items-center px-4 py-2 bg-primary-100 dark:bg-primary-900/30 text-primary-700 dark:text-primary-400 rounded-full text-sm font-medium mb-4">
+              <div className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-primary-600/20 to-cyan-600/20 backdrop-blur-sm text-cyan-400 rounded-full text-sm font-medium mb-6 border border-cyan-500/20">
                 <SparklesIcon className="w-4 h-4 mr-2" />
                 Workflow Automation Insights
               </div>
-              <h1 className="text-5xl md:text-6xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 bg-gradient-to-r from-primary-600 to-purple-600 bg-clip-text text-transparent">
+              <GradientText className="text-5xl md:text-7xl font-bold tracking-tight mb-6" gradient="from-white via-cyan-200 to-primary-200">
                 Knowledge Hub
-              </h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-2xl mx-auto">
+              </GradientText>
+              <p className="text-xl text-gray-300 mb-10 max-w-2xl mx-auto">
                 Deep dives into automation strategies, software reviews, and practical guides to transform your business processes
               </p>
               
-              {/* Search Bar */}
+              {/* Glossy Search Bar */}
               <div className="max-w-xl mx-auto relative">
-                <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
-                <input
-                  type="text"
-                  placeholder="Search articles, guides, and reviews..."
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-primary-500 focus:border-transparent shadow-lg"
-                />
-                <button className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-primary-600 text-white rounded-xl hover:bg-primary-700 transition-colors">
-                  Search
-                </button>
+                <div className="absolute inset-0 bg-gradient-to-r from-primary-600/20 to-cyan-600/20 rounded-2xl blur-xl"></div>
+                <div className="relative bg-gray-900/50 backdrop-blur-xl rounded-2xl border border-gray-700/50">
+                  <MagnifyingGlassIcon className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Search articles, guides, and reviews..."
+                    className="w-full pl-12 pr-32 py-4 bg-transparent text-white placeholder-gray-400 focus:outline-none"
+                  />
+                  <button className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-primary-600 to-cyan-600 text-white rounded-xl hover:shadow-lg hover:shadow-cyan-500/25 transition-all font-medium">
+                    Search
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Category Filter */}
-      <section className="py-8 border-b border-gray-200 dark:border-gray-700">
+      {/* Glossy Category Filter */}
+      <section className="py-8 border-b border-gray-800/50">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3 overflow-x-auto">
-              <button className="px-4 py-2 bg-primary-600 text-white rounded-lg font-medium whitespace-nowrap">
+              <button className="px-5 py-2.5 bg-gradient-to-r from-primary-600 to-cyan-600 text-white rounded-lg font-medium whitespace-nowrap shadow-lg shadow-cyan-500/25">
                 All Posts
               </button>
-              <button className="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-700 whitespace-nowrap border border-gray-200 dark:border-gray-700">
+              <button className="px-5 py-2.5 bg-gray-800/50 backdrop-blur-sm text-gray-300 rounded-lg font-medium hover:bg-gray-700/50 whitespace-nowrap border border-gray-700/50 transition-all">
                 Automation
               </button>
-              <button className="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-700 whitespace-nowrap border border-gray-200 dark:border-gray-700">
+              <button className="px-5 py-2.5 bg-gray-800/50 backdrop-blur-sm text-gray-300 rounded-lg font-medium hover:bg-gray-700/50 whitespace-nowrap border border-gray-700/50 transition-all">
                 Reviews
               </button>
-              <button className="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-700 whitespace-nowrap border border-gray-200 dark:border-gray-700">
+              <button className="px-5 py-2.5 bg-gray-800/50 backdrop-blur-sm text-gray-300 rounded-lg font-medium hover:bg-gray-700/50 whitespace-nowrap border border-gray-700/50 transition-all">
                 Guides
               </button>
-              <button className="px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg font-medium hover:bg-gray-100 dark:hover:bg-gray-700 whitespace-nowrap border border-gray-200 dark:border-gray-700">
+              <button className="px-5 py-2.5 bg-gray-800/50 backdrop-blur-sm text-gray-300 rounded-lg font-medium hover:bg-gray-700/50 whitespace-nowrap border border-gray-700/50 transition-all">
                 Case Studies
               </button>
             </div>
-            <div className="hidden md:flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+            <div className="hidden md:flex items-center gap-2 text-sm text-gray-400">
               <BookOpenIcon className="w-4 h-4" />
               {posts.length} Articles
             </div>
@@ -104,11 +118,11 @@ export default async function BlogPage() {
               <div className="mb-12">
                 <div className="flex items-center gap-2 mb-4">
                   <FireIcon className="w-5 h-5 text-orange-500" />
-                  <span className="text-sm font-semibold text-orange-600 dark:text-orange-400 uppercase tracking-wide">
+                  <span className="text-sm font-semibold text-orange-400 uppercase tracking-wide">
                     Featured Article
                   </span>
                 </div>
-                <article className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl overflow-hidden group hover:shadow-2xl transition-all">
+                <GlossyCard className="overflow-hidden group" gradient="from-primary-600/10 to-cyan-600/10">
                   <Link href={`/blog/${featuredPost.slug.current}`} className="block">
                     <div className="relative h-96 overflow-hidden">
                       {featuredPost.featuredImage ? (
@@ -137,17 +151,17 @@ export default async function BlogPage() {
                       </div>
                     </div>
                   </Link>
-                  <div className="p-6 border-t border-gray-100 dark:border-gray-700">
+                  <div className="p-6 border-t border-gray-700/50">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10">
                           <AuthorAvatarPlaceholder name={featuredPost.author} />
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900 dark:text-white">
+                          <p className="font-medium text-white">
                             {featuredPost.author}
                           </p>
-                          <p className="text-sm text-gray-500 dark:text-gray-400">
+                          <p className="text-sm text-gray-400">
                             {new Date(featuredPost.publishedAt).toLocaleDateString('en-US', {
                               month: 'short',
                               day: 'numeric',
@@ -158,22 +172,22 @@ export default async function BlogPage() {
                       </div>
                       <Link 
                         href={`/blog/${featuredPost.slug.current}`}
-                        className="inline-flex items-center text-primary-600 dark:text-primary-400 font-semibold hover:gap-3 gap-2 transition-all"
+                        className="inline-flex items-center text-cyan-400 font-semibold hover:gap-3 gap-2 transition-all"
                       >
                         Read Article
                         <ArrowRightIcon className="w-4 h-4" />
                       </Link>
                     </div>
                   </div>
-                </article>
+                </GlossyCard>
               </div>
             )}
 
             {/* Recent Posts Grid */}
             <div className="space-y-8">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Recent Articles</h2>
-                <select className="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm">
+                <h2 className="text-2xl font-bold text-white">Recent Articles</h2>
+                <select className="px-4 py-2 bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-lg text-sm text-gray-300">
                   <option>Most Recent</option>
                   <option>Most Popular</option>
                   <option>Most Commented</option>
@@ -182,7 +196,7 @@ export default async function BlogPage() {
 
               <div className="grid md:grid-cols-2 gap-6">
                 {recentPosts.map((post: any) => (
-                  <article key={post._id} className="bg-white dark:bg-gray-800 rounded-xl shadow-md overflow-hidden group hover:shadow-xl transition-all">
+                  <GlossyCard key={post._id} className="overflow-hidden group h-full" gradient="from-primary-600/5 to-cyan-600/5">
                     <Link href={`/blog/${post.slug.current}`}>
                       <div className="relative h-48 overflow-hidden">
                         {post.featuredImage ? (
@@ -202,7 +216,7 @@ export default async function BlogPage() {
                       </div>
                     </Link>
                     <div className="p-5">
-                      <div className="flex items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-3">
+                      <div className="flex items-center gap-3 text-sm text-gray-400 mb-3">
                         <span className="flex items-center gap-1">
                           <CalendarIcon className="w-4 h-4" />
                           {new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -216,12 +230,12 @@ export default async function BlogPage() {
                       <h3 className="text-xl font-bold mb-2">
                         <Link 
                           href={`/blog/${post.slug.current}`}
-                          className="text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400 transition-colors"
+                          className="text-white hover:text-cyan-400 transition-colors"
                         >
                           {post.title}
                         </Link>
                       </h3>
-                      <p className="text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">
+                      <p className="text-gray-400 line-clamp-2 mb-4">
                         {post.excerpt}
                       </p>
                       <div className="flex items-center justify-between">
@@ -229,25 +243,25 @@ export default async function BlogPage() {
                           <div className="w-6 h-6">
                             <AuthorAvatarPlaceholder name={post.author} />
                           </div>
-                          <span className="text-sm text-gray-600 dark:text-gray-400">
+                          <span className="text-sm text-gray-400">
                             {post.author}
                           </span>
                         </div>
                         <Link 
                           href={`/blog/${post.slug.current}`}
-                          className="text-primary-600 dark:text-primary-400 font-medium hover:underline text-sm"
+                          className="text-cyan-400 font-medium hover:underline text-sm"
                         >
                           Read more →
                         </Link>
                       </div>
                     </div>
-                  </article>
+                  </GlossyCard>
                 ))}
               </div>
 
               {/* Load More */}
               <div className="text-center pt-8">
-                <button className="px-8 py-3 bg-primary-600 text-white rounded-xl hover:bg-primary-700 font-medium inline-flex items-center gap-2">
+                <button className="px-8 py-3 bg-gradient-to-r from-primary-600 to-cyan-600 text-white rounded-xl hover:shadow-lg hover:shadow-cyan-500/25 transition-all font-medium inline-flex items-center gap-2">
                   Load More Articles
                   <ArrowRightIcon className="w-4 h-4" />
                 </button>
@@ -258,61 +272,41 @@ export default async function BlogPage() {
           {/* Enhanced Sidebar */}
           <aside className="lg:col-span-4 space-y-8">
             {/* Newsletter */}
-            <NewsletterCard />
+            <div className="sticky top-24">
+              <NewsletterCard />
 
-            {/* Popular Posts */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 flex items-center">
-                <FireIcon className="w-5 h-5 mr-2 text-orange-500" />
-                Trending This Week
-              </h3>
-              <div className="space-y-4">
-                <PopularPostCard title="10 Ways to Automate Your Marketing Workflow" index={1} />
-                <PopularPostCard title="Complete Guide to Zapier Integrations" index={2} />
-                <PopularPostCard title="Monday.com vs Asana: Which is Better?" index={3} />
-                <PopularPostCard title="How AI is Transforming Business Automation" index={4} />
-                <PopularPostCard title="Building Your First No-Code Automation" index={5} />
-              </div>
-            </div>
+              {/* Popular Posts */}
+              <GlossyCard className="p-6 mt-8" gradient="from-primary-600/10 to-cyan-600/10">
+                <h3 className="text-lg font-bold text-white mb-6 flex items-center">
+                  <FireIcon className="w-5 h-5 mr-2 text-orange-500" />
+                  Trending This Week
+                </h3>
+                <div className="space-y-4">
+                  <PopularPostCard title="10 Ways to Automate Your Marketing Workflow" index={1} />
+                  <PopularPostCard title="Complete Guide to Zapier Integrations" index={2} />
+                  <PopularPostCard title="Monday.com vs Asana: Which is Better?" index={3} />
+                  <PopularPostCard title="How AI is Transforming Business Automation" index={4} />
+                  <PopularPostCard title="Building Your First No-Code Automation" index={5} />
+                </div>
+              </GlossyCard>
 
-            {/* Topics */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6">
-                Browse Topics
-              </h3>
-              <div className="flex flex-wrap gap-2">
-                {['Automation', 'AI Tools', 'Productivity', 'No-Code', 'Integration', 'CRM', 'Project Management', 'Marketing', 'Sales', 'Analytics'].map((topic) => (
-                  <Link
-                    key={topic}
-                    href={`/blog/topic/${topic.toLowerCase()}`}
-                    className="px-3 py-1.5 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg text-sm hover:bg-primary-100 hover:text-primary-700 dark:hover:bg-primary-900/30 dark:hover:text-primary-400 transition-colors"
-                  >
-                    {topic}
-                  </Link>
-                ))}
-              </div>
-            </div>
-
-            {/* Archives */}
-            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md p-6">
-              <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">
-                Archives
-              </h3>
-              <ul className="space-y-2">
-                {['December 2024', 'November 2024', 'October 2024', 'September 2024'].map((month) => (
-                  <li key={month}>
-                    <Link 
-                      href={`/blog/archive/${month.toLowerCase().replace(' ', '-')}`}
-                      className="text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 flex items-center justify-between group"
+              {/* Topics */}
+              <GlossyCard className="p-6 mt-8" gradient="from-cyan-600/10 to-primary-600/10">
+                <h3 className="text-lg font-bold text-white mb-6">
+                  Browse Topics
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {['Automation', 'AI Tools', 'Productivity', 'No-Code', 'Integration', 'CRM', 'Project Management', 'Marketing', 'Sales', 'Analytics'].map((topic) => (
+                    <Link
+                      key={topic}
+                      href={`/blog/topic/${topic.toLowerCase()}`}
+                      className="px-3 py-1.5 bg-gray-800/50 backdrop-blur-sm text-gray-300 rounded-lg text-sm hover:bg-primary-600/20 hover:text-cyan-400 border border-gray-700/50 transition-all"
                     >
-                      <span>{month}</span>
-                      <span className="text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded group-hover:bg-primary-100 dark:group-hover:bg-primary-900/30">
-                        12
-                      </span>
+                      {topic}
                     </Link>
-                  </li>
-                ))}
-              </ul>
+                  ))}
+                </div>
+              </GlossyCard>
             </div>
           </aside>
         </div>

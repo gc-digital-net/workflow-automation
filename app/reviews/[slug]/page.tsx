@@ -391,6 +391,7 @@ export default async function SoftwareReviewPage({ params }: Props) {
               <a href="#overview" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Platform Overview</a>
               <a href="#scores" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Performance Scores</a>
               <a href="#features" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Feature Analysis</a>
+              <a href="#screenshots" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Screenshots</a>
               <a href="#pricing" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Pricing & Plans</a>
               <a href="#pros-cons" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Pros & Cons</a>
               <a href="#use-cases" className="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300">→ Use Cases</a>
@@ -428,10 +429,18 @@ export default async function SoftwareReviewPage({ params }: Props) {
               )}
               
               {/* Dashboard Screenshot */}
-              <div className="mt-12">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 text-center">See {software.name} in Action</h3>
-                <DashboardScreenshotPlaceholder />
-              </div>
+              {software.screenshots && software.screenshots.length > 0 && (
+                <div className="mt-12">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 text-center">See {software.name} in Action</h3>
+                  <div className="relative rounded-xl overflow-hidden shadow-2xl">
+                    <img 
+                      src={urlFor(software.screenshots[4]?.image || software.screenshots[0]?.image).width(1200).height(675).url()}
+                      alt={software.screenshots[4]?.altText || `${software.name} Dashboard`}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
@@ -476,7 +485,17 @@ export default async function SoftwareReviewPage({ params }: Props) {
               <div className="grid md:grid-cols-2 gap-8 mb-12">
                 {software.keyFeatures.slice(0, 6).map((feature: any, index: number) => (
                   <div key={feature._key || index} className="group">
-                    <FeatureScreenshotPlaceholder feature={feature.name} index={index} />
+                    {software.screenshots && software.screenshots[index] ? (
+                      <div className="relative rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+                        <img 
+                          src={urlFor(software.screenshots[index].image).width(600).height(400).url()}
+                          alt={software.screenshots[index].altText || feature.name}
+                          className="w-full h-64 object-cover"
+                        />
+                      </div>
+                    ) : (
+                      <FeatureScreenshotPlaceholder feature={feature.name} index={index} />
+                    )}
                     <div className="mt-4">
                       <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">{feature.name}</h3>
                       <p className="text-gray-600 dark:text-gray-400">{feature.description}</p>
@@ -496,6 +515,41 @@ export default async function SoftwareReviewPage({ params }: Props) {
                   How {software.name} Streamlines Your Workflow
                 </h3>
                 <WorkflowDiagramPlaceholder />
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* Screenshot Gallery */}
+      {software.screenshots && software.screenshots.length > 0 && (
+        <section id="screenshots" className="py-12 bg-white dark:bg-gray-900">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="max-w-7xl mx-auto">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">Screenshots</h2>
+              <p className="text-gray-600 dark:text-gray-400 text-center mb-12 max-w-2xl mx-auto">
+                Explore {software.name}'s interface and features in detail
+              </p>
+              
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {software.screenshots.map((screenshot: any, index: number) => (
+                  <div key={screenshot._key || index} className="group cursor-pointer">
+                    <div className="relative rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+                      <img 
+                        src={urlFor(screenshot.image).width(800).height(600).url()}
+                        alt={screenshot.altText || `${software.name} Screenshot ${index + 1}`}
+                        className="w-full h-56 object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="absolute bottom-0 left-0 right-0 p-4">
+                          <p className="text-white font-medium text-sm">
+                            {screenshot.caption || `Feature ${index + 1}`}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

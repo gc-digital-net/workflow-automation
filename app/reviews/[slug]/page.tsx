@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
 import { PortableText } from '@portabletext/react'
 import { StarIcon, CheckIcon, XMarkIcon, ArrowRightIcon, BuildingOfficeIcon, UsersIcon, CalendarIcon, ShieldCheckIcon } from '@heroicons/react/24/solid'
 import { ChartBarIcon, ClockIcon, CurrencyDollarIcon, GlobeAltIcon, DocumentTextIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
@@ -8,8 +9,18 @@ import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
 
-// Import tabs component
-import ReviewContentWithTabs from '@/components/review/ReviewContentWithTabs'
+// Dynamic import tabs component to avoid SSR issues
+const ReviewContentWithTabs = dynamic(
+  () => import('@/components/review/ReviewContentWithTabs'),
+  { 
+    loading: () => (
+      <div className="animate-pulse">
+        <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded mb-8"></div>
+        <div className="h-96 bg-gray-100 dark:bg-gray-800 rounded"></div>
+      </div>
+    )
+  }
+)
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600

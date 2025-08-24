@@ -47,7 +47,7 @@ export default function ComparisonTool() {
   const [selectedTools, setSelectedTools] = useState<string[]>(['ClickUp', 'Monday.com'])
 
   return (
-    <section className="py-16 sm:py-24 bg-gradient-to-b from-secondary-50/50 to-white dark:from-secondary-950/50 dark:to-secondary-900">
+    <section className="py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-2xl mb-4">
@@ -68,7 +68,7 @@ export default function ComparisonTool() {
             <button
               key={comparison.label}
               onClick={() => setSelectedTools(comparison.tools)}
-              className="px-4 py-2 text-sm font-medium bg-white dark:bg-secondary-800 text-secondary-700 dark:text-secondary-300 rounded-lg ring-1 ring-secondary-200 dark:ring-secondary-700 hover:ring-primary-500 dark:hover:ring-primary-400 transition-all"
+              className="px-4 py-2 text-sm font-medium bg-white/60 backdrop-blur-sm dark:bg-gray-800/60 text-secondary-700 dark:text-secondary-300 rounded-lg ring-1 ring-white/30 dark:ring-gray-700/30 hover:ring-primary-500 dark:hover:ring-primary-400 transition-all"
             >
               {comparison.label}
             </button>
@@ -80,12 +80,12 @@ export default function ComparisonTool() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="overflow-hidden rounded-2xl bg-white dark:bg-secondary-800 shadow-xl ring-1 ring-secondary-200/50 dark:ring-secondary-700/50"
+          className="overflow-hidden rounded-2xl bg-white/50 backdrop-blur-sm dark:bg-gray-800/50 shadow-xl ring-1 ring-white/20 dark:ring-gray-700/30"
         >
           <div className="grid grid-cols-3">
             {/* Features Column */}
             <div className="border-r border-secondary-200 dark:border-secondary-700">
-              <div className="bg-secondary-50 dark:bg-secondary-900/50 p-6">
+              <div className="bg-white/30 backdrop-blur-sm dark:bg-gray-900/30 p-6">
                 <h3 className="font-semibold text-secondary-900 dark:text-white">Features</h3>
               </div>
               <div className="p-6 space-y-4">
@@ -167,7 +167,7 @@ export default function ComparisonTool() {
           </div>
 
           {/* CTA Section */}
-          <div className="bg-secondary-50 dark:bg-secondary-900/50 p-6 border-t border-secondary-200 dark:border-secondary-700">
+          <div className="bg-white/30 backdrop-blur-sm dark:bg-gray-900/30 p-6 border-t border-white/20 dark:border-gray-700/30">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <p className="text-sm text-secondary-600 dark:text-secondary-400">
                 Want to see a detailed comparison with more tools?

@@ -12,9 +12,9 @@ export default function HeroSection() {
 
   return (
     <section className="relative overflow-hidden">
-      {/* Multi-layer gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-primary-50 via-white to-cyan-50 dark:from-secondary-950 dark:via-secondary-900 dark:to-primary-950/20" />
-      <MeshGradientOverlay opacity={0.3} />
+      {/* Subtle overlay to enhance the page gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-primary-50/5 to-transparent dark:from-transparent dark:via-primary-900/5 dark:to-transparent" />
+      <MeshGradientOverlay opacity={0.2} />
       
       {/* Animated gradient orbs */}
       <GradientOrb size="xl" color="primary" className="-top-40 -right-40" />

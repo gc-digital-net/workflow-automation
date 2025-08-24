@@ -35,7 +35,7 @@ export default function FAQSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
 
   return (
-    <section className="py-16 sm:py-24 bg-white dark:bg-secondary-900">
+    <section className="py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
@@ -55,11 +55,11 @@ export default function FAQSection() {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.05 }}
                 viewport={{ once: true }}
-                className="bg-secondary-50 dark:bg-secondary-800 rounded-xl overflow-hidden"
+                className="bg-white/40 backdrop-blur-sm dark:bg-gray-800/40 rounded-xl overflow-hidden ring-1 ring-white/20 dark:ring-gray-700/30"
               >
                 <button
                   onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                  className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-secondary-100 dark:hover:bg-secondary-700 transition-colors"
+                  className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-white/20 dark:hover:bg-gray-700/50 transition-colors"
                 >
                   <span className="font-medium text-secondary-900 dark:text-white">
                     {faq.question}

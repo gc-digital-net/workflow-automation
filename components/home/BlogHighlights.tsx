@@ -126,7 +126,7 @@ export default function BlogHighlights({ posts = mockPosts, guides = mockGuides 
             className="space-y-6"
           >
             {/* Recent Articles */}
-            <div className="bg-white dark:bg-secondary-800 rounded-2xl p-6 shadow-sm ring-1 ring-secondary-200/50 dark:ring-secondary-700/50">
+            <div className="bg-white/50 backdrop-blur-sm dark:bg-gray-800/50 rounded-2xl p-6 shadow-sm ring-1 ring-white/20 dark:ring-gray-700/30">
               <h3 className="font-semibold text-secondary-900 dark:text-white mb-4 flex items-center gap-2">
                 <BookOpenIcon className="h-5 w-5 text-primary-600 dark:text-primary-400" />
                 Recent Articles
@@ -160,7 +160,7 @@ export default function BlogHighlights({ posts = mockPosts, guides = mockGuides 
             </div>
 
             {/* Best Of Guides */}
-            <div className="bg-gradient-to-br from-secondary-50 to-primary-50 dark:from-secondary-800 dark:to-primary-900/20 rounded-2xl p-6">
+            <div className="bg-gradient-to-br from-white/30 to-primary-50/30 backdrop-blur-sm dark:from-gray-800/30 dark:to-primary-900/20 rounded-2xl p-6">
               <h3 className="font-semibold text-secondary-900 dark:text-white mb-4 flex items-center gap-2">
                 <LightBulbIcon className="h-5 w-5 text-primary-600 dark:text-primary-400" />
                 Popular Guides
@@ -172,7 +172,7 @@ export default function BlogHighlights({ posts = mockPosts, guides = mockGuides 
                     href={`/listicles/${guide.slug?.current}`}
                     className="block group"
                   >
-                    <div className="flex items-center justify-between p-3 bg-white/50 dark:bg-secondary-900/50 rounded-lg hover:bg-white dark:hover:bg-secondary-900 transition-all">
+                    <div className="flex items-center justify-between p-3 bg-white/30 backdrop-blur-sm dark:bg-gray-900/30 rounded-lg hover:bg-white/50 dark:hover:bg-gray-900/50 transition-all">
                       <span className="text-sm font-medium text-secondary-700 dark:text-secondary-300 group-hover:text-primary-600 dark:group-hover:text-primary-400">
                         {guide.title}
                       </span>

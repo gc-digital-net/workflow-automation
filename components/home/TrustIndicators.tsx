@@ -11,7 +11,7 @@ const companies = [
 
 export default function TrustIndicators() {
   return (
-    <section className="bg-gray-50 py-12 dark:bg-gray-900/50">
+    <section className="py-12">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <p className="text-sm font-semibold uppercase tracking-wide text-gray-600 dark:text-gray-400">

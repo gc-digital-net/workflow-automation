@@ -50,7 +50,7 @@ export default function Testimonials() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="rounded-2xl bg-white p-8 shadow-sm ring-1 ring-gray-200 dark:bg-gray-800 dark:ring-gray-700"
+              className="rounded-2xl bg-white/50 backdrop-blur-sm p-8 shadow-sm ring-1 ring-white/20 dark:bg-gray-800/50 dark:ring-gray-700/30"
             >
               <div className="flex gap-1">
                 {[...Array(testimonial.rating)].map((_, i) => (

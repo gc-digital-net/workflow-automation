@@ -22,15 +22,13 @@ export const NAVIGATION_ITEMS = [
     ],
   },
   {
-    name: 'Resources',
+    name: 'Blog',
     href: '/blog',
     children: [
-      { name: 'Blog', href: '/blog' },
-      { name: 'Top Software', href: '/top' },
+      { name: 'All Articles', href: '/blog' },
       { name: 'Guides', href: '/blog/category/guides' },
       { name: 'News', href: '/blog/category/news' },
-      { name: 'Templates', href: '/learn/templates' },
-      { name: 'All Resources', href: '/learn/resources' },
+      { name: 'Top Software', href: '/top' },
     ],
   },
   {
@@ -43,15 +41,6 @@ export const NAVIGATION_ITEMS = [
     ],
   },
   {
-    name: 'Learn',
-    href: '/learn',
-    children: [
-      { name: 'Certification', href: '/learn/certification' },
-      { name: 'Mini Courses', href: '/learn/mini-courses' },
-      { name: 'Templates', href: '/learn/templates' },
-    ],
-  },
-  {
     name: 'Community',
     href: '/community',
     children: [
@@ -60,6 +49,16 @@ export const NAVIGATION_ITEMS = [
       { name: 'Events', href: '/community/events' },
     ],
   },
+  // TODO: Complete Learn section in the future
+  // {
+  //   name: 'Learn',
+  //   href: '/learn',
+  //   children: [
+  //     { name: 'Certification', href: '/learn/certification' },
+  //     { name: 'Mini Courses', href: '/learn/mini-courses' },
+  //     { name: 'Templates', href: '/learn/templates' },
+  //   ],
+  // },
 ];
 
 export const FOOTER_LINKS = {

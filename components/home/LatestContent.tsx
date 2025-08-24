@@ -50,7 +50,7 @@ const latestPosts = [
 
 export default function LatestContent() {
   return (
-    <section className="bg-gray-50 py-16 dark:bg-gray-900/50 sm:py-24">
+    <section className="py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
@@ -65,7 +65,7 @@ export default function LatestContent() {
           {latestPosts.map((post) => (
             <article
               key={post.id}
-              className="flex flex-col overflow-hidden rounded-lg bg-white shadow-sm transition-shadow hover:shadow-md dark:bg-gray-800"
+              className="flex flex-col overflow-hidden rounded-lg bg-white/50 backdrop-blur-sm shadow-sm transition-shadow hover:shadow-md dark:bg-gray-800/50 ring-1 ring-white/20 dark:ring-gray-700/30"
             >
               <div className="flex flex-1 flex-col justify-between p-6">
                 <div className="flex-1">
@@ -115,13 +115,13 @@ export default function LatestContent() {
         <div className="mt-12 flex justify-center gap-4">
           <Link
             href="/blog"
-            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+            className="inline-flex items-center rounded-md border border-white/30 bg-white/60 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-white/80 dark:border-gray-600/30 dark:bg-gray-800/60 dark:text-gray-300 dark:hover:bg-gray-700/80"
           >
             View All Blog Posts
           </Link>
           <Link
             href="/listicles"
-            className="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700"
+            className="inline-flex items-center rounded-md border border-white/30 bg-white/60 backdrop-blur-sm px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-white/80 dark:border-gray-600/30 dark:bg-gray-800/60 dark:text-gray-300 dark:hover:bg-gray-700/80"
           >
             View All Best Of Guides
           </Link>

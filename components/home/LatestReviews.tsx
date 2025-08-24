@@ -51,7 +51,7 @@ const mockReviews = [
 
 export default function LatestReviews({ reviews = mockReviews }: { reviews?: any[] }) {
   return (
-    <section className="py-16 sm:py-24 bg-gradient-to-b from-white to-secondary-50/50 dark:from-secondary-900 dark:to-secondary-950/50">
+    <section className="py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between mb-12">
           <div>
@@ -82,10 +82,10 @@ export default function LatestReviews({ reviews = mockReviews }: { reviews?: any
               className="group"
             >
               <Link href={`/reviews/${review.slug?.current}`}>
-                <div className="relative h-full flex flex-col bg-white dark:bg-secondary-800 rounded-2xl shadow-sm ring-1 ring-secondary-200/50 dark:ring-secondary-700/50 overflow-hidden transition-all hover:shadow-xl hover:ring-primary-500/50 dark:hover:ring-primary-400/50 hover:-translate-y-1">
+                <div className="relative h-full flex flex-col bg-white/50 backdrop-blur-sm dark:bg-gray-800/50 rounded-2xl shadow-sm ring-1 ring-white/20 dark:ring-gray-700/30 overflow-hidden transition-all hover:shadow-xl hover:ring-primary-500/50 dark:hover:ring-primary-400/50 hover:-translate-y-1">
                   {/* Score Badge */}
                   <div className="absolute top-4 right-4 z-10">
-                    <div className="bg-white/90 dark:bg-secondary-900/90 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-md">
+                    <div className="bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm rounded-lg px-3 py-1.5 shadow-md">
                       <div className="flex items-center gap-1">
                         <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                           {review.overallScore}
@@ -139,7 +139,7 @@ export default function LatestReviews({ reviews = mockReviews }: { reviews?: any
                   </div>
 
                   {/* Footer */}
-                  <div className="px-6 py-3 bg-secondary-50 dark:bg-secondary-900/50 border-t border-secondary-200 dark:border-secondary-700">
+                  <div className="px-6 py-3 bg-white/30 backdrop-blur-sm dark:bg-gray-900/30 border-t border-white/20 dark:border-gray-700/30">
                     <span className="text-sm font-medium text-primary-600 dark:text-primary-400 group-hover:text-primary-700 dark:group-hover:text-primary-300">
                       Read Full Review →
                     </span>

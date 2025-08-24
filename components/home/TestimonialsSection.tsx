@@ -36,7 +36,7 @@ const mockTestimonials = [
 
 export default function TestimonialsSection({ testimonials = mockTestimonials }: { testimonials?: any[] }) {
   return (
-    <section className="py-16 sm:py-24 bg-gradient-to-b from-white to-secondary-50 dark:from-secondary-900 dark:to-secondary-950">
+    <section className="py-16 sm:py-24">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight text-secondary-900 dark:text-white sm:text-4xl">
@@ -57,7 +57,7 @@ export default function TestimonialsSection({ testimonials = mockTestimonials }:
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="h-full bg-white dark:bg-secondary-800 rounded-2xl p-8 shadow-sm ring-1 ring-secondary-200/50 dark:ring-secondary-700/50">
+              <div className="h-full bg-white/50 backdrop-blur-sm dark:bg-gray-800/50 rounded-2xl p-8 shadow-sm ring-1 ring-white/20 dark:ring-gray-700/30">
                 {/* Quote Icon */}
                 <div className="absolute -top-4 left-8">
                   <div className="w-8 h-8 bg-primary-600 rounded-lg flex items-center justify-center">

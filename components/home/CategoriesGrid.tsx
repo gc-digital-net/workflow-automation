@@ -102,8 +102,7 @@ const categories = [
 export default function CategoriesGrid() {
   return (
     <section className="relative py-16 sm:py-24 overflow-hidden">
-      {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-secondary-50/50 to-white dark:from-secondary-900/50 dark:to-secondary-950" />
+      {/* Remove gradient background to let the homepage gradient show through */}
       <MeshGradientOverlay opacity={0.2} />
       
       <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">

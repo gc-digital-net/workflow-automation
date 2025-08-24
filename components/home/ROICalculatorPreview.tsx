@@ -103,7 +103,7 @@ export default function ROICalculatorPreview() {
             <div className="mt-8 text-center">
               <Link
                 href="/tools/roi-calculator"
-                className="inline-flex items-center rounded-md bg-white px-6 py-3 text-base font-semibold text-primary-600 shadow-sm hover:bg-gray-50"
+                className="inline-flex items-center rounded-md bg-white/90 backdrop-blur-sm px-6 py-3 text-base font-semibold text-primary-600 shadow-sm hover:bg-white"
               >
                 Get Detailed ROI Analysis →
               </Link>

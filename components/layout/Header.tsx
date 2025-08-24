@@ -7,6 +7,7 @@ import { Bars3Icon, XMarkIcon, ChevronDownIcon, SparklesIcon } from '@heroicons/
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import SearchButton from '@/components/search/SearchButton';
+import MegaMenu from './MegaMenu';
 import { NAVIGATION_ITEMS } from '@/lib/constants';
 
 export default function Header() {
@@ -113,26 +114,13 @@ export default function Header() {
                 </Link>
 
                 <AnimatePresence>
-                  {item.children && openDropdown === item.name && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -10 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute left-0 z-10 mt-3 w-64 origin-top-left rounded-2xl glass shadow-xl ring-1 ring-black/5 dark:ring-white/5 p-2"
+                  {item.children && (
+                    <MegaMenu
+                      items={item.children}
+                      isOpen={openDropdown === item.name}
                       onMouseEnter={() => handleMouseEnter(item.name)}
                       onMouseLeave={handleMouseLeave}
-                    >
-                      {item.children.map((subItem) => (
-                        <Link
-                          key={subItem.name}
-                          href={subItem.href}
-                          className="block px-4 py-3 text-sm text-secondary-700 hover:bg-primary-50 dark:text-secondary-200 dark:hover:bg-primary-900/20 rounded-xl transition-colors"
-                        >
-                          {subItem.name}
-                        </Link>
-                      ))}
-                    </motion.div>
+                    />
                   )}
                 </AnimatePresence>
               </div>
@@ -160,7 +148,7 @@ export default function Header() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden glass-subtle"
+            className="lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800"
           >
             <div className="space-y-2 px-6 py-6">
               {NAVIGATION_ITEMS.map((item) => (

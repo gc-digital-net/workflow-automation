@@ -100,7 +100,7 @@ export default function FeaturedSoftware() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group relative rounded-2xl border border-gray-200 bg-white p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-700 dark:bg-gray-800"
+              className="group relative rounded-2xl border border-white/20 bg-white/50 backdrop-blur-sm p-6 shadow-sm transition-all hover:shadow-lg dark:border-gray-700/30 dark:bg-gray-800/50"
             >
               <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -173,7 +173,7 @@ export default function FeaturedSoftware() {
         <div className="mt-12 text-center">
           <Link
             href="/reviews"
-            className="inline-flex items-center rounded-md border border-primary-600 bg-white px-6 py-3 text-base font-medium text-primary-600 shadow-sm hover:bg-primary-50 dark:border-primary-400 dark:bg-gray-800 dark:text-primary-400 dark:hover:bg-gray-700"
+            className="inline-flex items-center rounded-md border border-primary-600 bg-white/80 backdrop-blur-sm px-6 py-3 text-base font-medium text-primary-600 shadow-sm hover:bg-white/90 dark:border-primary-400 dark:bg-gray-800/80 dark:text-primary-400 dark:hover:bg-gray-700/90"
           >
             View All Software Reviews
           </Link>

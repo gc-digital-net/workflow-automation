@@ -71,7 +71,7 @@ export default function PopularCategories() {
             <Link
               key={category.name}
               href={category.href}
-              className="group relative rounded-lg border border-gray-200 bg-white p-6 transition-all hover:border-primary-300 hover:shadow-lg dark:border-gray-700 dark:bg-gray-800 dark:hover:border-primary-600"
+              className="group relative rounded-lg border border-white/20 bg-white/50 backdrop-blur-sm p-6 transition-all hover:border-primary-300 hover:shadow-lg dark:border-gray-700/30 dark:bg-gray-800/50 dark:hover:border-primary-600"
             >
               <div>
                 <span className="inline-flex rounded-lg bg-primary-50 p-3 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400">
@@ -96,7 +96,7 @@ export default function PopularCategories() {
         <div className="mt-12 text-center">
           <Link
             href="/categories"
-            className="inline-flex items-center rounded-md border border-primary-600 bg-white px-6 py-3 text-base font-medium text-primary-600 shadow-sm hover:bg-primary-50 dark:border-primary-400 dark:bg-gray-800 dark:text-primary-400 dark:hover:bg-gray-700"
+            className="inline-flex items-center rounded-md border border-primary-600 bg-white/80 backdrop-blur-sm px-6 py-3 text-base font-medium text-primary-600 shadow-sm hover:bg-white/90 dark:border-primary-400 dark:bg-gray-800/80 dark:text-primary-400 dark:hover:bg-gray-700/90"
           >
             View All Categories
           </Link>

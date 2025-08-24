@@ -841,7 +841,9 @@ export default async function SoftwareReviewPage({ params }: Props) {
             <div className="max-w-6xl mx-auto">
               <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 text-center">Integrations</h2>
               <p className="text-gray-600 dark:text-gray-400 text-center mb-8">
-                Connect {software.name} with {software.integrations || '500+'} tools to power your workflow
+                Connect {software.name} with {typeof software.integrations === 'object' 
+                  ? software.integrations?.count || '500+'
+                  : software.integrations || '500+'} tools to power your workflow
               </p>
               <IntegrationLogos integrations={software.popularIntegrations} />
             </div>

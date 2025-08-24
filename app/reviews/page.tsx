@@ -59,7 +59,7 @@ export default async function ReviewsPage() {
     pricing: software.pricing && software.pricing.length > 0 && software.pricing[0].price 
       ? `$${software.pricing[0].price}/mo` 
       : 'Free',
-    integrations: software.integrations?.count || 100,
+    integrations: software.integrationsCount || software.integrations?.count || 100,
     freeTier: software.pricingDetails?.hasFreeTier || software.hasFreeTrial || false,
     slug: software.slug?.current || software.name.toLowerCase().replace(/\s+/g, '-'),
     bestFor: software.verdict || 'Teams looking for powerful automation',

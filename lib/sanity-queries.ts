@@ -44,6 +44,7 @@ export const softwareQuery = `
     hasFreeTrial,
     scores,
     pricing,
+    "integrationsCount": integrations.count,
     integrations,
     lastUpdated
   }

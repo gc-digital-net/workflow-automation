@@ -1,9 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
-import { Bars3Icon, XMarkIcon, ChevronDownIcon, SparklesIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import SearchButton from '@/components/search/SearchButton';
@@ -49,19 +50,25 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
       <nav className="w-full px-4 lg:px-8 h-20" aria-label="Global">
         <div className="flex h-full items-center justify-between">
-          {/* Logo Section with space for company logo */}
+          {/* Logo Section with company logo */}
           <div className="flex items-center gap-4 lg:flex-1">
             <Link href="/" className="flex items-center gap-3 group">
-              {/* Logo placeholder - you can replace with actual logo */}
-              <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-600 shadow-md group-hover:shadow-lg transition-all duration-300">
-                <SparklesIcon className="h-6 w-6 text-white" />
+              {/* Company Logo */}
+              <div className="relative h-12 w-12 flex-shrink-0">
+                <Image
+                  src="/logo/workflow automation logo.png"
+                  alt="Workflow Automation Logo"
+                  fill
+                  className="object-contain"
+                  priority
+                />
               </div>
               <div className="flex flex-col">
                 <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  Workflow
+                  Workflow Automation
                 </span>
                 <span className="text-xs text-secondary-500 dark:text-secondary-400 -mt-1">
-                  Automation Hub
+                  Find Your Perfect Software
                 </span>
               </div>
             </Link>

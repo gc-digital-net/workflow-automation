@@ -8,8 +8,8 @@ import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
 
-// Enable ISR - revalidate every 60 seconds in development, every hour in production
-export const revalidate = process.env.NODE_ENV === 'development' ? 60 : 3600
+// Enable ISR - revalidate every hour
+export const revalidate = 3600
 
 // Portable Text Components for rendering custom blocks
 const portableTextComponents = {

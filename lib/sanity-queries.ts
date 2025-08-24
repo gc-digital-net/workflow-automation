@@ -31,7 +31,7 @@ export const postBySlugQuery = `
 
 // Software queries
 export const softwareQuery = `
-  *[_type == "software"] | order(overallScore desc) {
+  *[_type == "software" && !(_id in path("drafts.**"))] | order(overallScore desc) {
     _id,
     name,
     slug,
@@ -41,7 +41,11 @@ export const softwareQuery = `
     overallScore,
     "categories": categories[]->name,
     affiliateLink,
-    hasFreeTrial
+    hasFreeTrial,
+    scores,
+    pricing,
+    integrations,
+    lastUpdated
   }
 `
 
@@ -93,7 +97,7 @@ export const bestOfGuideBySlugQuery = `
 
 // Homepage queries
 export const homepageDataQuery = `{
-  "featuredSoftware": *[_type == "software"] | order(overallScore desc)[0...6] {
+  "featuredSoftware": *[_type == "software" && !(_id in path("drafts.**"))] | order(overallScore desc)[0...6] {
     _id,
     name,
     slug,
@@ -102,7 +106,7 @@ export const homepageDataQuery = `{
     overallScore,
     affiliateLink
   },
-  "latestPosts": *[_type == "post"] | order(publishedAt desc)[0...3] {
+  "latestPosts": *[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...3] {
     _id,
     title,
     slug,
@@ -111,14 +115,14 @@ export const homepageDataQuery = `{
     featuredImage,
     "author": author->name
   },
-  "featuredGuides": *[_type == "bestOfGuide"] | order(publishedAt desc)[0...2] {
+  "featuredGuides": *[_type == "bestOfGuide" && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...2] {
     _id,
     title,
     slug,
     excerpt,
     featuredImage
   },
-  "testimonials": *[_type == "testimonial" && featured == true][0...3] {
+  "testimonials": *[_type == "testimonial" && featured == true && !(_id in path("drafts.**"))][0...3] {
     _id,
     name,
     role,
@@ -127,7 +131,7 @@ export const homepageDataQuery = `{
     avatar,
     rating
   },
-  "siteSettings": *[_type == "siteSettings"][0] {
+  "siteSettings": *[_type == "siteSettings" && !(_id in path("drafts.**"))][0] {
     title,
     description,
     newsletterCTA
@@ -136,7 +140,7 @@ export const homepageDataQuery = `{
 
 // Category queries
 export const categoriesQuery = `
-  *[_type == "category"] {
+  *[_type == "category" && !(_id in path("drafts.**"))] {
     _id,
     name,
     slug,

@@ -429,6 +429,110 @@ export default defineType({
       description: 'List the most popular integrations (10-15 max)',
     },
 
+    // ============ COMPANY INFO ============
+    {
+      name: 'companyInfo',
+      title: '🏢 Company Information',
+      type: 'object',
+      fields: [
+        {
+          name: 'founded',
+          title: 'Founded Year',
+          type: 'string',
+          description: 'e.g., "2017"',
+        },
+        {
+          name: 'headquarters',
+          title: 'Headquarters',
+          type: 'string',
+          description: 'e.g., "San Diego, CA"',
+        },
+        {
+          name: 'companySize',
+          title: 'Company Size',
+          type: 'string',
+          description: 'e.g., "500-1000 employees"',
+        },
+        {
+          name: 'funding',
+          title: 'Funding',
+          type: 'string',
+          description: 'e.g., "$538M Series C"',
+        },
+      ],
+    },
+
+    // ============ SUPPORT INFO ============
+    {
+      name: 'supportInfo',
+      title: '🤝 Support Information',
+      type: 'object',
+      fields: [
+        {
+          name: 'liveChat',
+          title: 'Live Chat',
+          type: 'boolean',
+        },
+        {
+          name: 'emailSupport',
+          title: 'Email Support',
+          type: 'boolean',
+        },
+        {
+          name: 'knowledgeBase',
+          title: 'Knowledge Base',
+          type: 'boolean',
+        },
+        {
+          name: 'videoTutorials',
+          title: 'Video Tutorials',
+          type: 'boolean',
+        },
+        {
+          name: 'supportDetails',
+          title: 'Support Details',
+          type: 'text',
+          rows: 2,
+        },
+      ],
+    },
+
+    // ============ SECURITY ============
+    {
+      name: 'securityInfo',
+      title: '🔒 Security & Compliance',
+      type: 'object',
+      fields: [
+        {
+          name: 'soc2',
+          title: 'SOC 2 Certified',
+          type: 'boolean',
+        },
+        {
+          name: 'gdpr',
+          title: 'GDPR Compliant',
+          type: 'boolean',
+        },
+        {
+          name: 'ssl',
+          title: 'SSL Encryption',
+          type: 'boolean',
+        },
+        {
+          name: 'uptime',
+          title: 'Uptime SLA',
+          type: 'string',
+          description: 'e.g., "99.9%"',
+        },
+        {
+          name: 'otherCertifications',
+          title: 'Other Certifications',
+          type: 'array',
+          of: [{ type: 'string' }],
+        },
+      ],
+    },
+
     // ============ METADATA ============
     {
       name: 'affiliateLink',

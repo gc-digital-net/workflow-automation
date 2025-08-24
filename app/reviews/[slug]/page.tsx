@@ -9,7 +9,7 @@ import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
 
 // Import ReviewTabs component
-import ReviewTabs from '@/components/review/ReviewTabs'
+import ReviewTabsSimple from '@/components/review/ReviewTabsSimple'
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600
@@ -543,10 +543,10 @@ export default async function G2StyleReviewPage({ params }: { params: { slug: st
             )}
             
             {/* Tabbed Content */}
-            <ReviewTabs 
+            <ReviewTabsSimple 
               content={software.content || []}
               portableTextComponents={portableTextComponents}
-              screenshotGallery={software.screenshotGallery}
+              PortableText={PortableText}
             />
             
             {/* Screenshot Gallery */}

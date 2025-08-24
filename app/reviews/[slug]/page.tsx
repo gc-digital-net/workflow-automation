@@ -7,6 +7,7 @@ import { ChartBarIcon, ClockIcon, CurrencyDollarIcon, GlobeAltIcon, DocumentText
 import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
+import ReviewTabs from '@/components/review/ReviewTabs'
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600
@@ -514,28 +515,6 @@ export default async function G2StyleReviewPage({ params }: { params: { slug: st
         </div>
       </header>
       
-      {/* Navigation Tabs (G2-style) */}
-      <div className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <nav className="flex space-x-8 overflow-x-auto">
-            <button className="py-4 px-1 border-b-2 border-blue-500 font-medium text-blue-600 dark:text-blue-400 whitespace-nowrap">
-              Overview
-            </button>
-            <button className="py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap">
-              Reviews
-            </button>
-            <button className="py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap">
-              Pricing
-            </button>
-            <button className="py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap">
-              Features
-            </button>
-            <button className="py-4 px-1 border-b-2 border-transparent font-medium text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300 whitespace-nowrap">
-              Alternatives
-            </button>
-          </nav>
-        </div>
-      </div>
       
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -561,15 +540,12 @@ export default async function G2StyleReviewPage({ params }: { params: { slug: st
               </section>
             )}
             
-            {/* Main Content - Portable Text */}
-            {software.content && (
-              <article className="prose prose-lg dark:prose-invert max-w-none">
-                <PortableText
-                  value={software.content}
-                  components={portableTextComponents}
-                />
-              </article>
-            )}
+            {/* Tabbed Content */}
+            <ReviewTabs 
+              content={software.content || []}
+              portableTextComponents={portableTextComponents}
+              screenshotGallery={software.screenshotGallery}
+            />
             
             {/* Screenshot Gallery */}
             {software.screenshotGallery && software.screenshotGallery.length > 0 && (

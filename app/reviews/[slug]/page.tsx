@@ -7,7 +7,7 @@ import { ChartBarIcon, ClockIcon, CurrencyDollarIcon, GlobeAltIcon, DocumentText
 import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
-import ReviewTabs from '@/components/review/ReviewTabs'
+// Removed ReviewTabs - all content on single page now
 import ReviewSubmissionForm from '@/components/review/ReviewSubmissionForm'
 
 // Enable ISR - revalidate every hour
@@ -16,7 +16,6 @@ export const revalidate = 3600
 // Props interface for the page
 interface Props {
   params: Promise<{ slug: string }>
-  searchParams: Promise<{ tab?: string }>
 }
 
 // Portable Text Components for rendering custom blocks
@@ -445,9 +444,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 }
 
-export default async function G2StyleReviewPage({ params, searchParams }: Props) {
+export default async function G2StyleReviewPage({ params }: Props) {
   const { slug } = await params
-  const { tab = 'overview' } = await searchParams
   const software = await getSoftware(slug)
   
   if (!software) {
@@ -598,196 +596,206 @@ export default async function G2StyleReviewPage({ params, searchParams }: Props)
               </section>
             )}
             
-            {/* Navigation Tabs */}
-            <ReviewTabs currentTab={tab} slug={slug} />
-            
-            {/* Tab Content */}
-            <div className="min-h-[400px]">
-              {tab === 'overview' && software.content && (
-                <article className="prose prose-lg dark:prose-invert max-w-none">
-                  <PortableText
-                    value={software.content}
-                    components={portableTextComponents}
-                  />
-                </article>
+            {/* Main Content - All sections on single page */}
+            <div className="space-y-16">
+              {/* Overview Section */}
+              {software.content && (
+                <section>
+                  <h2 className="text-2xl font-bold mb-6">Overview</h2>
+                  <article className="prose prose-lg dark:prose-invert max-w-none">
+                    <PortableText
+                      value={software.content}
+                      components={portableTextComponents}
+                    />
+                  </article>
+                </section>
               )}
               
-              {tab === 'features' && (
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold mb-4">Features & Capabilities</h2>
-                  {software.pros && software.pros.length > 0 ? (
+              {/* Features Section */}
+              {software.pros && software.pros.length > 0 && (
+                <section>
+                  <h2 className="text-2xl font-bold mb-6">Features & Capabilities</h2>
+                  <div className="grid md:grid-cols-2 gap-8">
                     <div>
-                      <h3 className="text-xl font-semibold mb-3">Key Features</h3>
-                      <ul className="space-y-2">
+                      <h3 className="text-xl font-semibold mb-4 text-green-700 dark:text-green-400">Pros</h3>
+                      <ul className="space-y-3">
                         {software.pros.map((pro: string, index: number) => (
                           <li key={index} className="flex items-start">
-                            <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <CheckIcon className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
                             <span>{pro}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
-                  ) : (
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Features information coming soon.
-                    </p>
-                  )}
-                </div>
-              )}
-              
-              {tab === 'pricing' && (
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold mb-4">Pricing Plans</h2>
-                  {software.pricing && software.pricing.length > 0 ? (
-                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                      {software.pricing.map((plan: any, index: number) => (
-                        <div
-                          key={index}
-                          className={`rounded-lg border p-6 ${
-                            plan.recommended
-                              ? 'border-primary-800 dark:border-primary-400 shadow-lg'
-                              : 'border-gray-200 dark:border-gray-700'
-                          }`}
-                        >
-                          {plan.recommended && (
-                            <div className="mb-2">
-                              <span className="inline-block px-3 py-1 text-sm font-medium text-white bg-primary-800 dark:bg-primary-600 rounded-full">
-                                Recommended
-                              </span>
-                            </div>
-                          )}
-                          <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-                          <div className="mb-4">
-                            <span className="text-3xl font-bold">
-                              ${plan.price}
-                            </span>
-                            <span className="text-gray-500">/month</span>
-                          </div>
-                          {plan.features && (
-                            <ul className="space-y-2">
-                              {plan.features.map((feature: string, idx: number) => (
-                                <li key={idx} className="flex items-start">
-                                  <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                                  <span className="text-sm">{feature}</span>
-                                </li>
-                              ))}
-                            </ul>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-gray-600 dark:text-gray-400">
-                      Pricing information coming soon.
-                    </p>
-                  )}
-                </div>
-              )}
-              
-              {tab === 'alternatives' && (
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold mb-4">Alternatives & Comparison</h2>
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Alternative comparisons coming soon.
-                  </p>
-                </div>
-              )}
-              
-              {tab === 'reviews' && (
-                <div className="space-y-8">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-2xl font-bold">User Reviews</h2>
-                    {software.reviewCount > 0 && (
-                      <div className="flex items-center gap-3">
-                        <div className="flex items-center gap-1">
-                          {[...Array(5)].map((_, i) => (
-                            <StarIcon
-                              key={i}
-                              className={`h-5 w-5 ${
-                                i < Math.floor(software.averageRating || 0)
-                                  ? 'text-yellow-400 fill-yellow-400'
-                                  : 'text-gray-300'
-                              }`}
-                            />
+                    {software.cons && software.cons.length > 0 && (
+                      <div>
+                        <h3 className="text-xl font-semibold mb-4 text-red-700 dark:text-red-400">Cons</h3>
+                        <ul className="space-y-3">
+                          {software.cons.map((con: string, index: number) => (
+                            <li key={index} className="flex items-start">
+                              <XMarkIcon className="h-5 w-5 text-red-500 mr-3 mt-0.5 flex-shrink-0" />
+                              <span>{con}</span>
+                            </li>
                           ))}
-                        </div>
-                        <span className="text-lg font-semibold">
-                          {(software.averageRating || 0).toFixed(1)}
-                        </span>
-                        <span className="text-gray-500">({software.reviewCount} reviews)</span>
+                        </ul>
                       </div>
                     )}
                   </div>
-                  
-                  {/* Existing Reviews */}
-                  {software.reviews && software.reviews.length > 0 && (
-                    <div className="space-y-6">
-                      {software.reviews.map((review: any) => (
-                        <div key={review._id} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                          <div className="flex items-start justify-between mb-4">
-                            <div>
-                              <h4 className="font-semibold text-lg">{review.headline}</h4>
-                              <div className="flex items-center gap-3 mt-1">
-                                <div className="flex items-center gap-1">
-                                  {[...Array(5)].map((_, i) => (
-                                    <StarIcon
-                                      key={i}
-                                      className={`h-4 w-4 ${
-                                        i < review.rating
-                                          ? 'text-yellow-400 fill-yellow-400'
-                                          : 'text-gray-300'
-                                      }`}
-                                    />
-                                  ))}
-                                </div>
-                                <span className="text-sm text-gray-600 dark:text-gray-400">
-                                  by {review.reviewerName}
-                                  {review.reviewerRole && `, ${review.reviewerRole}`}
-                                  {review.companyName && ` at ${review.companyName}`}
-                                </span>
-                              </div>
-                            </div>
-                            {review.verified && (
-                              <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded-full">
-                                ✓ Verified
-                              </span>
-                            )}
+                </section>
+              )}
+              
+              {/* Pricing Section */}
+              {software.pricing && software.pricing.length > 0 && (
+                <section>
+                  <h2 className="text-2xl font-bold mb-6">Pricing Plans</h2>
+                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {software.pricing.map((plan: any, index: number) => (
+                      <div
+                        key={index}
+                        className={`rounded-xl border-2 p-6 ${
+                          plan.recommended
+                            ? 'border-primary-600 shadow-xl relative'
+                            : 'border-gray-200 dark:border-gray-700'
+                        }`}
+                      >
+                        {plan.recommended && (
+                          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                            <span className="inline-block px-4 py-1 text-sm font-medium text-white bg-primary-600 rounded-full">
+                              Recommended
+                            </span>
                           </div>
-                          
-                          <div className="grid md:grid-cols-2 gap-6 mb-4">
-                            <div>
-                              <h5 className="font-medium text-green-700 dark:text-green-400 mb-2">What I like best:</h5>
-                              <p className="text-gray-700 dark:text-gray-300">{review.pros}</p>
-                            </div>
-                            <div>
-                              <h5 className="font-medium text-red-700 dark:text-red-400 mb-2">What could be better:</h5>
-                              <p className="text-gray-700 dark:text-gray-300">{review.cons}</p>
-                            </div>
-                          </div>
-                          
-                          {review.useCases && (
-                            <div className="mb-4">
-                              <h5 className="font-medium mb-2">Use cases:</h5>
-                              <p className="text-gray-700 dark:text-gray-300">{review.useCases}</p>
-                            </div>
-                          )}
-                          
-                          <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                            <span>Using for {review.usageLength?.replace('<', 'less than ').replace('+', ' or more')}</span>
-                            <span>{new Date(review.publishedAt).toLocaleDateString()}</span>
-                          </div>
+                        )}
+                        <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+                        <div className="mb-6">
+                          <span className="text-4xl font-bold">
+                            ${plan.price}
+                          </span>
+                          <span className="text-gray-500 dark:text-gray-400">/month</span>
                         </div>
-                      ))}
+                        {plan.features && (
+                          <ul className="space-y-3">
+                            {plan.features.map((feature: string, idx: number) => (
+                              <li key={idx} className="flex items-start">
+                                <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                                <span className="text-sm">{feature}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        {software.affiliateLink && (
+                          <a
+                            href={software.affiliateLink}
+                            target="_blank"
+                            rel="noopener noreferrer sponsored"
+                            className={`mt-6 block w-full text-center py-3 px-4 rounded-lg font-semibold transition-colors ${
+                              plan.recommended
+                                ? 'bg-primary-600 text-white hover:bg-primary-700'
+                                : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+                            }`}
+                          >
+                            Get Started
+                          </a>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </section>
+              )}
+              
+              {/* User Reviews Section */}
+              <section>
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold">User Reviews</h2>
+                  {software.reviewCount > 0 && (
+                    <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-1">
+                        {[...Array(5)].map((_, i) => (
+                          <StarIcon
+                            key={i}
+                            className={`h-5 w-5 ${
+                              i < Math.floor(software.averageRating || 0)
+                                ? 'text-yellow-400 fill-yellow-400'
+                                : 'text-gray-300'
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-lg font-semibold">
+                        {(software.averageRating || 0).toFixed(1)}
+                      </span>
+                      <span className="text-gray-500">({software.reviewCount} reviews)</span>
                     </div>
                   )}
-                  
-                  {/* Review Submission Form */}
-                  <ReviewSubmissionForm 
-                    softwareId={software._id} 
-                    softwareName={software.name}
-                  />
                 </div>
-              )}
+                
+                {/* Existing Reviews */}
+                {software.reviews && software.reviews.length > 0 && (
+                  <div className="space-y-6 mb-8">
+                    {software.reviews.map((review: any) => (
+                      <div key={review._id} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                        <div className="flex items-start justify-between mb-4">
+                          <div>
+                            <h4 className="font-semibold text-lg">{review.headline}</h4>
+                            <div className="flex items-center gap-3 mt-1">
+                              <div className="flex items-center gap-1">
+                                {[...Array(5)].map((_, i) => (
+                                  <StarIcon
+                                    key={i}
+                                    className={`h-4 w-4 ${
+                                      i < review.rating
+                                        ? 'text-yellow-400 fill-yellow-400'
+                                        : 'text-gray-300'
+                                    }`}
+                                  />
+                                ))}
+                              </div>
+                              <span className="text-sm text-gray-600 dark:text-gray-400">
+                                by {review.reviewerName}
+                                {review.reviewerRole && `, ${review.reviewerRole}`}
+                                {review.companyName && ` at ${review.companyName}`}
+                              </span>
+                            </div>
+                          </div>
+                          {review.verified && (
+                            <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded-full">
+                              ✓ Verified
+                            </span>
+                          )}
+                        </div>
+                        
+                        <div className="grid md:grid-cols-2 gap-6 mb-4">
+                          <div>
+                            <h5 className="font-medium text-green-700 dark:text-green-400 mb-2">What I like best:</h5>
+                            <p className="text-gray-700 dark:text-gray-300">{review.pros}</p>
+                          </div>
+                          <div>
+                            <h5 className="font-medium text-red-700 dark:text-red-400 mb-2">What could be better:</h5>
+                            <p className="text-gray-700 dark:text-gray-300">{review.cons}</p>
+                          </div>
+                        </div>
+                        
+                        {review.useCases && (
+                          <div className="mb-4">
+                            <h5 className="font-medium mb-2">Use cases:</h5>
+                            <p className="text-gray-700 dark:text-gray-300">{review.useCases}</p>
+                          </div>
+                        )}
+                        
+                        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                          <span>Using for {review.usageLength?.replace('<', 'less than ').replace('+', ' or more')}</span>
+                          <span>{new Date(review.publishedAt).toLocaleDateString()}</span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                {/* Review Submission Form */}
+                <ReviewSubmissionForm 
+                  softwareId={software._id} 
+                  softwareName={software.name}
+                />
+              </section>
             </div>
             
             {/* Screenshot Gallery */}

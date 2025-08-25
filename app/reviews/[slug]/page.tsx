@@ -1,29 +1,22 @@
 import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import dynamic from 'next/dynamic'
 import { PortableText } from '@portabletext/react'
 import { StarIcon, CheckIcon, XMarkIcon, ArrowRightIcon, BuildingOfficeIcon, UsersIcon, CalendarIcon, ShieldCheckIcon } from '@heroicons/react/24/solid'
 import { ChartBarIcon, ClockIcon, CurrencyDollarIcon, GlobeAltIcon, DocumentTextIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
-
-// Dynamic import tabs component to avoid SSR issues
-const ReviewContentWithTabs = dynamic(
-  () => import('@/components/review/ReviewContentWithTabs'),
-  { 
-    loading: () => (
-      <div className="animate-pulse">
-        <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded mb-8"></div>
-        <div className="h-96 bg-gray-100 dark:bg-gray-800 rounded"></div>
-      </div>
-    )
-  }
-)
+import ReviewTabs from '@/components/review/ReviewTabs'
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600
+
+// Props interface for the page
+interface Props {
+  params: Promise<{ slug: string }>
+  searchParams: Promise<{ tab?: string }>
+}
 
 // Portable Text Components for rendering custom blocks
 const portableTextComponents = {
@@ -377,6 +370,9 @@ async function getSoftware(slug: string) {
       supportInfo,
       securityInfo,
       affiliateLink,
+      pricing,
+      pros,
+      cons,
       categories[]-> {
         _id,
         name,
@@ -391,8 +387,9 @@ async function getSoftware(slug: string) {
   return software
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
-  const software = await getSoftware(params.slug)
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params
+  const software = await getSoftware(slug)
   
   if (!software) {
     return {
@@ -412,8 +409,10 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   }
 }
 
-export default async function G2StyleReviewPage({ params }: { params: { slug: string } }) {
-  const software = await getSoftware(params.slug)
+export default async function G2StyleReviewPage({ params, searchParams }: Props) {
+  const { slug } = await params
+  const { tab = 'overview' } = await searchParams
+  const software = await getSoftware(slug)
   
   if (!software) {
     notFound()
@@ -553,13 +552,116 @@ export default async function G2StyleReviewPage({ params }: { params: { slug: st
               </section>
             )}
             
-            {/* Content with Tabs */}
-            {software.content && (
-              <ReviewContentWithTabs
-                content={software.content}
-                portableTextComponents={portableTextComponents}
-              />
-            )}
+            {/* Navigation Tabs */}
+            <ReviewTabs currentTab={tab} slug={slug} />
+            
+            {/* Tab Content */}
+            <div className="min-h-[400px]">
+              {tab === 'overview' && software.content && (
+                <article className="prose prose-lg dark:prose-invert max-w-none">
+                  <PortableText
+                    value={software.content}
+                    components={portableTextComponents}
+                  />
+                </article>
+              )}
+              
+              {tab === 'features' && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold mb-4">Features & Capabilities</h2>
+                  {software.pros && software.pros.length > 0 ? (
+                    <div>
+                      <h3 className="text-xl font-semibold mb-3">Key Features</h3>
+                      <ul className="space-y-2">
+                        {software.pros.map((pro: string, index: number) => (
+                          <li key={index} className="flex items-start">
+                            <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                            <span>{pro}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ) : (
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Features information coming soon.
+                    </p>
+                  )}
+                </div>
+              )}
+              
+              {tab === 'pricing' && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold mb-4">Pricing Plans</h2>
+                  {software.pricing && software.pricing.length > 0 ? (
+                    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                      {software.pricing.map((plan: any, index: number) => (
+                        <div
+                          key={index}
+                          className={`rounded-lg border p-6 ${
+                            plan.recommended
+                              ? 'border-primary-800 dark:border-primary-400 shadow-lg'
+                              : 'border-gray-200 dark:border-gray-700'
+                          }`}
+                        >
+                          {plan.recommended && (
+                            <div className="mb-2">
+                              <span className="inline-block px-3 py-1 text-sm font-medium text-white bg-primary-800 dark:bg-primary-600 rounded-full">
+                                Recommended
+                              </span>
+                            </div>
+                          )}
+                          <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+                          <div className="mb-4">
+                            <span className="text-3xl font-bold">
+                              ${plan.price}
+                            </span>
+                            <span className="text-gray-500">/month</span>
+                          </div>
+                          {plan.features && (
+                            <ul className="space-y-2">
+                              {plan.features.map((feature: string, idx: number) => (
+                                <li key={idx} className="flex items-start">
+                                  <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                                  <span className="text-sm">{feature}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-600 dark:text-gray-400">
+                      Pricing information coming soon.
+                    </p>
+                  )}
+                </div>
+              )}
+              
+              {tab === 'alternatives' && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold mb-4">Alternatives & Comparison</h2>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    Alternative comparisons coming soon.
+                  </p>
+                </div>
+              )}
+              
+              {tab === 'reviews' && (
+                <div className="space-y-6">
+                  <h2 className="text-2xl font-bold mb-4">User Reviews</h2>
+                  <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
+                    <h3 className="text-xl font-semibold mb-4">No Reviews Yet</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
+                      Be the first to share your experience with {software.name}!
+                    </p>
+                    <button className="px-6 py-3 bg-accent-green text-gray-900 font-semibold rounded-lg hover:opacity-90 transition-opacity">
+                      Write a Review
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
             
             {/* Screenshot Gallery */}
             {software.screenshotGallery && software.screenshotGallery.length > 0 && (

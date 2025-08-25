@@ -88,7 +88,7 @@ export default function Footer() {
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+              <span className="text-2xl font-semibold tracking-tight text-primary-600 dark:text-primary-400">
                 Workflow Automation
               </span>
             </Link>

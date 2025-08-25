@@ -63,9 +63,11 @@ export default function Header() {
                   priority
                 />
               </div>
-              <span className="text-xl font-bold text-gray-900 dark:text-white hidden sm:block">
-                Workflow Automation
-              </span>
+              <div className="hidden sm:flex flex-col">
+                <span className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
+                  Workflow Automation
+                </span>
+              </div>
             </Link>
           </div>
           

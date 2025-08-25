@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { getPostBySlug, getPosts } from '@/lib/sanity-queries';
 import { urlFor } from '@/lib/sanity';
 import { PortableText } from '@portabletext/react';
+import { portableTextComponents } from '@/components/blog/PortableTextComponents';
 import { 
   CalendarIcon, 
   ClockIcon, 
@@ -199,64 +200,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 pb-12">
         <div className="max-w-4xl mx-auto">
-          <div className="prose prose-lg dark:prose-invert max-w-none">
+          <article className="prose prose-lg dark:prose-invert max-w-none">
             <PortableText 
               value={post.content}
-              components={{
-                types: {
-                  image: ({value}: any) => (
-                    <figure className="my-8">
-                      <img 
-                        src={urlFor(value).width(800).url()} 
-                        alt={value.alt || ''}
-                        className="rounded-lg shadow-md w-full"
-                      />
-                      {value.caption && (
-                        <figcaption className="mt-3 text-center text-sm text-gray-600 dark:text-gray-400">
-                          {value.caption}
-                        </figcaption>
-                      )}
-                    </figure>
-                  ),
-                },
-                block: {
-                  h2: ({children}: any) => (
-                    <h2 className="text-2xl md:text-3xl font-bold mt-8 mb-4 text-gray-900 dark:text-white">
-                      {children}
-                    </h2>
-                  ),
-                  h3: ({children}: any) => (
-                    <h3 className="text-xl md:text-2xl font-semibold mt-6 mb-3 text-gray-900 dark:text-white">
-                      {children}
-                    </h3>
-                  ),
-                  normal: ({children}: any) => (
-                    <p className="mb-4 text-gray-700 dark:text-gray-300 leading-relaxed">
-                      {children}
-                    </p>
-                  ),
-                  blockquote: ({children}: any) => (
-                    <blockquote className="border-l-4 border-primary-500 pl-6 my-6 text-gray-700 dark:text-gray-300 italic">
-                      {children}
-                    </blockquote>
-                  ),
-                },
-                marks: {
-                  strong: ({children}: any) => (
-                    <strong className="font-semibold text-gray-900 dark:text-white">{children}</strong>
-                  ),
-                  em: ({children}: any) => (
-                    <em className="italic">{children}</em>
-                  ),
-                  code: ({children}: any) => (
-                    <code className="bg-gray-100 dark:bg-gray-800 text-primary-600 dark:text-primary-400 px-2 py-1 rounded text-sm">
-                      {children}
-                    </code>
-                  ),
-                },
-              }}
+              components={portableTextComponents}
             />
-          </div>
+          </article>
 
           {/* Tags */}
           {post.tags && post.tags.length > 0 && (

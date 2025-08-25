@@ -78,6 +78,35 @@ export default defineType({
             name: 'affiliateLink',
             title: 'Affiliate Link Override',
             type: 'url'
+          },
+          {
+            name: 'affiliateLinkOptions',
+            title: 'Affiliate Link Options',
+            type: 'object',
+            fields: [
+              {
+                name: 'openInNewTab',
+                title: 'Open in New Tab',
+                type: 'boolean',
+                initialValue: true,
+                description: 'Opens link in a new browser tab'
+              },
+              {
+                name: 'rel',
+                title: 'Link Relationship',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'Follow (default)', value: ''},
+                    {title: 'No Follow', value: 'nofollow'},
+                    {title: 'Sponsored', value: 'sponsored'},
+                    {title: 'Sponsored + No Follow', value: 'sponsored nofollow'},
+                  ]
+                },
+                initialValue: 'sponsored',
+                description: 'SEO relationship attribute for the affiliate link'
+              }
+            ]
           }
         ],
         preview: {

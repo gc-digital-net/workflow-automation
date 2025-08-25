@@ -69,6 +69,47 @@ export const portableTextComponents = {
       </div>
     ),
     
+    // Simple Table Block
+    simpleTable: ({ value }: any) => {
+      if (!value.headers || !value.rows) return null;
+      
+      return (
+        <div className="my-8 overflow-x-auto">
+          {value.title && (
+            <h3 className="text-lg font-semibold mb-3">{value.title}</h3>
+          )}
+          <table className="min-w-full border-collapse">
+            <thead>
+              <tr className="border-b-2 border-gray-300 dark:border-gray-600">
+                {value.headers.map((header: string, idx: number) => (
+                  <th 
+                    key={idx} 
+                    className="px-4 py-2 text-left font-semibold text-gray-900 dark:text-gray-100"
+                  >
+                    {header}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {value.rows.map((row: any, ridx: number) => (
+                <tr key={ridx} className="border-b border-gray-200 dark:border-gray-700">
+                  {row.cells?.map((cell: string, cidx: number) => (
+                    <td 
+                      key={cidx} 
+                      className="px-4 py-2 text-gray-700 dark:text-gray-300"
+                    >
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      );
+    },
+    
     // Example Block
     exampleBlock: ({ value }: any) => {
       const bgColors = {

@@ -127,6 +127,73 @@ export default defineType({
       }
     }),
     
+    // Simple Table Block
+    defineArrayMember({
+      name: 'simpleTable',
+      title: 'Simple Table',
+      type: 'object',
+      icon: () => '📊',
+      fields: [
+        {
+          name: 'title',
+          title: 'Table Title (optional)',
+          type: 'string',
+        },
+        {
+          name: 'headers',
+          title: 'Column Headers',
+          type: 'array',
+          of: [{type: 'string'}],
+          validation: Rule => Rule.required().min(2).max(6),
+          description: 'Add 2-6 column headers'
+        },
+        {
+          name: 'rows',
+          title: 'Table Rows',
+          type: 'array',
+          of: [{
+            type: 'object',
+            name: 'row',
+            fields: [
+              {
+                name: 'cells',
+                title: 'Row Cells',
+                type: 'array',
+                of: [{type: 'string'}],
+                validation: Rule => Rule.required()
+              }
+            ],
+            preview: {
+              select: {
+                cells: 'cells'
+              },
+              prepare({cells}) {
+                return {
+                  title: cells ? cells.join(' | ') : 'Empty row'
+                }
+              }
+            }
+          }],
+          validation: Rule => Rule.required().min(1)
+        }
+      ],
+      preview: {
+        select: {
+          title: 'title',
+          headers: 'headers',
+          rows: 'rows'
+        },
+        prepare({title, headers, rows}) {
+          const columnCount = headers ? headers.length : 0
+          const rowCount = rows ? rows.length : 0
+          return {
+            title: title || 'Table',
+            subtitle: `${columnCount} columns, ${rowCount} rows`
+          }
+        }
+      }
+    }),
+    
     // Example/Code Block
     defineArrayMember({
       name: 'exampleBlock',

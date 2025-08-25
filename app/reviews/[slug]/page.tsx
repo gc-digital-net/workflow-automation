@@ -646,58 +646,98 @@ export default async function G2StyleReviewPage({ params }: Props) {
               
               {/* Pricing Section */}
               {software.pricing && software.pricing.length > 0 && (
-                <section>
+                <section className="overflow-hidden">
                   <h2 className="text-2xl font-bold mb-6">Pricing Plans</h2>
-                  <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                    {software.pricing.map((plan: any, index: number) => (
-                      <div
-                        key={index}
-                        className={`rounded-xl border-2 p-6 ${
-                          plan.recommended
-                            ? 'border-primary-600 shadow-xl relative'
-                            : 'border-gray-200 dark:border-gray-700'
-                        }`}
-                      >
-                        {plan.recommended && (
-                          <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
-                            <span className="inline-block px-4 py-1 text-sm font-medium text-white bg-primary-600 rounded-full">
-                              Recommended
-                            </span>
-                          </div>
-                        )}
-                        <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-                        <div className="mb-6">
-                          <span className="text-4xl font-bold">
-                            ${plan.price}
-                          </span>
-                          <span className="text-gray-500 dark:text-gray-400">/month</span>
-                        </div>
-                        {plan.features && (
-                          <ul className="space-y-3">
-                            {plan.features.map((feature: string, idx: number) => (
-                              <li key={idx} className="flex items-start">
-                                <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                                <span className="text-sm">{feature}</span>
-                              </li>
-                            ))}
-                          </ul>
-                        )}
-                        {software.affiliateLink && (
-                          <a
-                            href={software.affiliateLink}
-                            target="_blank"
-                            rel="noopener noreferrer sponsored"
-                            className={`mt-6 block w-full text-center py-3 px-4 rounded-lg font-semibold transition-colors ${
+                  <div className="relative">
+                    {/* Gradient fade indicators for scroll */}
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
+                    
+                    {/* Scrollable container on mobile, grid on larger screens */}
+                    <div className="overflow-x-auto pb-4 md:overflow-visible">
+                      <div className="flex gap-4 md:grid md:gap-6 md:grid-cols-2 lg:grid-cols-3 min-w-max md:min-w-0">
+                        {software.pricing.map((plan: any, index: number) => (
+                          <div
+                            key={index}
+                            className={`flex-shrink-0 w-80 md:w-auto rounded-xl border-2 p-6 ${
                               plan.recommended
-                                ? 'bg-primary-600 text-white hover:bg-primary-700'
-                                : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+                                ? 'border-primary-600 shadow-xl relative'
+                                : 'border-gray-200 dark:border-gray-700'
                             }`}
                           >
-                            Get Started
-                          </a>
-                        )}
+                            {plan.recommended && (
+                              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                <span className="inline-block px-4 py-1 text-sm font-medium text-white bg-primary-600 rounded-full whitespace-nowrap">
+                                  Recommended
+                                </span>
+                              </div>
+                            )}
+                            <h3 className="text-xl font-bold mb-2 truncate" title={plan.name}>
+                              {plan.name}
+                            </h3>
+                            <div className="mb-6">
+                              <div className="flex items-baseline gap-1">
+                                <span className="text-3xl md:text-4xl font-bold">
+                                  ${plan.price}
+                                </span>
+                                <span className="text-gray-500 dark:text-gray-400">/month</span>
+                              </div>
+                              {plan.yearlyPrice && (
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                  or ${plan.yearlyPrice}/year
+                                </p>
+                              )}
+                            </div>
+                            
+                            {/* Features list with fixed height and scroll if needed */}
+                            <div className="mb-6">
+                              {plan.features && (
+                                <ul className="space-y-2 max-h-64 overflow-y-auto pr-2">
+                                  {plan.features.map((feature: string, idx: number) => (
+                                    <li key={idx} className="flex items-start">
+                                      <CheckIcon className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                                      <span className="text-sm leading-relaxed break-words">
+                                        {feature}
+                                      </span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
+                              {plan.userLimit && (
+                                <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                                  <strong>Users:</strong> {plan.userLimit}
+                                </p>
+                              )}
+                              {plan.storageLimit && (
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                  <strong>Storage:</strong> {plan.storageLimit}
+                                </p>
+                              )}
+                            </div>
+                            
+                            {software.affiliateLink && (
+                              <a
+                                href={software.affiliateLink}
+                                target="_blank"
+                                rel="noopener noreferrer sponsored"
+                                className={`block w-full text-center py-3 px-4 rounded-lg font-semibold transition-colors ${
+                                  plan.recommended
+                                    ? 'bg-primary-600 text-white hover:bg-primary-700'
+                                    : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+                                }`}
+                              >
+                                Get Started
+                              </a>
+                            )}
+                          </div>
+                        ))}
                       </div>
-                    ))}
+                    </div>
+                    
+                    {/* Scroll hint for mobile */}
+                    <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4 md:hidden">
+                      ← Swipe to see more plans →
+                    </p>
                   </div>
                 </section>
               )}

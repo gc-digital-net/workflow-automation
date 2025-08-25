@@ -326,9 +326,9 @@ export const portableTextComponents = {
                         )}
                         <span className="text-lg font-bold">
                           {value.currency}{plan.price}
-                        </span>
-                        <span className="text-sm text-gray-500">
-                          {value.billingPeriod !== 'one-time' ? value.billingPeriod : ''}
+                          <span className="text-sm text-gray-500 font-normal ml-1">
+                            {value.billingPeriod !== 'one-time' ? value.billingPeriod : ''}
+                          </span>
                         </span>
                       </td>
                       {value.showFeatures && (
@@ -400,9 +400,9 @@ export const portableTextComponents = {
                       )}
                       <span className="text-xl font-bold">
                         {value.currency}{plan.price}
-                      </span>
-                      <span className="text-sm text-gray-500 block">
-                        {value.billingPeriod !== 'one-time' ? value.billingPeriod : ''}
+                        <span className="text-sm text-gray-500 font-normal ml-1">
+                          {value.billingPeriod !== 'one-time' ? value.billingPeriod : ''}
+                        </span>
                       </span>
                     </div>
                   </div>
@@ -476,12 +476,12 @@ export const portableTextComponents = {
                   )}
                   <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                     {value.currency}{plan.price}
+                    {value.billingPeriod !== 'one-time' && (
+                      <span className="text-sm text-gray-500 font-normal ml-1">
+                        {value.billingPeriod}
+                      </span>
+                    )}
                   </span>
-                  {value.billingPeriod !== 'one-time' && (
-                    <span className="text-sm text-gray-500 block mt-1">
-                      {value.billingPeriod}
-                    </span>
-                  )}
                 </div>
                 
                 {value.showFeatures && plan.features && (

@@ -344,8 +344,8 @@ export const portableTextComponents = {
                         {plan.buttonUrl && (
                           <a
                             href={plan.buttonUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                            target={plan.buttonTarget !== false ? "_blank" : undefined}
+                            rel={plan.buttonRel || (plan.buttonTarget !== false ? "noopener noreferrer" : undefined)}
                             className="inline-block px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700 transition-colors text-sm"
                           >
                             {plan.buttonText || 'Get Started'}
@@ -418,8 +418,8 @@ export const portableTextComponents = {
                   {plan.buttonUrl && (
                     <a
                       href={plan.buttonUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      target={plan.buttonTarget !== false ? "_blank" : undefined}
+                      rel={plan.buttonRel || (plan.buttonTarget !== false ? "noopener noreferrer" : undefined)}
                       className="inline-block w-full text-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
                     >
                       {plan.buttonText || 'Get Started'}
@@ -498,8 +498,8 @@ export const portableTextComponents = {
                 {plan.buttonUrl && (
                   <a
                     href={plan.buttonUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    target={plan.buttonTarget !== false ? "_blank" : undefined}
+                    rel={plan.buttonRel || (plan.buttonTarget !== false ? "noopener noreferrer" : undefined)}
                     className={`block w-full text-center py-3 px-4 font-semibold rounded-lg transition-colors ${
                       plan.highlighted
                         ? 'bg-primary-600 text-white hover:bg-primary-700'
@@ -542,8 +542,8 @@ export const portableTextComponents = {
           )}
           <a
             href={value.buttonUrl}
-            target="_blank"
-            rel="noopener noreferrer"
+            target={value.buttonTarget ? "_blank" : undefined}
+            rel={value.buttonRel || (value.buttonTarget ? "noopener noreferrer" : undefined)}
             className={`inline-flex items-center px-6 py-3 font-semibold rounded-xl transition-all transform hover:scale-105 shadow-lg ${styles[value.style as keyof typeof styles] || styles.primary}`}
           >
             {value.buttonText}
@@ -639,7 +639,16 @@ export const portableTextComponents = {
     ),
     link: ({ value, children }: any) => {
       const target = value?.blank ? '_blank' : undefined
-      const rel = value?.blank ? 'noopener noreferrer' : undefined
+      
+      // Build rel attribute based on settings
+      let relArray = []
+      if (value?.rel) {
+        relArray.push(value.rel)
+      }
+      if (value?.blank && !value?.rel?.includes('noopener')) {
+        relArray.push('noopener', 'noreferrer')
+      }
+      const rel = relArray.length > 0 ? relArray.join(' ') : undefined
       
       return (
         <Link 

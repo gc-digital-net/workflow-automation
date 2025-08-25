@@ -35,12 +35,31 @@ export default defineType({
                 title: 'URL',
                 name: 'href',
                 type: 'url',
+                validation: Rule => Rule.required()
               },
               {
                 title: 'Open in new tab',
                 name: 'blank',
                 type: 'boolean',
-                initialValue: true,
+                initialValue: false,
+                description: 'Opens the link in a new browser tab'
+              },
+              {
+                title: 'Link Relationship',
+                name: 'rel',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'Follow (default)', value: ''},
+                    {title: 'No Follow', value: 'nofollow'},
+                    {title: 'No Follow + No Opener', value: 'nofollow noopener'},
+                    {title: 'Sponsored', value: 'sponsored'},
+                    {title: 'UGC (User Generated Content)', value: 'ugc'},
+                    {title: 'Sponsored + No Follow', value: 'sponsored nofollow'},
+                  ]
+                },
+                initialValue: '',
+                description: 'SEO relationship attribute for the link'
               }
             ],
           },
@@ -412,6 +431,26 @@ export default defineType({
           validation: Rule => Rule.required()
         },
         {
+          name: 'buttonTarget',
+          title: 'Open in new tab',
+          type: 'boolean',
+          initialValue: false,
+          description: 'Opens the link in a new browser tab'
+        },
+        {
+          name: 'buttonRel',
+          title: 'Link Relationship',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Follow (default)', value: ''},
+              {title: 'No Follow', value: 'nofollow'},
+              {title: 'Sponsored', value: 'sponsored'},
+            ]
+          },
+          initialValue: ''
+        },
+        {
           name: 'style',
           title: 'Style',
           type: 'string',
@@ -549,6 +588,28 @@ export default defineType({
                 title: 'Button URL',
                 type: 'url',
                 description: 'Link to signup or more info'
+              },
+              {
+                name: 'buttonTarget',
+                title: 'Open in new tab',
+                type: 'boolean',
+                initialValue: true,
+                description: 'Opens link in new tab (recommended for external links)'
+              },
+              {
+                name: 'buttonRel',
+                title: 'Link Relationship',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'Follow (default)', value: ''},
+                    {title: 'No Follow', value: 'nofollow'},
+                    {title: 'Sponsored', value: 'sponsored'},
+                    {title: 'Affiliate', value: 'sponsored nofollow'},
+                  ]
+                },
+                initialValue: '',
+                description: 'For affiliate links, use "Affiliate"'
               }
             ],
             preview: {

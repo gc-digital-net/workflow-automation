@@ -8,6 +8,7 @@ import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
 import ReviewTabs from '@/components/review/ReviewTabs'
+import ReviewSubmissionForm from '@/components/review/ReviewSubmissionForm'
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600
@@ -305,27 +306,43 @@ const portableTextComponents = {
   }
 }
 
-// Score Display Component with G2 Style
+// Score Display Component with Enhanced Theme Colors
 function ScoreDisplay({ score, label }: { score: number; label: string }) {
   const percentage = (score / 10) * 100
+  
   const getScoreColor = (score: number) => {
-    if (score >= 9) return 'bg-gradient-to-r from-green-500 to-green-600'
-    if (score >= 7) return 'bg-gradient-to-r from-blue-500 to-blue-600'
-    if (score >= 5) return 'bg-gradient-to-r from-yellow-500 to-yellow-600'
-    return 'bg-gradient-to-r from-red-500 to-red-600'
+    if (score >= 9) return 'bg-gradient-to-r from-accent-green via-green-400 to-accent-green'
+    if (score >= 8) return 'bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600'
+    if (score >= 7) return 'bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500'
+    if (score >= 6) return 'bg-gradient-to-r from-indigo-500 via-indigo-400 to-indigo-500'
+    if (score >= 5) return 'bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500'
+    if (score >= 4) return 'bg-gradient-to-r from-orange-500 via-orange-400 to-orange-500'
+    return 'bg-gradient-to-r from-red-500 via-red-400 to-red-500'
+  }
+  
+  const getScoreTextColor = (score: number) => {
+    if (score >= 9) return 'text-accent-green'
+    if (score >= 8) return 'text-primary-600 dark:text-primary-400'
+    if (score >= 7) return 'text-blue-600 dark:text-blue-400'
+    if (score >= 5) return 'text-yellow-600 dark:text-yellow-400'
+    return 'text-red-600 dark:text-red-400'
   }
   
   return (
-    <div className="mb-4">
-      <div className="flex justify-between mb-2">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
-        <span className="text-sm font-bold text-gray-900 dark:text-white">{score}/10</span>
+    <div className="mb-5 group hover:scale-[1.02] transition-transform">
+      <div className="flex justify-between mb-2.5 items-center">
+        <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">{label}</span>
+        <span className={`text-sm font-bold ${getScoreTextColor(score)}`}>
+          {score.toFixed(1)}/10
+        </span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-3 dark:bg-gray-700 overflow-hidden">
+      <div className="w-full bg-gray-100 dark:bg-gray-700/50 rounded-full h-4 shadow-inner overflow-hidden">
         <div 
-          className={`h-full ${getScoreColor(score)} transition-all duration-700 rounded-full`}
+          className={`h-full ${getScoreColor(score)} transition-all duration-1000 rounded-full shadow-sm relative overflow-hidden`}
           style={{ width: `${percentage}%` }}
-        />
+        >
+          <div className="absolute inset-0 bg-white/20 animate-pulse" />
+        </div>
       </div>
     </div>
   )
@@ -379,7 +396,26 @@ async function getSoftware(slug: string) {
         slug
       },
       lastUpdated,
-      seo
+      seo,
+      "reviews": *[_type == "userReview" && references(^._id) && status == "approved"] | order(publishedAt desc) {
+        _id,
+        reviewerName,
+        reviewerRole,
+        companyName,
+        rating,
+        categoryRatings,
+        headline,
+        pros,
+        cons,
+        useCases,
+        wouldRecommend,
+        verified,
+        featured,
+        publishedAt,
+        usageLength
+      },
+      "reviewCount": count(*[_type == "userReview" && references(^._id) && status == "approved"]),
+      "averageRating": math::avg(*[_type == "userReview" && references(^._id) && status == "approved"].rating)
     }
   `
   
@@ -533,14 +569,24 @@ export default async function G2StyleReviewPage({ params, searchParams }: Props)
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content Column */}
           <div className="lg:col-span-2">
-            {/* Scores Section */}
+            {/* Enhanced Scores Section */}
             {software.scores && (
-              <section className="mb-10 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                <h2 className="text-xl font-bold mb-6 flex items-center">
-                  <ChartBarIcon className="h-6 w-6 mr-2 text-blue-600" />
-                  Performance Scores
-                </h2>
-                <div className="space-y-4">
+              <section className="mb-10 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between mb-8">
+                  <h2 className="text-2xl font-bold flex items-center text-gray-900 dark:text-white">
+                    <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg mr-3">
+                      <ChartBarIcon className="h-6 w-6 text-primary-800 dark:text-primary-400" />
+                    </div>
+                    Performance Metrics
+                  </h2>
+                  <div className="flex items-center gap-2">
+                    <span className="text-3xl font-bold text-primary-800 dark:text-primary-400">
+                      {software.overallScore?.toFixed(1) || '8.5'}
+                    </span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">Overall</span>
+                  </div>
+                </div>
+                <div className="grid gap-3">
                   {Object.entries(software.scores).map(([key, value]: [string, any]) => (
                     <ScoreDisplay
                       key={key}
@@ -648,17 +694,98 @@ export default async function G2StyleReviewPage({ params, searchParams }: Props)
               )}
               
               {tab === 'reviews' && (
-                <div className="space-y-6">
-                  <h2 className="text-2xl font-bold mb-4">User Reviews</h2>
-                  <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
-                    <h3 className="text-xl font-semibold mb-4">No Reviews Yet</h3>
-                    <p className="text-gray-600 dark:text-gray-400 mb-8 max-w-md mx-auto">
-                      Be the first to share your experience with {software.name}!
-                    </p>
-                    <button className="px-6 py-3 bg-accent-green text-gray-900 font-semibold rounded-lg hover:opacity-90 transition-opacity">
-                      Write a Review
-                    </button>
+                <div className="space-y-8">
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-2xl font-bold">User Reviews</h2>
+                    {software.reviewCount > 0 && (
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1">
+                          {[...Array(5)].map((_, i) => (
+                            <StarIcon
+                              key={i}
+                              className={`h-5 w-5 ${
+                                i < Math.floor(software.averageRating || 0)
+                                  ? 'text-yellow-400 fill-yellow-400'
+                                  : 'text-gray-300'
+                              }`}
+                            />
+                          ))}
+                        </div>
+                        <span className="text-lg font-semibold">
+                          {(software.averageRating || 0).toFixed(1)}
+                        </span>
+                        <span className="text-gray-500">({software.reviewCount} reviews)</span>
+                      </div>
+                    )}
                   </div>
+                  
+                  {/* Existing Reviews */}
+                  {software.reviews && software.reviews.length > 0 && (
+                    <div className="space-y-6">
+                      {software.reviews.map((review: any) => (
+                        <div key={review._id} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                          <div className="flex items-start justify-between mb-4">
+                            <div>
+                              <h4 className="font-semibold text-lg">{review.headline}</h4>
+                              <div className="flex items-center gap-3 mt-1">
+                                <div className="flex items-center gap-1">
+                                  {[...Array(5)].map((_, i) => (
+                                    <StarIcon
+                                      key={i}
+                                      className={`h-4 w-4 ${
+                                        i < review.rating
+                                          ? 'text-yellow-400 fill-yellow-400'
+                                          : 'text-gray-300'
+                                      }`}
+                                    />
+                                  ))}
+                                </div>
+                                <span className="text-sm text-gray-600 dark:text-gray-400">
+                                  by {review.reviewerName}
+                                  {review.reviewerRole && `, ${review.reviewerRole}`}
+                                  {review.companyName && ` at ${review.companyName}`}
+                                </span>
+                              </div>
+                            </div>
+                            {review.verified && (
+                              <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded-full">
+                                ✓ Verified
+                              </span>
+                            )}
+                          </div>
+                          
+                          <div className="grid md:grid-cols-2 gap-6 mb-4">
+                            <div>
+                              <h5 className="font-medium text-green-700 dark:text-green-400 mb-2">What I like best:</h5>
+                              <p className="text-gray-700 dark:text-gray-300">{review.pros}</p>
+                            </div>
+                            <div>
+                              <h5 className="font-medium text-red-700 dark:text-red-400 mb-2">What could be better:</h5>
+                              <p className="text-gray-700 dark:text-gray-300">{review.cons}</p>
+                            </div>
+                          </div>
+                          
+                          {review.useCases && (
+                            <div className="mb-4">
+                              <h5 className="font-medium mb-2">Use cases:</h5>
+                              <p className="text-gray-700 dark:text-gray-300">{review.useCases}</p>
+                            </div>
+                          )}
+                          
+                          <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                            <span>Using for {review.usageLength?.replace('<', 'less than ').replace('+', ' or more')}</span>
+                            <span>{new Date(review.publishedAt).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {/* Review Submission Form */}
+                  <ReviewSubmissionForm 
+                    softwareId={software._id} 
+                    softwareName={software.name}
+                  />
                 </div>
               )}
             </div>

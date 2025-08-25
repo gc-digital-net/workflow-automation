@@ -9,6 +9,7 @@ import faq from './faq'
 import testimonial from './testimonial'
 import siteSettings from './siteSettings'
 import navigation from './navigation'
+import userReview from './userReview'
 
 export const schemaTypes = [
   // Core content types
@@ -23,6 +24,7 @@ export const schemaTypes = [
   comparison,
   faq,
   testimonial,
+  userReview,
   
   // Site configuration
   siteSettings,

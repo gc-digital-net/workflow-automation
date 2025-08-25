@@ -1,5 +1,5 @@
-import { groq } from 'next-sanity'
-import { client } from '@/lib/sanity.client'
+import { groq } from 'groq'
+import { client } from '@/lib/sanity'
 import Image from 'next/image'
 import Link from 'next/link'
 import { urlFor } from '@/lib/sanity'

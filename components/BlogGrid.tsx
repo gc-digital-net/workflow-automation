@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { urlFor } from '@/lib/sanity';
 import { CalendarIcon, ClockIcon, ArrowRightIcon, BookOpenIcon } from '@heroicons/react/24/outline';
 
@@ -52,10 +53,12 @@ export function BlogGrid({ initialPosts, featuredPost }: BlogGridProps) {
             <Link href={`/blog/${featuredPost.slug.current}`} className="block">
               <div className="relative h-[400px]">
                 {featuredPost.featuredImage ? (
-                  <img 
-                    src={urlFor(featuredPost.featuredImage).width(1200).height(400).url()} 
+                  <Image
+                    src={urlFor(featuredPost.featuredImage).url()} 
                     alt={featuredPost.title}
-                    className="w-full h-full object-cover"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 1200px) 100vw, 1200px"
                   />
                 ) : (
                   <div className="w-full h-full bg-gradient-to-br from-primary-500 to-primary-600 flex items-center justify-center">
@@ -131,10 +134,12 @@ export function BlogGrid({ initialPosts, featuredPost }: BlogGridProps) {
               <Link href={`/blog/${post.slug.current}`}>
                 <div className="relative h-48">
                   {post.featuredImage ? (
-                    <img 
-                      src={urlFor(post.featuredImage).width(400).height(200).url()} 
+                    <Image
+                      src={urlFor(post.featuredImage).url()} 
                       alt={post.title}
-                      className="w-full h-full object-cover rounded-t-xl"
+                      fill
+                      className="object-cover rounded-t-xl"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     />
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-600 rounded-t-xl flex items-center justify-center">

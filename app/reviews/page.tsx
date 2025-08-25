@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { StarIcon, SparklesIcon, CurrencyDollarIcon, BeakerIcon } from '@heroicons/react/24/solid';
 import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
 import { getSoftware } from '@/lib/sanity-queries';
@@ -179,11 +180,15 @@ export default async function ReviewsPage() {
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
                           {software.logo ? (
-                            <img 
-                              src={urlFor(software.logo).width(48).height(48).url()} 
-                              alt={software.name}
-                              className="w-12 h-12 object-contain bg-white rounded-lg p-1"
-                            />
+                            <div className="relative w-12 h-12 bg-white rounded-lg p-1">
+                              <Image
+                                src={urlFor(software.logo).url()} 
+                                alt={software.name}
+                                fill
+                                className="object-contain"
+                                sizes="48px"
+                              />
+                            </div>
                           ) : (
                             <div className="w-12 h-12 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-lg flex items-center justify-center">
                               <SparklesIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />

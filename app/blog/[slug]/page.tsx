@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getPostBySlug, getPosts } from '@/lib/sanity-queries';
 import { urlFor } from '@/lib/sanity';
 import { PortableText } from '@portabletext/react';
@@ -188,11 +189,16 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
       {post.featuredImage && (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="max-w-5xl mx-auto">
-            <img 
-              src={urlFor(post.featuredImage).width(1200).height(600).url()} 
-              alt={post.title}
-              className="w-full h-auto rounded-xl shadow-lg"
-            />
+            <div className="relative aspect-[2/1] w-full overflow-hidden rounded-xl shadow-lg">
+              <Image
+                src={urlFor(post.featuredImage).url()} 
+                alt={post.title}
+                fill
+                className="object-cover"
+                priority
+                sizes="(max-width: 1280px) 100vw, 1280px"
+              />
+            </div>
           </div>
         </div>
       )}

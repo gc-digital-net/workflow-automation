@@ -1,8 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { urlFor } from '@/lib/sanity'
-import { CheckIcon, XMarkIcon, LightBulbIcon, InformationCircleIcon, ExclamationTriangleIcon, ExclamationCircleIcon, CheckCircleIcon, DocumentTextIcon, FireIcon } from '@heroicons/react/24/outline'
-import { ArrowRightIcon } from '@heroicons/react/24/solid'
+import { XMarkIcon, LightBulbIcon, InformationCircleIcon, ExclamationTriangleIcon, ExclamationCircleIcon, CheckCircleIcon, DocumentTextIcon, FireIcon } from '@heroicons/react/24/outline'
+import { ArrowRightIcon, CheckIcon } from '@heroicons/react/24/solid'
 
 export const portableTextComponents = {
   types: {
@@ -274,6 +274,245 @@ export const portableTextComponents = {
             </figcaption>
           )}
         </figure>
+      )
+    },
+    
+    // Mini Pricing Table
+    miniPricingTable: ({ value }: any) => {
+      const getBadgeColor = (badge: string) => {
+        switch(badge) {
+          case 'popular': return 'bg-blue-500 text-white'
+          case 'best-value': return 'bg-green-500 text-white'
+          case 'limited': return 'bg-red-500 text-white'
+          case 'new': return 'bg-purple-500 text-white'
+          case 'recommended': return 'bg-primary-600 text-white'
+          default: return ''
+        }
+      }
+
+      if (value.layout === 'table') {
+        // Compact table layout
+        return (
+          <div className="my-10">
+            {value.title && (
+              <h3 className="text-2xl font-bold mb-6 text-center">{value.title}</h3>
+            )}
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm">
+                <thead>
+                  <tr className="bg-gray-100 dark:bg-gray-700">
+                    <th className="border border-gray-200 dark:border-gray-600 p-3 text-left">Plan</th>
+                    <th className="border border-gray-200 dark:border-gray-600 p-3 text-center">Price</th>
+                    {value.showFeatures && <th className="border border-gray-200 dark:border-gray-600 p-3 text-left">Features</th>}
+                    <th className="border border-gray-200 dark:border-gray-600 p-3 text-center">Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {value.plans?.map((plan: any, idx: number) => (
+                    <tr key={idx} className={plan.highlighted ? 'bg-primary-50 dark:bg-primary-900/20' : ''}>
+                      <td className="border border-gray-200 dark:border-gray-600 p-3 font-semibold">
+                        {plan.name}
+                        {plan.badge && (
+                          <span className={`ml-2 text-xs px-2 py-1 rounded ${getBadgeColor(plan.badge)}`}>
+                            {plan.badge.replace('-', ' ').toUpperCase()}
+                          </span>
+                        )}
+                      </td>
+                      <td className="border border-gray-200 dark:border-gray-600 p-3 text-center">
+                        {plan.originalPrice && (
+                          <span className="line-through text-gray-400 mr-2">
+                            {value.currency}{plan.originalPrice}
+                          </span>
+                        )}
+                        <span className="text-xl font-bold">
+                          {value.currency}{plan.price}
+                        </span>
+                        <span className="text-sm text-gray-500">
+                          {value.billingPeriod !== 'one-time' ? value.billingPeriod : ''}
+                        </span>
+                      </td>
+                      {value.showFeatures && (
+                        <td className="border border-gray-200 dark:border-gray-600 p-3">
+                          <ul className="text-sm space-y-1">
+                            {plan.features?.slice(0, 3).map((feature: string, fidx: number) => (
+                              <li key={fidx}>• {feature}</li>
+                            ))}
+                          </ul>
+                        </td>
+                      )}
+                      <td className="border border-gray-200 dark:border-gray-600 p-3 text-center">
+                        {plan.buttonUrl && (
+                          <a
+                            href={plan.buttonUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-block px-4 py-2 bg-primary-600 text-white rounded hover:bg-primary-700 transition-colors text-sm"
+                          >
+                            {plan.buttonText || 'Get Started'}
+                          </a>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )
+      }
+
+      if (value.layout === 'list') {
+        // Vertical list layout
+        return (
+          <div className="my-10">
+            {value.title && (
+              <h3 className="text-2xl font-bold mb-6">{value.title}</h3>
+            )}
+            <div className="space-y-4">
+              {value.plans?.map((plan: any, idx: number) => (
+                <div
+                  key={idx}
+                  className={`p-6 rounded-xl border ${
+                    plan.highlighted
+                      ? 'border-primary-500 bg-primary-50 dark:bg-primary-900/20'
+                      : 'border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800'
+                  }`}
+                >
+                  <div className="flex items-center justify-between mb-3">
+                    <div>
+                      <h4 className="text-xl font-bold">
+                        {plan.name}
+                        {plan.badge && (
+                          <span className={`ml-2 text-xs px-2 py-1 rounded ${getBadgeColor(plan.badge)}`}>
+                            {plan.badge.replace('-', ' ').toUpperCase()}
+                          </span>
+                        )}
+                      </h4>
+                      {plan.description && (
+                        <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">{plan.description}</p>
+                      )}
+                    </div>
+                    <div className="text-right">
+                      {plan.originalPrice && (
+                        <span className="line-through text-gray-400 mr-2">
+                          {value.currency}{plan.originalPrice}
+                        </span>
+                      )}
+                      <span className="text-2xl font-bold">
+                        {value.currency}{plan.price}
+                      </span>
+                      <span className="text-sm text-gray-500 block">
+                        {value.billingPeriod !== 'one-time' ? value.billingPeriod : ''}
+                      </span>
+                    </div>
+                  </div>
+                  {value.showFeatures && plan.features && (
+                    <ul className="flex flex-wrap gap-2 mb-4">
+                      {plan.features.map((feature: string, fidx: number) => (
+                        <li key={fidx} className="text-sm bg-gray-100 dark:bg-gray-700 px-3 py-1 rounded">
+                          {feature}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  {plan.buttonUrl && (
+                    <a
+                      href={plan.buttonUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block w-full text-center px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+                    >
+                      {plan.buttonText || 'Get Started'}
+                    </a>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      }
+
+      // Default: Cards layout
+      return (
+        <div className="my-10">
+          {value.title && (
+            <h3 className="text-2xl font-bold mb-6 text-center">{value.title}</h3>
+          )}
+          <div className={`grid gap-6 ${
+            value.plans?.length === 1 ? 'max-w-sm mx-auto' :
+            value.plans?.length === 2 ? 'md:grid-cols-2 max-w-2xl mx-auto' :
+            value.plans?.length === 3 ? 'md:grid-cols-3 max-w-4xl mx-auto' :
+            'md:grid-cols-2 lg:grid-cols-4'
+          }`}>
+            {value.plans?.map((plan: any, idx: number) => (
+              <div
+                key={idx}
+                className={`relative rounded-xl p-6 ${
+                  plan.highlighted
+                    ? 'bg-gradient-to-b from-primary-50 to-white dark:from-primary-900/30 dark:to-gray-800 border-2 border-primary-500 shadow-xl scale-105'
+                    : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm'
+                }`}
+              >
+                {plan.badge && (
+                  <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                    <span className={`text-xs px-3 py-1 rounded-full ${getBadgeColor(plan.badge)}`}>
+                      {plan.badge.replace('-', ' ').toUpperCase()}
+                    </span>
+                  </div>
+                )}
+                
+                <div className="text-center mb-4">
+                  <h4 className="text-xl font-bold mb-2">{plan.name}</h4>
+                  {plan.description && (
+                    <p className="text-sm text-gray-600 dark:text-gray-400">{plan.description}</p>
+                  )}
+                </div>
+                
+                <div className="text-center mb-6">
+                  {plan.originalPrice && (
+                    <span className="line-through text-gray-400 mr-2">
+                      {value.currency}{plan.originalPrice}
+                    </span>
+                  )}
+                  <span className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                    {value.currency}{plan.price}
+                  </span>
+                  {value.billingPeriod !== 'one-time' && (
+                    <span className="text-sm text-gray-500 block mt-1">
+                      {value.billingPeriod}
+                    </span>
+                  )}
+                </div>
+                
+                {value.showFeatures && plan.features && (
+                  <ul className="space-y-2 mb-6">
+                    {plan.features.map((feature: string, fidx: number) => (
+                      <li key={fidx} className="flex items-start text-sm">
+                        <CheckIcon className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                        <span className="text-gray-700 dark:text-gray-300">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+                
+                {plan.buttonUrl && (
+                  <a
+                    href={plan.buttonUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`block w-full text-center py-3 px-4 font-semibold rounded-lg transition-colors ${
+                      plan.highlighted
+                        ? 'bg-primary-600 text-white hover:bg-primary-700'
+                        : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  >
+                    {plan.buttonText || 'Get Started'}
+                  </a>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
       )
     },
     

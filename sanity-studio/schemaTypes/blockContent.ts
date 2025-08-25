@@ -439,5 +439,168 @@ export default defineType({
         }
       }
     }),
+    
+    // Mini Pricing Table Block
+    defineArrayMember({
+      name: 'miniPricingTable',
+      title: 'Mini Pricing Table',
+      type: 'object',
+      icon: () => '💰',
+      fields: [
+        {
+          name: 'title',
+          title: 'Table Title',
+          type: 'string',
+          description: 'e.g., "Pricing Plans", "Choose Your Plan"'
+        },
+        {
+          name: 'currency',
+          title: 'Currency Symbol',
+          type: 'string',
+          initialValue: '$',
+          validation: Rule => Rule.required()
+        },
+        {
+          name: 'billingPeriod',
+          title: 'Billing Period',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Per Month', value: '/month'},
+              {title: 'Per Year', value: '/year'},
+              {title: 'Per User/Month', value: '/user/month'},
+              {title: 'One Time', value: 'one-time'},
+              {title: 'Custom', value: 'custom'}
+            ]
+          },
+          initialValue: '/month'
+        },
+        {
+          name: 'plans',
+          title: 'Pricing Plans (1-4 plans)',
+          type: 'array',
+          of: [{
+            type: 'object',
+            fields: [
+              {
+                name: 'name',
+                title: 'Plan Name',
+                type: 'string',
+                validation: Rule => Rule.required(),
+                description: 'e.g., "Starter", "Pro", "Enterprise"'
+              },
+              {
+                name: 'price',
+                title: 'Price',
+                type: 'string',
+                validation: Rule => Rule.required(),
+                description: 'e.g., "19", "49", "Custom"'
+              },
+              {
+                name: 'originalPrice',
+                title: 'Original Price (for discounts)',
+                type: 'string',
+                description: 'Optional - shows strikethrough price'
+              },
+              {
+                name: 'badge',
+                title: 'Badge',
+                type: 'string',
+                options: {
+                  list: [
+                    {title: 'None', value: ''},
+                    {title: 'Most Popular', value: 'popular'},
+                    {title: 'Best Value', value: 'best-value'},
+                    {title: 'Limited Time', value: 'limited'},
+                    {title: 'New', value: 'new'},
+                    {title: 'Recommended', value: 'recommended'}
+                  ]
+                }
+              },
+              {
+                name: 'description',
+                title: 'Short Description',
+                type: 'string',
+                description: 'e.g., "Perfect for small teams"'
+              },
+              {
+                name: 'features',
+                title: 'Features',
+                type: 'array',
+                of: [{type: 'string'}],
+                validation: Rule => Rule.max(6),
+                description: 'Up to 6 key features'
+              },
+              {
+                name: 'highlighted',
+                title: 'Highlight this plan',
+                type: 'boolean',
+                initialValue: false,
+                description: 'Makes this plan stand out'
+              },
+              {
+                name: 'buttonText',
+                title: 'Button Text',
+                type: 'string',
+                initialValue: 'Get Started'
+              },
+              {
+                name: 'buttonUrl',
+                title: 'Button URL',
+                type: 'url',
+                description: 'Link to signup or more info'
+              }
+            ],
+            preview: {
+              select: {
+                title: 'name',
+                price: 'price',
+                badge: 'badge'
+              },
+              prepare({title, price, badge}) {
+                return {
+                  title: title,
+                  subtitle: `${price}${badge ? ` - ${badge}` : ''}`
+                }
+              }
+            }
+          }],
+          validation: Rule => Rule.required().min(1).max(4)
+        },
+        {
+          name: 'showFeatures',
+          title: 'Show Features List',
+          type: 'boolean',
+          initialValue: true,
+          description: 'Toggle feature list visibility'
+        },
+        {
+          name: 'layout',
+          title: 'Layout Style',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Cards (Side by Side)', value: 'cards'},
+              {title: 'Compact Table', value: 'table'},
+              {title: 'List (Vertical)', value: 'list'}
+            ]
+          },
+          initialValue: 'cards'
+        }
+      ],
+      preview: {
+        select: {
+          title: 'title',
+          plans: 'plans'
+        },
+        prepare({title, plans}) {
+          const planCount = plans ? plans.length : 0
+          return {
+            title: title || 'Pricing Table',
+            subtitle: `${planCount} plan${planCount !== 1 ? 's' : ''}`
+          }
+        }
+      }
+    }),
   ],
 })

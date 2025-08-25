@@ -3,7 +3,7 @@ import Image from 'next/image';
 const companies = [
   { 
     name: 'ClickUp', 
-    logo: '/tools/clickup/logo-v3-clickup-dark.svg',
+    logo: '/tools/clickup/logo-v3-clickup-light.svg',
     logoDark: '/tools/clickup/logo-v3-clickup-white.svg'
   },
   { 

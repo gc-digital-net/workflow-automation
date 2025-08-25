@@ -79,18 +79,15 @@ export default function Footer() {
       <div className="container mx-auto px-4 pb-8 pt-16 sm:px-6 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <Link href="/" className="flex items-center gap-3">
-              <div className="relative h-10 w-10 flex-shrink-0">
+            <Link href="/" className="flex items-center">
+              <div className="relative h-14 w-48 flex-shrink-0">
                 <Image
-                  src="/logo/workflow automation logo.png"
-                  alt="Workflow Automation Logo"
+                  src="/logo/workflow-automation-logo-dark-bg.svg"
+                  alt="Workflow Automation"
                   fill
                   className="object-contain"
                 />
               </div>
-              <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                Workflow Automation
-              </span>
             </Link>
             <p className="text-sm leading-6 text-gray-600 dark:text-gray-400">
               Find the perfect automation software for your business. Expert reviews, comparisons, and guides to help you make informed decisions.

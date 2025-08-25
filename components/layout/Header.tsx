@@ -53,23 +53,15 @@ export default function Header() {
           {/* Logo Section with company logo */}
           <div className="flex items-center gap-4 lg:flex-1">
             <Link href="/" className="flex items-center gap-3 group">
-              {/* Company Logo */}
-              <div className="relative h-12 w-12 flex-shrink-0">
+              {/* Company Logo - White Background */}
+              <div className="relative h-14 w-48 flex-shrink-0">
                 <Image
-                  src="/logo/workflow automation logo.png"
-                  alt="Workflow Automation Logo"
+                  src="/logo/workflow-automation-logo-white-bg.svg"
+                  alt="Workflow Automation"
                   fill
                   className="object-contain"
                   priority
                 />
-              </div>
-              <div className="flex flex-col">
-                <span className="text-xl font-bold text-gray-900 dark:text-white">
-                  Workflow Automation
-                </span>
-                <span className="text-xs text-secondary-500 dark:text-secondary-400 -mt-1">
-                  Find Your Perfect Software
-                </span>
               </div>
             </Link>
           </div>

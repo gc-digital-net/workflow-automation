@@ -1,4 +1,3 @@
-import { groq } from 'groq'
 import { client } from '@/lib/sanity'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -8,7 +7,7 @@ import { formatDistanceToNow } from 'date-fns'
 
 export const revalidate = 3600 // Revalidate every hour
 
-const authorQuery = groq`
+const authorQuery = `
   *[_type == "author" && slug.current == $slug][0] {
     _id,
     name,
@@ -23,7 +22,7 @@ const authorQuery = groq`
   }
 `
 
-const authorPostsQuery = groq`
+const authorPostsQuery = `
   *[_type == "post" && author._ref == $authorId] | order(publishedAt desc) {
     _id,
     title,
@@ -40,7 +39,7 @@ const authorPostsQuery = groq`
 `
 
 export async function generateStaticParams() {
-  const authors = await client.fetch(groq`
+  const authors = await client.fetch(`
     *[_type == "author"] {
       slug
     }

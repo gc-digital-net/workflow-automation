@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { BookOpenIcon } from '@heroicons/react/24/outline';
 
 interface BlogFiltersProps {
@@ -12,7 +12,19 @@ interface BlogFiltersProps {
 export function BlogFilters({ posts, onFilterChange, totalCount }: BlogFiltersProps) {
   const [activeCategory, setActiveCategory] = useState('All Posts');
   
-  const categories = ['All Posts', 'Automation', 'Productivity', 'Workflow Automation'];
+  // Dynamically extract unique categories from posts
+  const categories = useMemo(() => {
+    const categorySet = new Set<string>();
+    posts.forEach(post => {
+      if (post.categories && Array.isArray(post.categories)) {
+        post.categories.forEach((cat: string) => {
+          if (cat) categorySet.add(cat);
+        });
+      }
+    });
+    // Convert to array, sort alphabetically, and add 'All Posts' at the beginning
+    return ['All Posts', ...Array.from(categorySet).sort()];
+  }, [posts]);
   
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -22,7 +34,7 @@ export function BlogFilters({ posts, onFilterChange, totalCount }: BlogFiltersPr
     } else {
       const filtered = posts.filter(post => 
         post.categories?.some((cat: string) => 
-          cat.toLowerCase().includes(category.toLowerCase())
+          cat === category
         )
       );
       onFilterChange(filtered);

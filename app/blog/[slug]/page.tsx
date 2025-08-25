@@ -5,6 +5,7 @@ import { getPostBySlug, getPosts } from '@/lib/sanity-queries';
 import { urlFor } from '@/lib/sanity';
 import { PortableText } from '@portabletext/react';
 import { portableTextComponents } from '@/components/blog/PortableTextComponents';
+import SocialShare from '@/components/blog/SocialShare';
 import { 
   CalendarIcon, 
   ClockIcon, 
@@ -153,9 +154,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                   </span>
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-900 dark:text-white">
+                  <Link 
+                    href={post.author?.slug ? `/author/${post.author.slug.current}` : '#'}
+                    className="font-semibold text-gray-900 dark:text-white hover:text-primary-600 dark:hover:text-primary-400"
+                  >
                     {post.author?.name || post.author || 'Anonymous'}
-                  </div>
+                  </Link>
                   <div className="text-sm text-gray-500 dark:text-gray-400">
                     <time dateTime={post.publishedAt}>
                       {new Date(post.publishedAt).toLocaleDateString('en-US', {
@@ -170,9 +174,11 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
 
               {/* Share Buttons */}
               <div className="flex items-center gap-2">
-                <button className="p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
-                  <ShareIcon className="w-5 h-5" />
-                </button>
+                <SocialShare 
+                  url={`https://workflowautomation.net/blog/${post.slug.current}`}
+                  title={post.title}
+                  description={post.excerpt}
+                />
                 <button className="p-2 text-gray-600 dark:text-gray-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors">
                   <BookmarkIcon className="w-5 h-5" />
                 </button>
@@ -244,9 +250,12 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                   </span>
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-900 dark:text-white mb-2">
+                  <Link 
+                    href={post.author?.slug ? `/author/${post.author.slug.current}` : '#'}
+                    className="font-semibold text-gray-900 dark:text-white mb-2 hover:text-primary-600 dark:hover:text-primary-400 block"
+                  >
                     {post.author.name}
-                  </div>
+                  </Link>
                   <p className="text-gray-600 dark:text-gray-300">
                     {post.author.bio}
                   </p>

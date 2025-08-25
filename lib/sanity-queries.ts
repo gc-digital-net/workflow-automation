@@ -23,7 +23,7 @@ export const postBySlugQuery = `
     content,
     publishedAt,
     featuredImage,
-    "author": author->{name, bio, avatar},
+    "author": author->{name, bio, avatar, slug},
     "categories": categories[]->name,
     seo
   }

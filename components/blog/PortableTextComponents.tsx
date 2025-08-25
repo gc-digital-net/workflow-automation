@@ -324,7 +324,7 @@ export const portableTextComponents = {
                             {value.currency}{plan.originalPrice}
                           </span>
                         )}
-                        <span className="text-xl font-bold">
+                        <span className="text-lg font-bold">
                           {value.currency}{plan.price}
                         </span>
                         <span className="text-sm text-gray-500">
@@ -398,7 +398,7 @@ export const portableTextComponents = {
                           {value.currency}{plan.originalPrice}
                         </span>
                       )}
-                      <span className="text-2xl font-bold">
+                      <span className="text-xl font-bold">
                         {value.currency}{plan.price}
                       </span>
                       <span className="text-sm text-gray-500 block">
@@ -474,7 +474,7 @@ export const portableTextComponents = {
                       {value.currency}{plan.originalPrice}
                     </span>
                   )}
-                  <span className="text-3xl font-bold text-primary-600 dark:text-primary-400">
+                  <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                     {value.currency}{plan.price}
                   </span>
                   {value.billingPeriod !== 'one-time' && (

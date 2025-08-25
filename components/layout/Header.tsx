@@ -54,7 +54,7 @@ export default function Header() {
           <div className="flex items-center gap-4 lg:flex-1">
             <Link href="/" className="flex items-center gap-3 group">
               {/* Company Logo - White Background */}
-              <div className="relative h-14 w-48 flex-shrink-0">
+              <div className="relative h-12 w-12 flex-shrink-0">
                 <Image
                   src="/logo/workflow-automation-logo-white-bg.svg"
                   alt="Workflow Automation"
@@ -63,6 +63,9 @@ export default function Header() {
                   priority
                 />
               </div>
+              <span className="text-xl font-bold text-gray-900 dark:text-white hidden sm:block">
+                Workflow Automation
+              </span>
             </Link>
           </div>
           

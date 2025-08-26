@@ -874,26 +874,28 @@ export default async function G2StyleReviewPage({ params }: Props) {
                           : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50'
                       }`}
                     >
-                      <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-semibold text-sm truncate flex-1 mr-2" title={plan.name}>
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
+                        <h4 className="font-semibold text-sm break-words" title={plan.name}>
                           {plan.name}
                         </h4>
                         {plan.recommended && (
-                          <span className="text-xs bg-primary-600 text-white px-2 py-0.5 rounded-full">
+                          <span className="text-xs bg-primary-600 text-white px-2 py-0.5 rounded-full self-start sm:self-auto whitespace-nowrap">
                             Popular
                           </span>
                         )}
                       </div>
-                      <div className="flex items-baseline">
+                      <div className="flex items-baseline flex-wrap">
                         <span className="text-xl font-bold text-gray-900 dark:text-white">
-                          ${plan.price}
+                          {typeof plan.price === 'number' ? `$${plan.price}` : plan.price}
                         </span>
-                        <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                          /month
-                        </span>
+                        {plan.price !== 'Free' && plan.price !== 'Custom' && (
+                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                            /month
+                          </span>
+                        )}
                       </div>
                       {plan.userLimit && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 truncate">
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 break-words">
                           {plan.userLimit}
                         </p>
                       )}

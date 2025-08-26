@@ -128,8 +128,8 @@ const portableTextComponents = {
                     </div>
                   )}
                   <div className="text-center mb-6">
-                    <h4 className="text-xl font-bold mt-2 mb-2">{plan.name}</h4>
-                    <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                    <h4 className="text-xl font-bold mt-2 mb-2 break-words">{plan.name}</h4>
+                    <p className="text-2xl md:text-3xl font-bold text-blue-600 dark:text-blue-400">
                       {plan.price}
                       {plan.price !== 'Free' && plan.price !== 'Custom pricing' && (
                         <span className="text-sm font-normal text-gray-600 dark:text-gray-400 block mt-1">
@@ -665,8 +665,12 @@ export default async function G2StyleReviewPage({ params }: Props) {
                       <div className={`flex gap-4 xl:grid xl:gap-6 min-w-max xl:min-w-0 ${
                         software.pricing.length === 2 
                           ? 'xl:grid-cols-2 max-w-4xl mx-auto' 
-                          : software.pricing.length >= 3
+                          : software.pricing.length === 3
                           ? 'xl:grid-cols-3' 
+                          : software.pricing.length === 4
+                          ? 'xl:grid-cols-2 max-w-5xl mx-auto'
+                          : software.pricing.length > 4
+                          ? 'xl:grid-cols-3'
                           : 'xl:grid-cols-1 max-w-md mx-auto'
                       }`}>
                         {software.pricing.map((plan: any, index: number) => (
@@ -689,11 +693,13 @@ export default async function G2StyleReviewPage({ params }: Props) {
                               {plan.name}
                             </h3>
                             <div className="mb-6">
-                              <div className="flex items-baseline gap-1">
-                                <span className="text-3xl md:text-4xl font-bold">
-                                  ${plan.price}
+                              <div className="flex items-baseline gap-1 flex-wrap">
+                                <span className="text-2xl md:text-3xl font-bold">
+                                  {typeof plan.price === 'number' ? `$${plan.price}` : plan.price}
                                 </span>
-                                <span className="text-gray-500 dark:text-gray-400">/month</span>
+                                {plan.price !== 'Free' && plan.price !== 'Custom' && (
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">/month</span>
+                                )}
                               </div>
                               {plan.yearlyPrice && (
                                 <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">

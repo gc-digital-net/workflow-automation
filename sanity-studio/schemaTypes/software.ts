@@ -575,6 +575,25 @@ export default defineType({
       of: [{ type: 'reference', to: [{ type: 'category' }] }],
     },
     {
+      name: 'reviewAuthor',
+      title: 'Review Author',
+      type: 'reference',
+      to: [{ type: 'author' }],
+      description: 'The person who reviewed this software',
+    },
+    {
+      name: 'reviewDate',
+      title: 'Review Date',
+      type: 'datetime',
+      description: 'When this review was originally written',
+    },
+    {
+      name: 'lastReviewUpdate',
+      title: 'Last Review Update',
+      type: 'datetime',
+      description: 'When this review was last updated',
+    },
+    {
       name: 'lastUpdated',
       title: 'Last Updated',
       type: 'datetime',

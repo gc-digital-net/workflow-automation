@@ -268,17 +268,17 @@ const portableTextComponents = {
   
   block: {
     h2: ({ children }: any) => (
-      <h2 className="text-3xl font-bold mt-12 mb-6 text-gray-900 dark:text-white">
+      <h2 className="text-2xl font-bold mt-10 mb-5 text-gray-900 dark:text-white">
         {children}
       </h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="text-2xl font-semibold mt-8 mb-4 text-gray-900 dark:text-white">
+      <h3 className="text-xl font-semibold mt-8 mb-4 text-gray-900 dark:text-white">
         {children}
       </h3>
     ),
     h4: ({ children }: any) => (
-      <h4 className="text-xl font-semibold mt-6 mb-3 text-gray-900 dark:text-white">
+      <h4 className="text-lg font-semibold mt-6 mb-3 text-gray-900 dark:text-white">
         {children}
       </h4>
     ),
@@ -288,7 +288,7 @@ const portableTextComponents = {
       </blockquote>
     ),
     normal: ({ children }: any) => (
-      <p className="mb-6 text-gray-700 dark:text-gray-300 leading-relaxed text-lg">
+      <p className="mb-5 text-gray-700 dark:text-gray-300 leading-relaxed">
         {children}
       </p>
     )
@@ -627,7 +627,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
               {/* Main Content */}
               {software.content && (
                 <section>
-                  <article className="prose prose-lg dark:prose-invert max-w-none">
+                  <article className="prose dark:prose-invert max-w-none">
                     <PortableText
                       value={software.content}
                       components={portableTextComponents}

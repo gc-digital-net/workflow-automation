@@ -661,6 +661,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                     <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
                     
                     {/* Scrollable container on mobile, responsive grid on larger screens */}
+                    {/* Debug: {software.pricing.length} pricing plans */}
                     <div className="overflow-x-auto pb-4 xl:overflow-visible">
                       <div className={`flex gap-4 xl:grid xl:gap-6 min-w-max xl:min-w-0 ${
                         software.pricing.length === 2 
@@ -668,7 +669,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                           : software.pricing.length === 3
                           ? 'xl:grid-cols-3' 
                           : software.pricing.length === 4
-                          ? 'xl:grid-cols-2 max-w-5xl mx-auto'
+                          ? 'xl:grid-cols-2 xl:gap-8 max-w-6xl mx-auto'
                           : software.pricing.length > 4
                           ? 'xl:grid-cols-3'
                           : 'xl:grid-cols-1 max-w-md mx-auto'

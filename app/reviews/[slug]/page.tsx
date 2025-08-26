@@ -318,8 +318,8 @@ function ScoreDisplay({ score, label }: { score: number; label: string }) {
   const percentage = (score / 10) * 100
   
   const getScoreColor = (score: number) => {
-    if (score >= 9) return 'bg-gradient-to-r from-accent-green via-green-400 to-accent-green'
-    if (score >= 8) return 'bg-gradient-to-r from-primary-600 via-primary-500 to-primary-600'
+    if (score >= 9) return 'bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500'
+    if (score >= 8) return 'bg-gradient-to-r from-green-500 via-green-400 to-green-500'
     if (score >= 7) return 'bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500'
     if (score >= 6) return 'bg-gradient-to-r from-indigo-500 via-indigo-400 to-indigo-500'
     if (score >= 5) return 'bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500'
@@ -328,8 +328,8 @@ function ScoreDisplay({ score, label }: { score: number; label: string }) {
   }
   
   const getScoreTextColor = (score: number) => {
-    if (score >= 9) return 'text-accent-green'
-    if (score >= 8) return 'text-primary-600 dark:text-primary-400'
+    if (score >= 9) return 'text-emerald-600 dark:text-emerald-400'
+    if (score >= 8) return 'text-green-600 dark:text-green-400'
     if (score >= 7) return 'text-blue-600 dark:text-blue-400'
     if (score >= 5) return 'text-yellow-600 dark:text-yellow-400'
     return 'text-red-600 dark:text-red-400'
@@ -343,12 +343,12 @@ function ScoreDisplay({ score, label }: { score: number; label: string }) {
           {score.toFixed(1)}/10
         </span>
       </div>
-      <div className="w-full bg-gray-100 dark:bg-gray-700/50 rounded-full h-4 shadow-inner overflow-hidden">
+      <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 shadow-inner overflow-hidden">
         <div 
-          className={`h-full ${getScoreColor(score)} transition-all duration-1000 rounded-full shadow-sm relative overflow-hidden`}
+          className={`h-full ${getScoreColor(score)} transition-all duration-1000 rounded-full shadow-md relative overflow-hidden`}
           style={{ width: `${percentage}%` }}
         >
-          <div className="absolute inset-0 bg-white/20 animate-pulse" />
+          <div className="absolute inset-0 bg-white/30 bg-gradient-to-b from-white/40 to-transparent" />
         </div>
       </div>
     </div>

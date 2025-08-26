@@ -471,7 +471,8 @@ export default async function G2StyleReviewPage({ params }: Props) {
   
   // Calculate overall rating for display
   const overallRating = software.overallScore || 8.5
-  const totalReviews = Math.floor(Math.random() * 500) + 100 // Mock data - replace with real reviews
+  // Use actual review count or a consistent placeholder
+  const totalReviews = software.reviews?.length || 47 // Fixed number until we have real reviews
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">

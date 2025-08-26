@@ -661,18 +661,17 @@ export default async function G2StyleReviewPage({ params }: Props) {
                     <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
                     
                     {/* Scrollable container on mobile, responsive grid on larger screens */}
-                    {/* Debug: {software.pricing.length} pricing plans */}
                     <div className="overflow-x-auto pb-4 xl:overflow-visible">
-                      <div className={`flex gap-4 xl:grid xl:gap-6 min-w-max xl:min-w-0 ${
-                        software.pricing.length === 2 
-                          ? 'xl:grid-cols-2 max-w-4xl mx-auto' 
+                      <div className={`flex gap-4 min-w-max ${
+                        software.pricing.length === 4
+                          ? 'xl:grid xl:grid-cols-2 xl:gap-8 xl:min-w-0 max-w-6xl mx-auto'
                           : software.pricing.length === 3
-                          ? 'xl:grid-cols-3' 
-                          : software.pricing.length === 4
-                          ? 'xl:grid-cols-2 xl:gap-8 max-w-6xl mx-auto'
+                          ? 'xl:grid xl:grid-cols-3 xl:gap-6 xl:min-w-0' 
+                          : software.pricing.length === 2 
+                          ? 'xl:grid xl:grid-cols-2 xl:gap-6 xl:min-w-0 max-w-4xl mx-auto' 
                           : software.pricing.length > 4
-                          ? 'xl:grid-cols-3'
-                          : 'xl:grid-cols-1 max-w-md mx-auto'
+                          ? 'xl:grid xl:grid-cols-3 xl:gap-6 xl:min-w-0'
+                          : 'xl:grid xl:grid-cols-1 xl:gap-6 xl:min-w-0 max-w-md mx-auto'
                       }`}>
                         {software.pricing.map((plan: any, index: number) => (
                           <div
@@ -826,18 +825,18 @@ export default async function G2StyleReviewPage({ params }: Props) {
                         <div className="grid md:grid-cols-2 gap-6 mb-4">
                           <div>
                             <h5 className="font-medium text-green-700 dark:text-green-400 mb-2">What I like best:</h5>
-                            <p className="text-gray-700 dark:text-gray-300">{review.pros}</p>
+                            <p className="text-gray-700 dark:text-gray-300 break-words overflow-wrap">{review.pros}</p>
                           </div>
                           <div>
                             <h5 className="font-medium text-red-700 dark:text-red-400 mb-2">What could be better:</h5>
-                            <p className="text-gray-700 dark:text-gray-300">{review.cons}</p>
+                            <p className="text-gray-700 dark:text-gray-300 break-words overflow-wrap">{review.cons}</p>
                           </div>
                         </div>
                         
                         {review.useCases && (
                           <div className="mb-4">
                             <h5 className="font-medium mb-2">Use cases:</h5>
-                            <p className="text-gray-700 dark:text-gray-300">{review.useCases}</p>
+                            <p className="text-gray-700 dark:text-gray-300 break-words overflow-wrap">{review.useCases}</p>
                           </div>
                         )}
                         

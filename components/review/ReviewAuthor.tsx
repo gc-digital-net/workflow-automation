@@ -26,7 +26,7 @@ export default function ReviewAuthor({
   readingTime = 15
 }: ReviewAuthorProps) {
   return (
-    <div className="flex items-center justify-between flex-wrap gap-4 py-4 border-t border-gray-200 dark:border-gray-700">
+    <div className="flex items-center justify-between flex-wrap gap-4 py-5 mt-2 border-t border-gray-200 dark:border-gray-700">
       {/* Left side - Author info */}
       <div className="flex items-center gap-3">
         {/* Author Avatar */}

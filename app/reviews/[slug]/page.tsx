@@ -495,17 +495,17 @@ export default async function G2StyleReviewPage({ params }: Props) {
               )}
               
               <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
                   {software.name}
                 </h1>
                 {software.tagline && (
-                  <p className="text-lg text-gray-600 dark:text-gray-400 mb-3">
+                  <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
                     {software.tagline}
                   </p>
                 )}
                 
                 {/* Rating and Reviews */}
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center gap-2">
                     <span className="text-3xl font-bold text-gray-900 dark:text-white">
                       {overallRating.toFixed(1)}
@@ -518,7 +518,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 </div>
                 
                 {/* Quick Stats */}
-                <div className="flex flex-wrap gap-4 text-sm">
+                <div className="flex flex-wrap gap-4 text-sm mb-6">
                   {software.quickInfo?.bestFor && (
                     <div className="flex items-center gap-2">
                       <UsersIcon className="h-5 w-5 text-gray-400" />

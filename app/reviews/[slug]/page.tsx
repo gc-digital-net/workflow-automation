@@ -624,10 +624,9 @@ export default async function G2StyleReviewPage({ params }: Props) {
             
             {/* Main Content - All sections on single page */}
             <div className="space-y-16">
-              {/* Overview Section */}
+              {/* Main Content */}
               {software.content && (
                 <section>
-                  <h2 className="text-2xl font-bold mb-6">Overview</h2>
                   <article className="prose prose-lg dark:prose-invert max-w-none">
                     <PortableText
                       value={software.content}

@@ -18,6 +18,20 @@ export default function ScreenshotGallery({ screenshots }: { screenshots: any[] 
   
   if (!screenshots || screenshots.length === 0) return null
   
+  // Helper function to get the image source
+  const getImageSrc = (screenshot: any) => {
+    // Check if it's a local image URL (starts with /)
+    if (screenshot.imageUrl && screenshot.imageUrl.startsWith('/')) {
+      return screenshot.imageUrl
+    }
+    // Otherwise try to use Sanity's image builder
+    if (screenshot.image) {
+      return urlFor(screenshot.image).url()
+    }
+    // Fallback to imageUrl if present
+    return screenshot.imageUrl || '/placeholder.png'
+  }
+  
   return (
     <div className="my-12">
       <h2 className="text-3xl font-bold mb-6">Screenshots</h2>
@@ -26,8 +40,8 @@ export default function ScreenshotGallery({ screenshots }: { screenshots: any[] 
         {/* Main Screenshot Display */}
         <div className="relative aspect-video bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden">
           <Image
-            src={urlFor(screenshots[currentIndex].image).url()}
-            alt={screenshots[currentIndex].caption || `Screenshot ${currentIndex + 1}`}
+            src={getImageSrc(screenshots[currentIndex])}
+            alt={screenshots[currentIndex].caption || screenshots[currentIndex].altText || `Screenshot ${currentIndex + 1}`}
             fill
             className="object-contain"
           />
@@ -70,7 +84,7 @@ export default function ScreenshotGallery({ screenshots }: { screenshots: any[] 
               }`}
             >
               <Image
-                src={urlFor(screenshot.image).url()}
+                src={getImageSrc(screenshot)}
                 alt={`Thumbnail ${idx + 1}`}
                 fill
                 className="object-cover"

@@ -7,6 +7,7 @@ import { ChartBarIcon, ClockIcon, GlobeAltIcon, DocumentTextIcon, ChatBubbleLeft
 import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
+import ReviewAuthor from '@/components/review/ReviewAuthor'
 // Removed ReviewTabs - all content on single page now
 import ReviewSubmissionForm from '@/components/review/ReviewSubmissionForm'
 
@@ -401,6 +402,15 @@ async function getSoftware(slug: string) {
         name,
         slug
       },
+      reviewAuthor-> {
+        name,
+        role,
+        bio,
+        expertise,
+        certifications
+      },
+      reviewDate,
+      lastReviewUpdate,
       lastUpdated,
       seo,
       "reviews": *[_type == "userReview" && references(^._id) && status == "approved"] | order(publishedAt desc) {
@@ -524,6 +534,14 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 </div>
               </div>
             </div>
+            
+            {/* Author Section */}
+            <ReviewAuthor 
+              author={software.reviewAuthor}
+              reviewDate={software.reviewDate || software.lastUpdated || new Date().toISOString()}
+              lastUpdated={software.lastReviewUpdate || software.lastUpdated}
+              readingTime={15}
+            />
             
             {/* Right Side Actions and Info */}
             <div className="lg:w-80">

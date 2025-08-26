@@ -1,72 +1,60 @@
 import { createClient } from '@sanity/client'
-import * as dotenv from 'dotenv'
-
-dotenv.config({ path: '.env.local' })
+import { config } from 'dotenv'
+config()
 
 const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!,
   dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-  useCdn: false,
   apiVersion: '2024-01-01',
   token: process.env.SANITY_API_TOKEN,
+  useCdn: false,
 })
 
-async function checkClickUpScreenshots() {
-  console.log('Checking ClickUp screenshots in Sanity...\n')
-  
+async function checkScreenshots() {
   try {
-    const query = `*[_type == "software" && name == "ClickUp"][0] {
+    const query = `*[_type == "software" && name == "ClickUp"][0]{
       _id,
       name,
-      logo,
-      screenshots[] {
-        _key,
-        caption,
-        altText,
-        image {
-          asset-> {
-            _id,
-            url
-          }
-        }
-      },
-      featuredImage
+      screenshots,
+      screenshotGallery,
+      "hasScreenshots": defined(screenshots),
+      "hasGallery": defined(screenshotGallery),
+      "screenshotCount": count(screenshots[]),
+      "galleryCount": count(screenshotGallery[])
     }`
     
-    const clickup = await client.fetch(query)
+    const review = await client.fetch(query)
     
-    if (!clickup) {
-      console.log('ClickUp review not found!')
+    if (!review) {
+      console.log('ClickUp review not found')
       return
     }
+
+    console.log('ClickUp Screenshots Status:')
+    console.log(`- Has screenshots field: ${review.hasScreenshots}`)
+    console.log(`- Has screenshotGallery field: ${review.hasGallery}`)
+    console.log(`- Screenshot count: ${review.screenshotCount || 0}`)
+    console.log(`- Gallery count: ${review.galleryCount || 0}`)
     
-    console.log('ClickUp Review ID:', clickup._id)
-    console.log('Logo:', clickup.logo ? '✅ Present' : '❌ Missing')
-    console.log('Featured Image:', clickup.featuredImage ? '✅ Present' : '❌ Missing')
-    console.log('\nScreenshots:', clickup.screenshots ? `${clickup.screenshots.length} found` : '❌ None')
-    
-    if (clickup.screenshots && clickup.screenshots.length > 0) {
-      console.log('\nScreenshot details:')
-      clickup.screenshots.forEach((screenshot: any, index: number) => {
-        console.log(`\n${index + 1}. ${screenshot.caption || 'No caption'}`)
-        console.log(`   Alt: ${screenshot.altText || 'No alt text'}`)
-        console.log(`   Asset ID: ${screenshot.image?.asset?._id || 'No asset'}`)
-        console.log(`   URL: ${screenshot.image?.asset?.url || 'No URL'}`)
+    if (review.screenshots) {
+      console.log('\nScreenshots field content:')
+      review.screenshots.forEach((s: any, i: number) => {
+        console.log(`  ${i + 1}. Caption: ${s.caption || 'No caption'}`)
+        console.log(`     Alt: ${s.altText || 'No alt text'}`)
       })
     }
     
+    if (review.screenshotGallery) {
+      console.log('\nScreenshot Gallery content:')
+      review.screenshotGallery.forEach((s: any, i: number) => {
+        console.log(`  ${i + 1}. Caption: ${s.caption || 'No caption'}`)
+        console.log(`     Alt: ${s.altText || 'No alt text'}`)
+      })
+    }
+
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Error checking screenshots:', error)
   }
 }
 
-// Run the script
-checkClickUpScreenshots()
-  .then(() => {
-    console.log('\n✨ Check complete!')
-    process.exit(0)
-  })
-  .catch((error) => {
-    console.error('Script failed:', error)
-    process.exit(1)
-  })
+checkScreenshots()

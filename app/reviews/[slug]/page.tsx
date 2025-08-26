@@ -109,8 +109,8 @@ const portableTextComponents = {
         <h3 className="text-2xl font-bold mb-8 text-center">{value.title || 'Pricing Plans'}</h3>
         {/* Horizontal scroll container for mobile/tablet, grid for desktop */}
         <div className="relative">
-          <div className="overflow-x-auto pb-4 lg:overflow-visible">
-            <div className="flex gap-4 lg:grid lg:grid-cols-3 xl:grid-cols-4 lg:gap-6 min-w-max lg:min-w-0">
+          <div className="overflow-x-auto pb-4 xl:overflow-visible">
+            <div className="flex gap-4 xl:grid xl:grid-cols-3 xl:gap-6 min-w-max xl:min-w-0">
               {value.plans?.map((plan: any, idx: number) => (
                 <div 
                   key={idx} 
@@ -661,20 +661,18 @@ export default async function G2StyleReviewPage({ params }: Props) {
                     <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
                     
                     {/* Scrollable container on mobile, responsive grid on larger screens */}
-                    <div className="overflow-x-auto pb-4 lg:overflow-visible">
-                      <div className={`flex gap-4 lg:grid lg:gap-6 min-w-max lg:min-w-0 ${
+                    <div className="overflow-x-auto pb-4 xl:overflow-visible">
+                      <div className={`flex gap-4 xl:grid xl:gap-6 min-w-max xl:min-w-0 ${
                         software.pricing.length === 2 
-                          ? 'lg:grid-cols-2 max-w-4xl mx-auto' 
-                          : software.pricing.length === 3 
-                          ? 'lg:grid-cols-3' 
-                          : software.pricing.length >= 4 
-                          ? 'lg:grid-cols-2 xl:grid-cols-4' 
-                          : 'lg:grid-cols-1 max-w-md mx-auto'
+                          ? 'xl:grid-cols-2 max-w-4xl mx-auto' 
+                          : software.pricing.length >= 3
+                          ? 'xl:grid-cols-3' 
+                          : 'xl:grid-cols-1 max-w-md mx-auto'
                       }`}>
                         {software.pricing.map((plan: any, index: number) => (
                           <div
                             key={index}
-                            className={`flex-shrink-0 w-80 lg:w-auto rounded-xl border-2 p-6 ${
+                            className={`flex-shrink-0 w-80 xl:w-auto rounded-xl border-2 p-6 ${
                               plan.recommended
                                 ? 'border-primary-600 shadow-xl relative'
                                 : 'border-gray-200 dark:border-gray-700'

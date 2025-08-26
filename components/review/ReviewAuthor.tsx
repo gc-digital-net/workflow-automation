@@ -15,32 +15,35 @@ interface ReviewAuthorProps {
 }
 
 export default function ReviewAuthor({ 
-  author = {
-    name: 'Sarah Mitchell',
-    role: 'Senior Software Analyst',
-    avatar: '/team/sarah-mitchell.jpg',
-    bio: 'Sarah has over 8 years of experience testing and implementing project management software for Fortune 500 companies.'
-  },
+  author,
   reviewDate,
   lastUpdated,
   readingTime = 15
 }: ReviewAuthorProps) {
+  // Use default author if none provided or if author is null
+  const reviewAuthor = author || {
+    name: 'Sarah Mitchell',
+    role: 'Senior Software Analyst',
+    avatar: '/team/sarah-mitchell.jpg',
+    bio: 'Sarah has over 8 years of experience testing and implementing project management software for Fortune 500 companies.'
+  }
+  
   return (
     <div className="flex items-center justify-between flex-wrap gap-4 py-5 mt-2 border-t border-gray-200 dark:border-gray-700">
       {/* Left side - Author info */}
       <div className="flex items-center gap-3">
         {/* Author Avatar */}
         <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex-shrink-0">
-          {author.avatar ? (
+          {reviewAuthor.avatar ? (
             <Image
-              src={author.avatar}
-              alt={author.name}
+              src={reviewAuthor.avatar}
+              alt={reviewAuthor.name}
               fill
               className="object-cover"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-sm font-semibold text-gray-500 dark:text-gray-400">
-              {author.name.split(' ').map(n => n[0]).join('')}
+              {reviewAuthor.name.split(' ').map(n => n[0]).join('')}
             </div>
           )}
         </div>
@@ -49,11 +52,11 @@ export default function ReviewAuthor({
         <div>
           <div className="flex items-center gap-2">
             <p className="text-sm font-medium text-gray-900 dark:text-white">
-              {author.name}
+              {reviewAuthor.name}
             </p>
             <CheckBadgeIcon className="h-4 w-4 text-blue-500" title="Verified Reviewer" />
           </div>
-          <p className="text-xs text-gray-500 dark:text-gray-400">{author.role}</p>
+          <p className="text-xs text-gray-500 dark:text-gray-400">{reviewAuthor.role}</p>
         </div>
       </div>
 

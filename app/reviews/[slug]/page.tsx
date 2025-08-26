@@ -546,16 +546,16 @@ export default async function G2StyleReviewPage({ params }: Props) {
             {/* Right Side Actions and Info */}
             <div className="lg:w-80">
               {/* Pricing Info Box */}
-              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-5 mb-4">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Starting Price</span>
-                  <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+              <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 mb-4">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Starting From</span>
+                  <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
                     {software.quickInfo?.startingPrice || 'Contact Sales'}
                   </span>
                 </div>
                 {software.quickInfo?.freeTrial && (
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400">Free Trial</span>
+                    <span className="text-xs font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">Free Trial</span>
                     <span className="text-sm font-semibold text-green-600 dark:text-green-400">
                       {software.quickInfo.freeTrial}
                     </span>

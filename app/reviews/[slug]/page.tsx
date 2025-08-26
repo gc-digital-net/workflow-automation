@@ -533,15 +533,15 @@ export default async function G2StyleReviewPage({ params }: Props) {
                   )}
                 </div>
               </div>
+              
+              {/* Author Section - moved below description */}
+              <ReviewAuthor 
+                author={software.reviewAuthor}
+                reviewDate={software.reviewDate || software.lastUpdated || new Date().toISOString()}
+                lastUpdated={software.lastReviewUpdate || software.lastUpdated}
+                readingTime={15}
+              />
             </div>
-            
-            {/* Author Section */}
-            <ReviewAuthor 
-              author={software.reviewAuthor}
-              reviewDate={software.reviewDate || software.lastUpdated || new Date().toISOString()}
-              lastUpdated={software.lastReviewUpdate || software.lastUpdated}
-              readingTime={15}
-            />
             
             {/* Right Side Actions and Info */}
             <div className="lg:w-80">

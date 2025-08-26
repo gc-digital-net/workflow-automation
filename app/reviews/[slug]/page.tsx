@@ -107,49 +107,56 @@ const portableTextComponents = {
     pricingTable: ({ value }: any) => (
       <div className="my-12">
         <h3 className="text-2xl font-bold mb-8 text-center">{value.title || 'Pricing Plans'}</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          {value.plans?.map((plan: any, idx: number) => (
-            <div 
-              key={idx} 
-              className={`rounded-xl p-6 relative flex flex-col ${
-                plan.highlighted 
-                  ? 'bg-gradient-to-b from-blue-50 to-white dark:from-blue-900/30 dark:to-gray-800 border-2 border-blue-500 shadow-xl scale-105 lg:scale-110' 
-                  : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm'
-              }`}
-            >
-              {plan.highlighted && (
-                <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                  <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium whitespace-nowrap">
-                    Most Popular
-                  </span>
-                </div>
-              )}
-              <div className="text-center mb-6">
-                <h4 className="text-xl font-bold mt-2 mb-2">{plan.name}</h4>
-                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
-                  {plan.price}
-                  {plan.price !== 'Free' && plan.price !== 'Custom pricing' && (
-                    <span className="text-sm font-normal text-gray-600 dark:text-gray-400 block mt-1">
-                      per user/month
-                    </span>
+        {/* Horizontal scroll container for mobile/tablet, grid for desktop */}
+        <div className="relative">
+          <div className="overflow-x-auto pb-4 lg:overflow-visible">
+            <div className="flex gap-4 lg:grid lg:grid-cols-3 xl:grid-cols-4 lg:gap-6 min-w-max lg:min-w-0">
+              {value.plans?.map((plan: any, idx: number) => (
+                <div 
+                  key={idx} 
+                  className={`rounded-xl p-6 relative flex flex-col min-w-[280px] lg:min-w-0 ${
+                    plan.highlighted 
+                      ? 'bg-gradient-to-b from-blue-50 to-white dark:from-blue-900/30 dark:to-gray-800 border-2 border-blue-500 shadow-xl scale-105 lg:scale-110' 
+                      : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm'
+                  }`}
+                >
+                  {plan.highlighted && (
+                    <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
+                      <span className="bg-blue-500 text-white px-4 py-1 rounded-full text-sm font-medium whitespace-nowrap">
+                        Most Popular
+                      </span>
+                    </div>
                   )}
-                </p>
-              </div>
-              <ul className="space-y-3 flex-grow">
-                {plan.features?.map((feature: string, fidx: number) => (
-                  <li key={fidx} className="flex items-start">
-                    <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
-                    <span className="text-sm text-gray-700 dark:text-gray-300 leading-tight">{feature}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6">
-                <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
-                  {plan.name === 'Free Forever' ? 'Start Free' : plan.price === 'Custom pricing' ? 'Contact Sales' : 'Start Trial'}
-                </button>
-              </div>
+                  <div className="text-center mb-6">
+                    <h4 className="text-xl font-bold mt-2 mb-2">{plan.name}</h4>
+                    <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">
+                      {plan.price}
+                      {plan.price !== 'Free' && plan.price !== 'Custom pricing' && (
+                        <span className="text-sm font-normal text-gray-600 dark:text-gray-400 block mt-1">
+                          per user/month
+                        </span>
+                      )}
+                    </p>
+                  </div>
+                  <ul className="space-y-3 flex-grow">
+                    {plan.features?.map((feature: string, fidx: number) => (
+                      <li key={fidx} className="flex items-start">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                        <span className="text-sm text-gray-700 dark:text-gray-300 leading-tight">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                  <div className="mt-6">
+                    <button className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+                      {plan.name === 'Free Forever' ? 'Start Free' : plan.price === 'Custom pricing' ? 'Contact Sales' : 'Start Trial'}
+                    </button>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
+          {/* Scroll indicator for mobile */}
+          <div className="lg:hidden absolute right-0 top-1/2 transform -translate-y-1/2 bg-gradient-to-l from-white dark:from-gray-900 to-transparent w-12 h-full pointer-events-none" />
         </div>
       </div>
     ),

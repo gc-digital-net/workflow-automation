@@ -912,69 +912,6 @@ export default async function G2StyleReviewPage({ params }: Props) {
           
           {/* Sidebar */}
           <aside className="lg:col-span-1 space-y-6">
-            {/* Quick Pricing Overview */}
-            {software.pricing && software.pricing.length > 0 && (
-              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div className="p-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
-                  <h3 className="text-lg font-bold flex items-center">
-                    <CurrencyDollarIcon className="h-5 w-5 mr-2" />
-                    Quick Pricing
-                  </h3>
-                </div>
-                <div className="p-4 space-y-3">
-                  {software.pricing.slice(0, 3).map((plan: any, index: number) => (
-                    <div 
-                      key={index} 
-                      className={`p-3 rounded-lg border ${
-                        plan.recommended 
-                          ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20' 
-                          : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50'
-                      }`}
-                    >
-                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
-                        <h4 className="font-semibold text-sm break-words" title={plan.name}>
-                          {plan.name}
-                        </h4>
-                        {plan.recommended && (
-                          <span className="text-xs bg-primary-600 text-white px-2 py-0.5 rounded-full self-start sm:self-auto whitespace-nowrap">
-                            Popular
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex items-baseline flex-wrap">
-                        <span className="text-xl font-bold text-gray-900 dark:text-white">
-                          {typeof plan.price === 'number' ? `$${plan.price}` : plan.price}
-                        </span>
-                        {plan.price !== 'Free' && plan.price !== 'Custom' && (
-                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
-                            /month
-                          </span>
-                        )}
-                      </div>
-                      {plan.userLimit && (
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 break-words">
-                          {plan.userLimit}
-                        </p>
-                      )}
-                    </div>
-                  ))}
-                  {software.pricing.length > 3 && (
-                    <p className="text-xs text-center text-gray-500 dark:text-gray-400 pt-2">
-                      +{software.pricing.length - 3} more plans available
-                    </p>
-                  )}
-                  {software.affiliateLink && (
-                    <a
-                      href="#pricing"
-                      className="block w-full text-center py-2 px-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold mt-3"
-                    >
-                      View All Plans
-                    </a>
-                  )}
-                </div>
-              </div>
-            )}
-            
             {/* Company Info Card */}
             {software.companyInfo && (
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
@@ -1008,6 +945,85 @@ export default async function G2StyleReviewPage({ params }: Props) {
                     </div>
                   )}
                 </dl>
+              </div>
+            )}
+            
+            {/* Quick Pricing Overview */}
+            {software.pricing && software.pricing.length > 0 && (
+              <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                <div className="p-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
+                  <h3 className="text-lg font-bold flex items-center">
+                    <CurrencyDollarIcon className="h-5 w-5 mr-2" />
+                    Quick Pricing
+                  </h3>
+                </div>
+                <div className="p-4 space-y-3">
+                  {software.pricing.slice(0, 3).map((plan: any, index: number) => (
+                    <div 
+                      key={index} 
+                      className={`p-3 rounded-lg border ${
+                        plan.recommended || plan.highlighted
+                          ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20' 
+                          : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50'
+                      }`}
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
+                        <h4 className="font-semibold text-sm break-words" title={plan.name}>
+                          {plan.name}
+                        </h4>
+                        {(plan.recommended || plan.highlighted) && (
+                          <span className="text-xs bg-primary-600 text-white px-2 py-0.5 rounded-full self-start sm:self-auto whitespace-nowrap">
+                            Popular
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-baseline flex-wrap">
+                        <span className="text-xl font-bold text-gray-900 dark:text-white">
+                          {typeof plan.price === 'number' ? 
+                            plan.price === 0 ? 'Free' : `$${plan.price}` 
+                            : plan.price}
+                        </span>
+                        {plan.price !== 'Free' && plan.price !== 'Custom' && typeof plan.price === 'number' && plan.price > 0 && (
+                          <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                            /user/month
+                          </span>
+                        )}
+                      </div>
+                      {plan.userLimit && (
+                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 break-words">
+                          {plan.userLimit}
+                        </p>
+                      )}
+                      {/* Show first 2 features */}
+                      {plan.features && plan.features.length > 0 && (
+                        <ul className="mt-2 space-y-1">
+                          {plan.features.slice(0, 2).map((feature: string, idx: number) => (
+                            <li key={idx} className="text-xs text-gray-600 dark:text-gray-400 flex items-start">
+                              <CheckIcon className="h-3 w-3 text-green-500 mr-1 mt-0.5 flex-shrink-0" />
+                              <span className="line-clamp-1">{feature}</span>
+                            </li>
+                          ))}
+                          {plan.features.length > 2 && (
+                            <li className="text-xs text-gray-500 dark:text-gray-400 italic">
+                              +{plan.features.length - 2} more features
+                            </li>
+                          )}
+                        </ul>
+                      )}
+                    </div>
+                  ))}
+                  {software.pricing.length > 3 && (
+                    <p className="text-xs text-center text-gray-500 dark:text-gray-400 pt-2">
+                      +{software.pricing.length - 3} more plans available
+                    </p>
+                  )}
+                  <a
+                    href="#pricing"
+                    className="block w-full text-center py-2 px-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm font-semibold mt-3"
+                  >
+                    View All Pricing Plans
+                  </a>
+                </div>
               </div>
             )}
             

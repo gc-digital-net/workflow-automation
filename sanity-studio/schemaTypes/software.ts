@@ -638,7 +638,8 @@ export default defineType({
       name: 'categories',
       title: 'Categories',
       type: 'array',
-      of: [{ type: 'reference', to: [{ type: 'category' }] }],
+      of: [{ type: 'reference', to: [{ type: 'softwareCategory' }] }],
+      description: 'Select the categories this software belongs to',
     },
     {
       name: 'reviewAuthor',

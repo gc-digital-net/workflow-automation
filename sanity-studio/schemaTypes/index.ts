@@ -1,6 +1,7 @@
 import blockContent from './blockContent'
 import author from './author'
 import category from './category'
+import softwareCategory from './softwareCategory'
 import blogPost from './blogPost'
 import software from './software'
 import topSoftware from './topSoftware'
@@ -16,6 +17,7 @@ export const schemaTypes = [
   blockContent,
   author,
   category,
+  softwareCategory,
   blogPost,
   software,
   topSoftware,

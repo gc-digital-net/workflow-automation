@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Outfit } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -9,6 +9,12 @@ import "./globals.css";
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
+  display: "swap",
+});
+
+const outfit = Outfit({
+  subsets: ["latin"],
+  variable: "--font-outfit",
   display: "swap",
 });
 
@@ -72,7 +78,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${inter.variable} font-sans antialiased`}>
+      <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
         <ThemeProvider>
           {/* Background effects - layered for depth */}
           <MeshGradient />

@@ -9,6 +9,11 @@
   :root {
     --font-inter: 'Inter', system-ui, sans-serif;
     --font-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-outfit: 'Outfit', system-ui, sans-serif;
+  }
+  
+  .font-outfit {
+    font-family: var(--font-outfit);
   }
   
   html {

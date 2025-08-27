@@ -54,7 +54,7 @@ export default function ReviewAuthor({
   const avatarUrl = getAvatarUrl()
   
   // Debug logging
-  if (reviewAuthor.avatar) {
+  if (reviewAuthor && reviewAuthor.avatar) {
     console.log('Avatar data:', reviewAuthor.avatar)
     console.log('Generated URL:', avatarUrl)
   }

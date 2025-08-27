@@ -121,8 +121,35 @@ export default function HomePage() {
     fetchData()
   }, [])
 
+  // Add debug info
+  if (typeof window !== 'undefined') {
+    console.log('Homepage render - isLoading:', isLoading)
+    console.log('Homepage render - featuredSoftware:', featuredSoftware)
+    console.log('Homepage render - categories:', categories)
+    console.log('Homepage render - latestPosts:', latestPosts)
+  }
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading content...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen">
+      {/* Debug Info - Remove in production */}
+      {!isLoading && featuredSoftware.length === 0 && categories.length === 0 && (
+        <div className="bg-yellow-50 border border-yellow-200 p-4 m-4 rounded">
+          <p className="text-yellow-800">Debug: No data loaded. Check console for errors.</p>
+          <p className="text-sm">Software: {featuredSoftware.length}, Categories: {categories.length}, Posts: {latestPosts.length}</p>
+        </div>
+      )}
+      
       {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-primary-600 via-primary-700 to-indigo-800 overflow-hidden">
         {/* Background Pattern */}
@@ -184,19 +211,20 @@ export default function HomePage() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-900">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Browse by Category
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Find the perfect software for your specific needs
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {categories.map((category) => {
+      {categories.length > 0 && (
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                Browse by Category
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Find the perfect software for your specific needs
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {categories.map((category) => {
               const icons: any = {
                 'project-management': ChartBarIcon,
                 'workflow-automation': BoltIcon,
@@ -236,21 +264,23 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Featured Software */}
-      <section className="py-20 bg-white dark:bg-gray-800">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Top-Rated Software
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-              Our highest-rated tools based on comprehensive testing and real user feedback
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredSoftware.map((software, idx) => (
+      {featuredSoftware.length > 0 && (
+        <section className="py-20 bg-white dark:bg-gray-800">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                Top-Rated Software
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                Our highest-rated tools based on comprehensive testing and real user feedback
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredSoftware.map((software, idx) => (
               <Link
                 key={software._id}
                 href={`/reviews/${software.slug?.current}`}
@@ -322,6 +352,7 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* Benefits Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-900">

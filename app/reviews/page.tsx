@@ -1,30 +1,14 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import Image from 'next/image';
-import { StarIcon, SparklesIcon, CurrencyDollarIcon, BeakerIcon } from '@heroicons/react/24/solid';
-import { MagnifyingGlassIcon, AdjustmentsHorizontalIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
-import { getSoftware } from '@/lib/sanity-queries';
-import { urlFor } from '@/lib/sanity';
+'use client'
 
-export const metadata: Metadata = {
-  title: 'Software Reviews | In-Depth Analysis & Ratings',
-  description: 'Comprehensive reviews of workflow automation, project management, and business software. Compare features, pricing, and find the perfect tool for your needs.',
-};
-
-const categories = [
-  'All Software',
-  'Project Management',
-  'Automation',
-  'Work Management',
-  'CRM',
-  'Knowledge Management',
-  'Database',
-  'Communication',
-  'HR Tools',
-];
+import { useState, useEffect, useMemo } from 'react'
+import Link from 'next/link'
+import Image from 'next/image'
+import { StarIcon, FunnelIcon, XMarkIcon } from '@heroicons/react/24/solid'
+import { MagnifyingGlassIcon, ChevronDownIcon } from '@heroicons/react/24/outline'
+import { client, urlFor } from '@/lib/sanity'
 
 function ScoreBar({ score, label }: { score: number; label: string }) {
-  const percentage = (score / 10) * 100;
+  const percentage = (score / 10) * 100
   return (
     <div className="flex items-center gap-2">
       <span className="text-xs text-gray-600 dark:text-gray-400 w-20">{label}</span>
@@ -36,125 +20,227 @@ function ScoreBar({ score, label }: { score: number; label: string }) {
       </div>
       <span className="text-xs font-semibold text-gray-900 dark:text-white w-8">{score}</span>
     </div>
-  );
+  )
 }
 
-export default async function ReviewsPage() {
-  // Fetch real data from Sanity
-  const softwareData = await getSoftware();
-  
-  // Transform Sanity data to match our component structure
-  const softwareReviews = softwareData.map((software: any) => ({
-    id: software._id,
-    name: software.name,
-    tagline: software.tagline || 'Powerful automation software',
-    logo: software.logo,
-    category: software.categories?.[0] || 'Software',
-    overallScore: software.overallScore || 8.0,
-    scores: {
-      features: software.scores?.features || 8.0,
-      easeOfUse: software.scores?.easeOfUse || 8.0,
-      value: software.scores?.pricing || software.scores?.value || 8.0,
-      support: software.scores?.support || 8.0,
-    },
-    pricing: software.pricing && software.pricing.length > 0 && software.pricing[0].price 
-      ? `$${software.pricing[0].price}/mo` 
-      : 'Free',
-    integrations: software.integrationsCount || software.integrations?.count || 100,
-    freeTier: software.pricingDetails?.hasFreeTier || software.hasFreeTrial || false,
-    slug: software.slug?.current || software.name.toLowerCase().replace(/\s+/g, '-'),
-    bestFor: software.verdict || 'Teams looking for powerful automation',
-    updatedAt: software.lastUpdated || new Date().toISOString(),
-  }));
+export default function ReviewsPage() {
+  const [softwareReviews, setSoftwareReviews] = useState<any[]>([])
+  const [categories, setCategories] = useState<any[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isLoading, setIsLoading] = useState(true)
+  const [sortBy, setSortBy] = useState<'score' | 'name' | 'recent'>('score')
+
+  // Fetch software and categories
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        // Fetch software with categories
+        const softwareQuery = `*[_type == "software"] {
+          _id,
+          name,
+          tagline,
+          excerpt,
+          logo,
+          overallScore,
+          scores,
+          quickInfo,
+          slug,
+          lastUpdated,
+          categories[]-> {
+            _id,
+            name,
+            slug,
+            color
+          }
+        } | order(overallScore desc)`
+
+        // Fetch all categories
+        const categoriesQuery = `*[_type == "softwareCategory"] | order(order asc) {
+          _id,
+          name,
+          slug,
+          color,
+          featured
+        }`
+
+        const [software, cats] = await Promise.all([
+          client.fetch(softwareQuery),
+          client.fetch(categoriesQuery)
+        ])
+
+        setSoftwareReviews(software)
+        setCategories(cats)
+        setIsLoading(false)
+      } catch (error) {
+        console.error('Error fetching data:', error)
+        setIsLoading(false)
+      }
+    }
+
+    fetchData()
+  }, [])
+
+  // Filter and sort software
+  const filteredSoftware = useMemo(() => {
+    let filtered = softwareReviews
+
+    // Category filter
+    if (selectedCategory !== 'all') {
+      filtered = filtered.filter(software => 
+        software.categories?.some((cat: any) => cat._id === selectedCategory)
+      )
+    }
+
+    // Search filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase()
+      filtered = filtered.filter(software =>
+        software.name.toLowerCase().includes(query) ||
+        software.tagline?.toLowerCase().includes(query) ||
+        software.categories?.some((cat: any) => cat.name.toLowerCase().includes(query))
+      )
+    }
+
+    // Sort
+    switch (sortBy) {
+      case 'name':
+        filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name))
+        break
+      case 'recent':
+        filtered = [...filtered].sort((a, b) => 
+          new Date(b.lastUpdated || 0).getTime() - new Date(a.lastUpdated || 0).getTime()
+        )
+        break
+      default: // score
+        filtered = [...filtered].sort((a, b) => (b.overallScore || 0) - (a.overallScore || 0))
+    }
+
+    return filtered
+  }, [softwareReviews, selectedCategory, searchQuery, sortBy])
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-800 dark:to-gray-900 py-16">
+      <section className="bg-gradient-to-b from-white to-gray-50 dark:from-gray-800 dark:to-gray-900 py-12 border-b border-gray-200 dark:border-gray-700">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto">
             <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
               Software Reviews & Ratings
             </h1>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
-              In-depth analysis of top business software tools. Compare features, pricing, and find your perfect match.
+              In-depth analysis of {softwareReviews.length}+ business software tools. Compare features, pricing, and find your perfect match.
             </p>
             
             {/* Search Bar */}
-            <div className="mt-8 flex gap-4 max-w-2xl mx-auto">
-              <div className="flex-1 relative">
+            <div className="mt-8 max-w-2xl mx-auto">
+              <div className="relative">
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder="Search software by name or category..."
                   className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-primary-500 focus:border-transparent dark:border-gray-600 dark:bg-gray-800 dark:text-white"
                 />
               </div>
-              <button className="px-6 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium">
-                Search
-              </button>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Quick Stats */}
-      <section className="py-8 border-b border-gray-200 dark:border-gray-700">
+      {/* Filters Section */}
+      <section className="sticky top-0 z-10 bg-white dark:bg-gray-800 shadow-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">{softwareReviews.length}</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Software Reviewed</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">15</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Review Criteria</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">50K+</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Hours Analyzed</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-primary-600 dark:text-primary-400">2024</div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">Latest Updates</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Filters and Sorting */}
-      <section className="py-6 border-b border-gray-200 dark:border-gray-700 sticky top-16 bg-white dark:bg-gray-900 z-30">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            {/* Category Filter */}
-            <div className="flex items-center gap-2 overflow-x-auto">
-              {categories.map((category) => (
+          <div className="py-4">
+            {/* Category Pills */}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2 overflow-x-auto pb-2">
                 <button
-                  key={category}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
-                    category === 'All Software'
+                  onClick={() => setSelectedCategory('all')}
+                  className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                    selectedCategory === 'all'
                       ? 'bg-primary-600 text-white'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
-                  {category}
+                  All Software ({softwareReviews.length})
                 </button>
-              ))}
-            </div>
-            
-            {/* Sort Dropdown */}
-            <div className="flex items-center gap-4">
-              <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800">
-                <AdjustmentsHorizontalIcon className="h-4 w-4" />
-                <span className="text-sm">Filters</span>
-              </button>
-              <div className="relative">
-                <button className="flex items-center gap-2 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800">
-                  <span className="text-sm">Sort by: Highest Rated</span>
-                  <ChevronDownIcon className="h-4 w-4" />
-                </button>
+                
+                {categories.filter(cat => cat.featured).map((category) => {
+                  const count = softwareReviews.filter(s => 
+                    s.categories?.some((c: any) => c._id === category._id)
+                  ).length
+                  
+                  return (
+                    <button
+                      key={category._id}
+                      onClick={() => setSelectedCategory(category._id)}
+                      className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
+                        selectedCategory === category._id
+                          ? 'bg-primary-600 text-white'
+                          : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                      }`}
+                    >
+                      {category.name} ({count})
+                    </button>
+                  )
+                })}
+                
+                {/* Dropdown for more categories */}
+                <div className="relative">
+                  <button className="px-4 py-2 rounded-full text-sm font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600 flex items-center gap-1">
+                    More
+                    <ChevronDownIcon className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Sort Dropdown */}
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Sort by:</span>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as any)}
+                  className="px-3 py-1.5 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-700 text-sm"
+                >
+                  <option value="score">Highest Score</option>
+                  <option value="name">Name (A-Z)</option>
+                  <option value="recent">Recently Updated</option>
+                </select>
               </div>
             </div>
+
+            {/* Active Filters */}
+            {(selectedCategory !== 'all' || searchQuery) && (
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 dark:text-gray-400">Active filters:</span>
+                {selectedCategory !== 'all' && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 text-sm">
+                    {categories.find(c => c._id === selectedCategory)?.name}
+                    <button onClick={() => setSelectedCategory('all')}>
+                      <XMarkIcon className="h-3 w-3" />
+                    </button>
+                  </span>
+                )}
+                {searchQuery && (
+                  <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 text-sm">
+                    Search: {searchQuery}
+                    <button onClick={() => setSearchQuery('')}>
+                      <XMarkIcon className="h-3 w-3" />
+                    </button>
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -162,149 +248,105 @@ export default async function ReviewsPage() {
       {/* Software Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          {softwareReviews.length === 0 ? (
+          {filteredSoftware.length === 0 ? (
             <div className="text-center py-12">
-              <p className="text-gray-500 dark:text-gray-400">No software reviews available yet.</p>
+              <FunnelIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-gray-600 dark:text-gray-400">No software found matching your filters.</p>
+              <button
+                onClick={() => {
+                  setSelectedCategory('all')
+                  setSearchQuery('')
+                }}
+                className="mt-4 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700"
+              >
+                Clear Filters
+              </button>
             </div>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {softwareReviews.map((software) => (
-                <Link
-                  key={software.id}
-                  href={`/reviews/${software.slug}`}
-                  className="group block"
-                >
-                  <article className="h-full flex flex-col bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                    {/* Header */}
-                    <div className="p-6 border-b border-gray-100 dark:border-gray-700">
+            <>
+              <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                Showing {filteredSoftware.length} software review{filteredSoftware.length !== 1 ? 's' : ''}
+              </div>
+              
+              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                {filteredSoftware.map((software) => (
+                  <Link
+                    key={software._id}
+                    href={`/reviews/${software.slug?.current || '#'}`}
+                    className="group bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden border border-gray-200 dark:border-gray-700"
+                  >
+                    <div className="p-6">
+                      {/* Header */}
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
-                          {software.logo ? (
-                            <div className="relative w-12 h-12 bg-white rounded-lg p-1">
+                          {software.logo && (
+                            <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
                               <Image
-                                src={urlFor(software.logo).url()} 
+                                src={urlFor(software.logo).url()}
                                 alt={software.name}
                                 fill
-                                className="object-contain"
-                                sizes="48px"
+                                className="object-contain p-2"
                               />
-                            </div>
-                          ) : (
-                            <div className="w-12 h-12 bg-gradient-to-br from-gray-200 to-gray-300 dark:from-gray-600 dark:to-gray-700 rounded-lg flex items-center justify-center">
-                              <SparklesIcon className="h-6 w-6 text-gray-500 dark:text-gray-400" />
                             </div>
                           )}
                           <div>
                             <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
                               {software.name}
                             </h3>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">{software.category}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                              {software.tagline || 'Business Software'}
+                            </p>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-                            {software.overallScore.toFixed(1)}
-                          </div>
-                          <div className="flex items-center gap-0.5">
-                            {[...Array(5)].map((_, i) => (
-                              <StarIcon 
-                                key={i} 
-                                className={`h-3 w-3 ${
-                                  i < Math.floor(software.overallScore / 2)
-                                    ? 'text-yellow-400'
-                                    : 'text-gray-300 dark:text-gray-600'
-                                }`}
-                              />
-                            ))}
-                          </div>
+                        <div className="flex items-center gap-1 px-2 py-1 bg-primary-50 dark:bg-primary-900/30 rounded-lg">
+                          <StarIcon className="h-4 w-4 text-primary-600 dark:text-primary-400" />
+                          <span className="text-sm font-semibold text-primary-700 dark:text-primary-300">
+                            {software.overallScore || 'N/A'}
+                          </span>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
-                        {software.tagline}
-                      </p>
-                    </div>
-                    
-                    {/* Scores */}
-                    <div className="p-6 space-y-3 flex-1">
-                      <ScoreBar score={software.scores.features} label="Features" />
-                      <ScoreBar score={software.scores.easeOfUse} label="Ease of Use" />
-                      <ScoreBar score={software.scores.value} label="Value" />
-                      <ScoreBar score={software.scores.support} label="Support" />
-                    </div>
-                    
-                    {/* Quick Info */}
-                    <div className="p-6 pt-0">
-                      <div className="flex items-center justify-between text-sm mb-4">
-                        <div className="flex items-center gap-4">
-                          <div className="flex items-center gap-1">
-                            <CurrencyDollarIcon className="h-4 w-4 text-gray-400" />
-                            <span className="text-gray-600 dark:text-gray-400">{software.pricing}</span>
-                          </div>
-                          {software.freeTier && (
-                            <span className="px-2 py-1 bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400 text-xs rounded-full">
-                              Free Tier
+
+                      {/* Categories */}
+                      {software.categories && software.categories.length > 0 && (
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {software.categories.slice(0, 3).map((cat: any) => (
+                            <span
+                              key={cat._id}
+                              className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300"
+                            >
+                              {cat.name}
+                            </span>
+                          ))}
+                          {software.categories.length > 3 && (
+                            <span className="px-2 py-1 text-xs rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                              +{software.categories.length - 3}
                             </span>
                           )}
                         </div>
-                        <div className="flex items-center gap-1">
-                          <BeakerIcon className="h-4 w-4 text-gray-400" />
-                          <span className="text-gray-600 dark:text-gray-400">{software.integrations}+</span>
-                        </div>
-                      </div>
-                      
-                      {/* Best For */}
-                      <div className="p-3 bg-gray-50 dark:bg-gray-900/50 rounded-lg">
-                        <p className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-1">Best For:</p>
-                        <p className="text-sm text-gray-700 dark:text-gray-300">{software.bestFor}</p>
-                      </div>
-                    </div>
-                    
-                    {/* Footer */}
-                    <div className="px-6 py-3 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-100 dark:border-gray-700">
-                      <div className="flex items-center justify-between">
-                        <span className="text-xs text-gray-500 dark:text-gray-400">
-                          Updated {new Date(software.updatedAt).toLocaleDateString()}
+                      )}
+
+                      {/* Description */}
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                        {software.excerpt || 'Comprehensive software solution for modern businesses.'}
+                      </p>
+
+                      {/* Quick Info */}
+                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
+                        <span>
+                          {software.quickInfo?.startingPrice || 'Contact for pricing'}
                         </span>
-                        <span className="text-sm font-medium text-primary-600 dark:text-primary-400 group-hover:underline">
+                        <span className="text-primary-600 dark:text-primary-400 font-medium group-hover:underline">
                           Read Review →
                         </span>
                       </div>
                     </div>
-                  </article>
-                </Link>
-              ))}
-            </div>
+                  </Link>
+                ))}
+              </div>
+            </>
           )}
-          
-          {/* Load More - only show if we have reviews */}
-          {softwareReviews.length > 0 && softwareReviews.length >= 6 && (
-            <div className="mt-12 text-center">
-              <button className="px-8 py-3 bg-primary-600 text-white rounded-lg hover:bg-primary-700 font-medium">
-                Load More Reviews
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16 bg-gradient-to-r from-primary-600 to-primary-700">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Can't Find What You're Looking For?
-          </h2>
-          <p className="text-xl text-primary-100 mb-8 max-w-2xl mx-auto">
-            Use our AI-powered Software Finder to get personalized recommendations based on your specific needs.
-          </p>
-          <Link
-            href="/tools/software-finder"
-            className="inline-flex items-center px-8 py-3 bg-white text-primary-600 rounded-lg hover:bg-primary-50 font-medium"
-          >
-            Try Software Finder
-            <SparklesIcon className="ml-2 h-5 w-5" />
-          </Link>
         </div>
       </section>
     </div>
-  );
+  )
 }

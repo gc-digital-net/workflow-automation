@@ -82,7 +82,7 @@ export default function Footer() {
             <Link href="/" className="flex items-center gap-3">
               <div className="relative h-12 w-12 flex-shrink-0">
                 <Image
-                  src="/logo/workflow-automation-logo-dark-bg.svg"
+                  src="/logo/workflow-automation-logo-white-bg.svg"
                   alt="Workflow Automation"
                   fill
                   className="object-contain"

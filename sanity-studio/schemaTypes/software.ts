@@ -6,7 +6,7 @@ export default defineType({
   title: 'Software Review',
   type: 'document',
   groups: [
-    { name: 'basic', title: '📝 Basic Info', default: true },
+    { name: 'basic', title: '📝 Basic Info' },
     { name: 'scoring', title: '⭐ Scoring & Ratings' },
     { name: 'automated', title: '🤖 Automated Content' },
     { name: 'features', title: '✨ Features & Details' },

@@ -406,6 +406,7 @@ async function getSoftware(slug: string) {
         name,
         role,
         bio,
+        avatar,
         expertise,
         certifications
       },

@@ -1,12 +1,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { CalendarIcon, CheckBadgeIcon, DocumentMagnifyingGlassIcon } from '@heroicons/react/24/outline'
+import { urlFor } from '@/lib/sanity'
 
 interface ReviewAuthorProps {
   author?: {
     name: string
     role: string
-    avatar?: string
+    avatar?: any // Can be string URL or Sanity image object
     bio?: string
   }
   reviewDate: string
@@ -24,9 +25,28 @@ export default function ReviewAuthor({
   const reviewAuthor = author || {
     name: 'Sarah Mitchell',
     role: 'Senior Software Analyst',
-    avatar: '/team/sarah-mitchell.jpg',
+    avatar: null,
     bio: 'Sarah has over 8 years of experience testing and implementing project management software for Fortune 500 companies.'
   }
+  
+  // Get avatar URL - handle both Sanity image objects and string URLs
+  const getAvatarUrl = () => {
+    if (!reviewAuthor.avatar) return null
+    
+    // If it's a string (URL), return as-is
+    if (typeof reviewAuthor.avatar === 'string') {
+      return reviewAuthor.avatar
+    }
+    
+    // If it's a Sanity image object, use urlFor
+    if (reviewAuthor.avatar._type === 'image' || reviewAuthor.avatar.asset) {
+      return urlFor(reviewAuthor.avatar).url()
+    }
+    
+    return null
+  }
+  
+  const avatarUrl = getAvatarUrl()
   
   return (
     <div className="flex items-center justify-between flex-wrap gap-4 py-5 mt-2 border-t border-gray-200 dark:border-gray-700">
@@ -34,9 +54,9 @@ export default function ReviewAuthor({
       <div className="flex items-center gap-3">
         {/* Author Avatar */}
         <div className="relative w-10 h-10 rounded-full overflow-hidden bg-gray-200 dark:bg-gray-700 flex-shrink-0">
-          {reviewAuthor.avatar ? (
+          {avatarUrl ? (
             <Image
-              src={reviewAuthor.avatar}
+              src={avatarUrl}
               alt={reviewAuthor.name}
               fill
               className="object-cover"

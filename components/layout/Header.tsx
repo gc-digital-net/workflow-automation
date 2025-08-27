@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useState, useRef, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 import { Bars3Icon, XMarkIcon, ChevronDownIcon } from '@heroicons/react/24/outline';
@@ -9,6 +8,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from './ThemeToggle';
 import SearchButton from '@/components/search/SearchButton';
 import MegaMenu from './MegaMenu';
+import Logo from '@/components/ui/Logo';
 import { NAVIGATION_ITEMS } from '@/lib/constants';
 
 export default function Header() {
@@ -52,23 +52,7 @@ export default function Header() {
         <div className="flex h-full items-center justify-between">
           {/* Logo Section with company logo */}
           <div className="flex items-center gap-4 lg:flex-1">
-            <Link href="/" className="flex items-center gap-3 group">
-              {/* Company Logo - White Background */}
-              <div className="relative h-9 w-9 flex-shrink-0">
-                <Image
-                  src="/logo/workflow-automation-logo-white-bg.svg"
-                  alt="Workflow Automation"
-                  fill
-                  className="object-contain"
-                  priority
-                />
-              </div>
-              <div className="hidden sm:flex flex-col">
-                <span className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white font-outfit bg-gradient-to-r from-primary-600 to-blue-600 bg-clip-text text-transparent dark:from-primary-400 dark:to-blue-400">
-                  Workflow Automation
-                </span>
-              </div>
-            </Link>
+            <Logo />
           </div>
           
           {/* Mobile menu button */}

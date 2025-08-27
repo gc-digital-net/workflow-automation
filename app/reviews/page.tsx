@@ -40,11 +40,11 @@ export default function ReviewsPage() {
           _id,
           name,
           tagline,
-          excerpt,
+          "excerpt": coalesce(excerpt, shortDescription, ""),
           logo,
           overallScore,
           scores,
-          quickInfo,
+          "quickInfo": coalesce(quickInfo, companyInfo, {}),
           slug,
           lastUpdated,
           categories[]-> {
@@ -69,8 +69,11 @@ export default function ReviewsPage() {
           client.fetch(categoriesQuery)
         ])
 
-        setSoftwareReviews(software)
-        setCategories(cats)
+        console.log('Fetched software:', software)
+        console.log('Fetched categories:', cats)
+        
+        setSoftwareReviews(software || [])
+        setCategories(cats || [])
         setIsLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error)

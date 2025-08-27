@@ -73,7 +73,7 @@ export default function HomePage() {
           logo,
           overallScore,
           slug,
-          quickInfo,
+          "quickInfo": coalesce(quickInfo, companyInfo, {}),
           categories[]-> {
             name
           }
@@ -93,8 +93,8 @@ export default function HomePage() {
           _id,
           title,
           slug,
-          excerpt,
-          mainImage,
+          "excerpt": coalesce(excerpt, ""),
+          "mainImage": coalesce(mainImage, featuredImage),
           publishedAt
         }`
 
@@ -104,9 +104,13 @@ export default function HomePage() {
           client.fetch(postsQuery)
         ])
 
-        setFeaturedSoftware(software)
-        setCategories(cats)
-        setLatestPosts(posts)
+        console.log('Homepage - Fetched software:', software)
+        console.log('Homepage - Fetched categories:', cats)
+        console.log('Homepage - Fetched posts:', posts)
+        
+        setFeaturedSoftware(software || [])
+        setCategories(cats || [])
+        setLatestPosts(posts || [])
         setIsLoading(false)
       } catch (error) {
         console.error('Error fetching data:', error)

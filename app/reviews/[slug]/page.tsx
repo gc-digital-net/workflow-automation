@@ -247,11 +247,28 @@ const portableTextComponents = {
       )
     },
     
-    infoBox: ({ value }: any) => (
-      <InfoBox type={value.type || 'info'} title={value.title}>
-        <PortableText value={value.content} />
-      </InfoBox>
-    ),
+    infoBox: ({ value }: any) => {
+      // Simple component for info box content
+      const simpleComponents = {
+        marks: {
+          strong: ({ children }: any) => <strong>{children}</strong>,
+          em: ({ children }: any) => <em>{children}</em>,
+        },
+        block: {
+          normal: ({ children }: any) => <p className="mb-2 last:mb-0">{children}</p>,
+        }
+      }
+      
+      return (
+        <InfoBox type={value.type || 'info'} title={value.title}>
+          {value.content ? (
+            <PortableText value={value.content} components={simpleComponents} />
+          ) : (
+            <p>No content available</p>
+          )}
+        </InfoBox>
+      )
+    },
     
     faqBlock: ({ value }: any) => (
       <div className="my-12 bg-gray-50 dark:bg-gray-800/50 rounded-xl p-8">

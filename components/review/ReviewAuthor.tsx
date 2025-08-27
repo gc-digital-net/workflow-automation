@@ -39,14 +39,25 @@ export default function ReviewAuthor({
     }
     
     // If it's a Sanity image object, use urlFor
-    if (reviewAuthor.avatar._type === 'image' || reviewAuthor.avatar.asset) {
-      return urlFor(reviewAuthor.avatar).url()
+    if (reviewAuthor.avatar && (reviewAuthor.avatar._type === 'image' || reviewAuthor.avatar.asset)) {
+      try {
+        return urlFor(reviewAuthor.avatar).width(200).height(200).url()
+      } catch (error) {
+        console.error('Error generating avatar URL:', error)
+        return null
+      }
     }
     
     return null
   }
   
   const avatarUrl = getAvatarUrl()
+  
+  // Debug logging
+  if (reviewAuthor.avatar) {
+    console.log('Avatar data:', reviewAuthor.avatar)
+    console.log('Generated URL:', avatarUrl)
+  }
   
   return (
     <div className="flex items-center justify-between flex-wrap gap-4 py-5 mt-2 border-t border-gray-200 dark:border-gray-700">

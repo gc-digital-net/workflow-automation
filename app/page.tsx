@@ -1,6 +1,3 @@
-'use client'
-
-import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { 
@@ -56,94 +53,69 @@ const benefits = [
   },
 ]
 
-export default function HomePage() {
-  const [featuredSoftware, setFeaturedSoftware] = useState<any[]>([])
-  const [categories, setCategories] = useState<any[]>([])
-  const [latestPosts, setLatestPosts] = useState<any[]>([])
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        // Fetch featured software
-        const softwareQuery = `*[_type == "software"] | order(overallScore desc) [0...6] {
-          _id,
-          name,
-          tagline,
-          logo,
-          overallScore,
-          slug,
-          "quickInfo": coalesce(quickInfo, companyInfo, {}),
-          categories[]-> {
-            name
-          }
-        }`
-
-        // Fetch featured categories
-        const categoriesQuery = `*[_type == "softwareCategory" && featured == true] | order(order asc) {
-          _id,
-          name,
-          slug,
-          description,
-          color
-        }`
-
-        // Fetch latest blog posts
-        const postsQuery = `*[_type == "post"] | order(publishedAt desc) [0...3] {
-          _id,
-          title,
-          slug,
-          "excerpt": coalesce(excerpt, ""),
-          "mainImage": coalesce(mainImage, featuredImage),
-          publishedAt
-        }`
-
-        const [software, cats, posts] = await Promise.all([
-          client.fetch(softwareQuery),
-          client.fetch(categoriesQuery),
-          client.fetch(postsQuery)
-        ])
-
-        console.log('Homepage - Fetched software:', software)
-        console.log('Homepage - Fetched categories:', cats)
-        console.log('Homepage - Fetched posts:', posts)
-        
-        setFeaturedSoftware(software || [])
-        setCategories(cats || [])
-        setLatestPosts(posts || [])
-        setIsLoading(false)
-      } catch (error) {
-        console.error('Error fetching data:', error)
-        setIsLoading(false)
+async function getHomePageData() {
+  try {
+    // Fetch featured software
+    const softwareQuery = `*[_type == "software"] | order(overallScore desc) [0...6] {
+      _id,
+      name,
+      tagline,
+      logo,
+      overallScore,
+      slug,
+      "quickInfo": coalesce(quickInfo, companyInfo, {}),
+      categories[]-> {
+        name
       }
+    }`
+
+    // Fetch featured categories
+    const categoriesQuery = `*[_type == "softwareCategory" && featured == true] | order(order asc) {
+      _id,
+      name,
+      slug,
+      description,
+      color
+    }`
+
+    // Fetch latest blog posts
+    const postsQuery = `*[_type == "post"] | order(publishedAt desc) [0...3] {
+      _id,
+      title,
+      slug,
+      "excerpt": coalesce(excerpt, ""),
+      "mainImage": coalesce(mainImage, featuredImage),
+      publishedAt
+    }`
+
+    const [software, cats, posts] = await Promise.all([
+      client.fetch(softwareQuery),
+      client.fetch(categoriesQuery),
+      client.fetch(postsQuery)
+    ])
+
+    return {
+      featuredSoftware: software || [],
+      categories: cats || [],
+      latestPosts: posts || []
     }
-
-    fetchData()
-  }, [])
-
-  // Add debug info
-  if (typeof window !== 'undefined') {
-    console.log('Homepage render - isLoading:', isLoading)
-    console.log('Homepage render - featuredSoftware:', featuredSoftware)
-    console.log('Homepage render - categories:', categories)
-    console.log('Homepage render - latestPosts:', latestPosts)
+  } catch (error) {
+    console.error('Error fetching homepage data:', error)
+    return {
+      featuredSoftware: [],
+      categories: [],
+      latestPosts: []
+    }
   }
+}
 
-  if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading content...</p>
-        </div>
-      </div>
-    )
-  }
+export default async function HomePage() {
+  const { featuredSoftware, categories, latestPosts } = await getHomePageData()
 
   return (
     <div className="min-h-screen">
       {/* Debug Info - Remove in production */}
-      {!isLoading && featuredSoftware.length === 0 && categories.length === 0 && (
+      {featuredSoftware.length === 0 && categories.length === 0 && (
         <div className="bg-yellow-50 border border-yellow-200 p-4 m-4 rounded">
           <p className="text-yellow-800">Debug: No data loaded. Check console for errors.</p>
           <p className="text-sm">Software: {featuredSoftware.length}, Categories: {categories.length}, Posts: {latestPosts.length}</p>

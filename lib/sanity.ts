@@ -8,8 +8,8 @@ export const client = createClient({
   projectId: projectId,
   dataset: dataset,
   apiVersion: '2024-01-01',
-  useCdn: process.env.NODE_ENV === 'production',
-  token: process.env.SANITY_API_TOKEN,
+  useCdn: false, // Disable CDN to ensure fresh data
+  // Don't include token on client side for security
 })
 
 const builder = imageUrlBuilder(client)

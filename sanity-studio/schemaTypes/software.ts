@@ -327,6 +327,72 @@ export default defineType({
             },
           },
         },
+        // Info Box Block
+        {
+          type: 'object',
+          name: 'infoBox',
+          title: 'Info Box',
+          fields: [
+            {
+              name: 'type',
+              title: 'Box Type',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Info (Blue)', value: 'info' },
+                  { title: 'Pro Tip (Purple)', value: 'tip' },
+                  { title: 'Warning (Amber)', value: 'warning' },
+                  { title: 'Success (Green)', value: 'success' },
+                  { title: 'Highlight (Gradient)', value: 'highlight' },
+                  { title: 'Note (Gray)', value: 'note' },
+                ],
+              },
+              initialValue: 'info',
+            },
+            {
+              name: 'title',
+              title: 'Title (optional)',
+              type: 'string',
+              description: 'Leave empty to use default title for the type',
+            },
+            {
+              name: 'content',
+              title: 'Content',
+              type: 'array',
+              of: [
+                {
+                  type: 'block',
+                  styles: [{ title: 'Normal', value: 'normal' }],
+                  marks: {
+                    decorators: [
+                      { title: 'Bold', value: 'strong' },
+                      { title: 'Italic', value: 'em' },
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+          preview: {
+            select: {
+              title: 'title',
+              type: 'type',
+            },
+            prepare({ title, type }: any) {
+              const typeLabels: any = {
+                info: '💙 Info Box',
+                tip: '💡 Pro Tip',
+                warning: '⚠️ Warning',
+                success: '✅ Success',
+                highlight: '✨ Highlight',
+                note: '📝 Note',
+              };
+              return {
+                title: title || typeLabels[type] || 'Info Box',
+              };
+            },
+          },
+        },
         // FAQ Block
         {
           type: 'object',

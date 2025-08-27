@@ -8,6 +8,7 @@ import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
 import ReviewAuthor from '@/components/review/ReviewAuthor'
+import InfoBox from '@/components/review/InfoBox'
 // Removed ReviewTabs - all content on single page now
 import ReviewSubmissionForm from '@/components/review/ReviewSubmissionForm'
 
@@ -246,6 +247,12 @@ const portableTextComponents = {
       )
     },
     
+    infoBox: ({ value }: any) => (
+      <InfoBox type={value.type || 'info'} title={value.title}>
+        <PortableText value={value.content} />
+      </InfoBox>
+    ),
+    
     faqBlock: ({ value }: any) => (
       <div className="my-12 bg-gray-50 dark:bg-gray-800/50 rounded-xl p-8">
         <h3 className="text-2xl font-bold mb-6">{value.title || 'Frequently Asked Questions'}</h3>
@@ -283,8 +290,10 @@ const portableTextComponents = {
       </h4>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="border-l-4 border-blue-500 pl-6 my-6 italic text-gray-700 dark:text-gray-300 bg-gray-50 dark:bg-gray-800/50 py-4 pr-6 rounded-r-lg">
-        {children}
+      <blockquote className="my-8 p-6 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/50 dark:to-gray-900/50 border-l-4 border-slate-400 dark:border-slate-600 rounded-r-lg shadow-md">
+        <div className="text-gray-700 dark:text-gray-300 italic leading-relaxed text-lg">
+          {children}
+        </div>
       </blockquote>
     ),
     normal: ({ children }: any) => (

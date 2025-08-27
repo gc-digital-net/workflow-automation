@@ -218,7 +218,7 @@ export default async function HomePage() {
                       <Icon className="h-6 w-6 text-primary-600 dark:text-primary-400" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                      <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
                         {category.name}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
@@ -344,7 +344,7 @@ export default async function HomePage() {
                 <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 dark:bg-primary-900/30 rounded-xl mb-4">
                   <benefit.icon className="h-8 w-8 text-primary-600 dark:text-primary-400" />
                 </div>
-                <h3 className="font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2">
                   {benefit.title}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -387,7 +387,7 @@ export default async function HomePage() {
                       />
                     )}
                   </div>
-                  <h3 className="font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                  <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 line-clamp-2">
                     {post.title}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">

@@ -9,7 +9,7 @@ import {
 } from '@heroicons/react/24/outline'
 
 interface InfoBoxProps {
-  type?: 'info' | 'tip' | 'warning' | 'success' | 'highlight' | 'note'
+  type?: 'info' | 'tip' | 'warning' | 'success' | 'highlight' | 'note' | 'verdict'
   title?: string
   children: ReactNode
 }
@@ -57,6 +57,13 @@ export default function InfoBox({ type = 'info', title, children }: InfoBoxProps
       titleColor: 'text-gray-900 dark:text-gray-200',
       textColor: 'text-gray-700 dark:text-gray-300',
       defaultTitle: 'Note'
+    },
+    verdict: {
+      container: 'bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 border-blue-300 dark:border-blue-700',
+      icon: <CheckCircleIcon className="h-5 w-5 text-blue-600 dark:text-blue-400" />,
+      titleColor: 'text-blue-900 dark:text-blue-300',
+      textColor: 'text-blue-800 dark:text-blue-200',
+      defaultTitle: 'Final Verdict'
     }
   }
 

@@ -250,6 +250,58 @@ export default defineType({
               type: 'string',
             }
           ]
+        },
+        
+        // Screenshot block (for existing content compatibility)
+        {
+          type: 'object',
+          name: 'screenshot',
+          title: 'Screenshot',
+          fields: [
+            {
+              name: 'image',
+              title: 'Image',
+              type: 'image',
+              options: { hotspot: true },
+              validation: Rule => Rule.required()
+            },
+            {
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+            },
+            {
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
+            },
+            {
+              name: 'size',
+              title: 'Display Size',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Small', value: 'small' },
+                  { title: 'Medium', value: 'medium' },
+                  { title: 'Large', value: 'large' },
+                  { title: 'Full Width', value: 'full' }
+                ]
+              },
+              initialValue: 'large'
+            }
+          ],
+          preview: {
+            select: {
+              media: 'image',
+              caption: 'caption'
+            },
+            prepare({media, caption}) {
+              return {
+                title: caption || 'Screenshot',
+                media
+              }
+            }
+          }
         }
       ]
     }),
@@ -292,6 +344,24 @@ export default defineType({
         {
           name: 'customerSupport',
           title: 'Customer Support',
+          type: 'number',
+          validation: Rule => Rule.min(1).max(10).precision(1)
+        },
+        {
+          name: 'integrations',
+          title: 'Integrations',
+          type: 'number',
+          validation: Rule => Rule.min(1).max(10).precision(1)
+        },
+        {
+          name: 'support',
+          title: 'Support',
+          type: 'number',
+          validation: Rule => Rule.min(1).max(10).precision(1)
+        },
+        {
+          name: 'value',
+          title: 'Value',
           type: 'number',
           validation: Rule => Rule.min(1).max(10).precision(1)
         }
@@ -454,7 +524,9 @@ export default defineType({
         { name: 'emailSupport', title: 'Email Support?', type: 'boolean' },
         { name: 'phoneSupport', title: 'Phone Support?', type: 'boolean' },
         { name: 'knowledgeBase', title: 'Knowledge Base?', type: 'boolean' },
-        { name: 'responseTime', title: 'Avg Response Time', type: 'string' }
+        { name: 'responseTime', title: 'Avg Response Time', type: 'string' },
+        { name: 'supportDetails', title: 'Support Details', type: 'text', rows: 3 },
+        { name: 'videoTutorials', title: 'Video Tutorials?', type: 'boolean' }
       ]
     }),
     
@@ -472,7 +544,17 @@ export default defineType({
           description: 'e.g., SOC 2, ISO 27001, HIPAA'
         },
         { name: 'dataEncryption', title: 'Data Encryption', type: 'string' },
-        { name: 'gdprCompliant', title: 'GDPR Compliant?', type: 'boolean' }
+        { name: 'gdprCompliant', title: 'GDPR Compliant?', type: 'boolean' },
+        { name: 'gdpr', title: 'GDPR', type: 'boolean' },
+        { name: 'soc2', title: 'SOC 2', type: 'boolean' },
+        { name: 'ssl', title: 'SSL', type: 'boolean' },
+        { name: 'uptime', title: 'Uptime', type: 'string' },
+        { 
+          name: 'otherCertifications', 
+          title: 'Other Certifications', 
+          type: 'array', 
+          of: [{ type: 'string' }] 
+        }
       ]
     }),
     
@@ -557,6 +639,61 @@ export default defineType({
     defineField({
       name: 'lastUpdated',
       title: 'Last Updated',
+      type: 'datetime',
+      group: 'seo',
+    }),
+    
+    // Additional fields for compatibility
+    defineField({
+      name: 'affiliateLinkOptions',
+      title: 'Affiliate Link Options',
+      type: 'object',
+      group: 'seo',
+      fields: [
+        { name: 'openInNewTab', title: 'Open in New Tab', type: 'boolean', initialValue: true }
+      ]
+    }),
+    
+    defineField({
+      name: 'excerpt',
+      title: 'Excerpt',
+      type: 'text',
+      group: 'basic',
+      rows: 3,
+      description: 'Custom excerpt for SEO and previews'
+    }),
+    
+    defineField({
+      name: 'lastReviewUpdate',
+      title: 'Last Review Update',
+      type: 'datetime',
+      group: 'seo',
+    }),
+    
+    defineField({
+      name: 'quickInfo',
+      title: 'Quick Info',
+      type: 'object',
+      group: 'basic',
+      fields: [
+        { name: 'bestFor', title: 'Best For', type: 'string' },
+        { name: 'freeTrial', title: 'Free Trial', type: 'string' },
+        { name: 'integrations', title: 'Integrations', type: 'string' },
+        { name: 'startingPrice', title: 'Starting Price', type: 'string' }
+      ]
+    }),
+    
+    defineField({
+      name: 'reviewAuthor',
+      title: 'Review Author',
+      type: 'reference',
+      to: [{ type: 'author' }],
+      group: 'seo',
+    }),
+    
+    defineField({
+      name: 'reviewDate',
+      title: 'Review Date',
       type: 'datetime',
       group: 'seo',
     }),

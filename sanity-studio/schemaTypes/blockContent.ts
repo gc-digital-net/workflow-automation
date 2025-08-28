@@ -83,6 +83,59 @@ export default defineType({
       ]
     }),
     
+    // Screenshot Block (for compatibility with existing data)
+    defineArrayMember({
+      name: 'screenshot',
+      title: 'Screenshot',
+      type: 'object',
+      icon: () => '📸',
+      fields: [
+        {
+          name: 'image',
+          title: 'Image',
+          type: 'image',
+          options: {hotspot: true},
+          validation: Rule => Rule.required()
+        },
+        {
+          name: 'caption',
+          type: 'string',
+          title: 'Caption',
+        },
+        {
+          name: 'alt',
+          type: 'string',
+          title: 'Alternative Text',
+        },
+        {
+          name: 'size',
+          title: 'Display Size',
+          type: 'string',
+          options: {
+            list: [
+              {title: 'Small', value: 'small'},
+              {title: 'Medium', value: 'medium'},
+              {title: 'Large', value: 'large'},
+              {title: 'Full Width', value: 'full'}
+            ]
+          },
+          initialValue: 'large'
+        }
+      ],
+      preview: {
+        select: {
+          media: 'image',
+          caption: 'caption'
+        },
+        prepare({media, caption}) {
+          return {
+            title: caption || 'Screenshot',
+            media
+          }
+        }
+      }
+    }),
+    
     // Pros and Cons Block
     defineArrayMember({
       name: 'prosConsBlock',

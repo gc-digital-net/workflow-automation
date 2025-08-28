@@ -52,7 +52,6 @@ p, span, div, h1, h2, h3, h4, h5, h6, li, td, th, article {
     @apply min-h-screen bg-gradient-to-br from-secondary-50 via-white to-primary-50/20 text-secondary-900 antialiased dark:from-secondary-950 dark:via-secondary-900 dark:to-primary-950/20 dark:text-secondary-100;
     font-family: var(--font-jakarta), system-ui, sans-serif;
     letter-spacing: -0.01em;
-    overflow-x: hidden;
   }
   
   h1, h2, h3, h4, h5, h6 {

@@ -505,30 +505,36 @@ export default async function G2StyleReviewPage({ params }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col lg:flex-row items-start gap-8">
             {/* Logo and Basic Info */}
-            <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 flex-1">
-              {software.logo && (
-                <div className="flex-shrink-0">
-                  <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-md border border-gray-200 dark:border-gray-700">
-                    <Image
-                      src={urlFor(software.logo).url()}
-                      alt={`${software.name} logo`}
-                      fill
-                      className="object-contain p-2"
-                    />
+            <div className="flex-1">
+              {/* Logo, Name and Tagline Row */}
+              <div className="flex items-start gap-4 mb-6">
+                {software.logo && (
+                  <div className="flex-shrink-0">
+                    <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-md border border-gray-200 dark:border-gray-700">
+                      <Image
+                        src={urlFor(software.logo).url()}
+                        alt={`${software.name} logo`}
+                        fill
+                        className="object-contain p-2"
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
-              
-              <div className="flex-1">
-                <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
-                  {software.name}
-                </h1>
-                {software.tagline && (
-                  <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 break-words">
-                    {software.tagline}
-                  </p>
                 )}
                 
+                <div className="flex-1">
+                  <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3">
+                    {software.name}
+                  </h1>
+                  {software.tagline && (
+                    <p className="text-lg text-gray-600 dark:text-gray-400 break-words">
+                      {software.tagline}
+                    </p>
+                  )}
+                </div>
+              </div>
+              
+              {/* Rating, Stats and Author - Below Logo/Name */}
+              <div>
                 {/* Rating and Reviews */}
                 <div className="flex items-center gap-4 mb-6">
                   <div className="flex items-center gap-2">

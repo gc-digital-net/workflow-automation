@@ -100,21 +100,21 @@ export default function InlineScreenshotGallery({
       {/* Lightbox Modal */}
       {selectedImage !== null && (
         <div 
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4"
+          className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="relative max-w-7xl w-full max-h-[90vh] flex flex-col">
+          <div className="relative w-full h-full max-w-[95vw] max-h-[95vh] flex flex-col">
             {/* Close Button */}
             <button
               onClick={() => setSelectedImage(null)}
-              className="absolute -top-12 right-0 text-white hover:text-gray-300 transition-colors"
+              className="absolute top-2 right-2 sm:top-4 sm:right-4 z-10 text-white hover:text-gray-300 transition-colors bg-black/50 rounded-full p-2"
               aria-label="Close screenshot viewer"
             >
-              <XMarkIcon className="h-8 w-8" />
+              <XMarkIcon className="h-6 w-6 sm:h-8 sm:w-8" />
             </button>
             
             {/* Image Container */}
-            <div className="relative w-full h-full min-h-[400px] bg-black rounded-lg overflow-hidden">
+            <div className="relative w-full flex-1 bg-black overflow-hidden">
               <Image
                 src={getImageSrc(screenshots[selectedImage])}
                 alt={screenshots[selectedImage].caption || `Screenshot ${selectedImage + 1}`}
@@ -126,7 +126,7 @@ export default function InlineScreenshotGallery({
             </div>
             
             {/* Caption and Navigation */}
-            <div className="mt-4 flex items-center justify-between text-white">
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex items-center justify-between text-white">
               <div className="flex-1">
                 {screenshots[selectedImage].caption && (
                   <p className="text-sm">{screenshots[selectedImage].caption}</p>

@@ -707,7 +707,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
               
               {/* Pricing Section */}
               {software.pricing && software.pricing.length > 0 && (
-                <section className="overflow-hidden">
+                <section>
                   <h2 className="text-2xl font-bold mb-6">Pricing Plans</h2>
                   <div className="relative">
                     {/* Scrollable container on mobile, responsive grid on larger screens */}

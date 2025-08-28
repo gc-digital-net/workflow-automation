@@ -80,12 +80,12 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${outfit.variable} font-sans antialiased`}>
         <ThemeProvider>
-          {/* Background effects - layered for depth */}
-          <MeshGradient />
-          <BackgroundBlobs />
-          <FloatingShapes />
+          {/* Background effects - temporarily disabled for mobile debugging */}
+          {/* <MeshGradient /> */}
+          {/* <BackgroundBlobs /> */}
+          {/* <FloatingShapes /> */}
           
-          <div className="relative flex min-h-screen flex-col">
+          <div className="relative flex min-h-screen flex-col overflow-x-hidden">
             <Header />
             <main className="flex-1 relative z-10">{children}</main>
             <Footer />

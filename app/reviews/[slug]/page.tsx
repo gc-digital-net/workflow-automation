@@ -113,11 +113,11 @@ const portableTextComponents = {
         {/* Horizontal scroll container for mobile/tablet, grid for desktop */}
         <div className="relative">
           <div className="overflow-x-auto pb-4 xl:overflow-visible">
-            <div className="flex gap-4 xl:grid xl:grid-cols-3 xl:gap-6 min-w-max xl:min-w-0">
+            <div className="flex gap-4 xl:grid xl:grid-cols-3 xl:gap-6 w-full xl:min-w-0">
               {value.plans?.map((plan: any, idx: number) => (
                 <div 
                   key={idx} 
-                  className={`rounded-xl p-6 relative flex flex-col min-w-[280px] lg:min-w-0 ${
+                  className={`rounded-xl p-6 relative flex flex-col w-full sm:min-w-[280px] lg:min-w-0 ${
                     plan.highlighted 
                       ? 'bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-500 shadow-xl scale-105 lg:scale-110' 
                       : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm'
@@ -166,7 +166,7 @@ const portableTextComponents = {
       <div className="my-12">
         <h3 className="text-2xl font-bold mb-6">{value.title || 'Comparison'}</h3>
         <div className="overflow-x-auto">
-          <table className="w-full border-collapse bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm">
+          <table className="min-w-full border-collapse bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm">
             <thead>
               <tr className="bg-gray-100 dark:bg-gray-700">
                 <th className="border border-gray-200 dark:border-gray-600 p-4 text-left font-semibold">Feature</th>
@@ -499,7 +499,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
   const totalReviews = software.reviews?.length || 47 // Fixed number until we have real reviews
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
       {/* Header Section with G2-style layout */}
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -663,7 +663,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
               {/* Main Content */}
               {software.content && (
                 <section>
-                  <article className="prose dark:prose-invert max-w-none prose-p:break-words prose-headings:break-words prose-li:break-words">
+                  <article className="prose dark:prose-invert max-w-none prose-p:break-words prose-headings:break-words prose-li:break-words prose-td:break-words prose-th:break-words overflow-hidden">
                     <PortableText
                       value={software.content}
                       components={portableTextComponents}

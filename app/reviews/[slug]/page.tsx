@@ -7,6 +7,7 @@ import { ChartBarIcon, ClockIcon, GlobeAltIcon, DocumentTextIcon, ChatBubbleLeft
 import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
+import InlineScreenshotGallery from '@/components/review/InlineScreenshotGallery'
 import ReviewAuthor from '@/components/review/ReviewAuthor'
 import InfoBox from '@/components/review/InfoBox'
 // Removed ReviewTabs - all content on single page now
@@ -653,6 +654,14 @@ export default async function G2StyleReviewPage({ params }: Props) {
               </section>
             )}
             
+            {/* Inline Screenshot Gallery - Positioned after Performance Metrics for better visibility */}
+            {software.screenshotGallery && software.screenshotGallery.length > 0 && (
+              <InlineScreenshotGallery 
+                screenshots={software.screenshotGallery} 
+                initialDisplayCount={4}
+              />
+            )}
+            
             {/* Main Content - All sections on single page */}
             <div className="space-y-16">
               {/* Main Content */}
@@ -907,13 +916,6 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 />
               </section>
             </div>
-            
-            {/* Screenshot Gallery */}
-            {software.screenshotGallery && software.screenshotGallery.length > 0 && (
-              <section className="mt-12">
-                <ScreenshotGallery screenshots={software.screenshotGallery} />
-              </section>
-            )}
           </div>
           
           {/* Sidebar */}

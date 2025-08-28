@@ -108,22 +108,14 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                     {/* Header */}
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
-                        {item.logo ? (
-                          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
+                        {item.logo && (
+                          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
                             <Image
-                              src={urlFor(item.logo).width(96).height(96).fit('max').url()}
+                              src={urlFor(item.logo).url()}
                               alt={item.name}
-                              width={48}
-                              height={48}
-                              className="object-contain"
-                              style={{ maxWidth: '100%', height: 'auto' }}
+                              fill
+                              className="object-contain p-2"
                             />
-                          </div>
-                        ) : (
-                          <div className="w-12 h-12 rounded-lg bg-gray-100 dark:bg-gray-700 flex items-center justify-center">
-                            <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
-                              {item.name.substring(0, 2).toUpperCase()}
-                            </span>
                           </div>
                         )}
                         <div>

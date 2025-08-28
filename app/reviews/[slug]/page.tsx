@@ -508,25 +508,15 @@ export default async function G2StyleReviewPage({ params }: Props) {
             <div className="flex-1">
               {/* Logo, Name and Tagline Row */}
               <div className="flex items-start gap-4 mb-6">
-                {software.logo ? (
+                {software.logo && (
                   <div className="flex-shrink-0">
-                    <div className="w-20 h-20 rounded-xl overflow-hidden bg-white shadow-md border border-gray-200 dark:border-gray-700 flex items-center justify-center">
+                    <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-md border border-gray-200 dark:border-gray-700">
                       <Image
-                        src={urlFor(software.logo).width(160).height(160).fit('max').url()}
+                        src={urlFor(software.logo).url()}
                         alt={`${software.name} logo`}
-                        width={80}
-                        height={80}
+                        fill
                         className="object-contain p-2"
-                        style={{ maxWidth: '100%', height: 'auto' }}
                       />
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex-shrink-0">
-                    <div className="w-20 h-20 rounded-xl bg-white shadow-md border border-gray-200 dark:border-gray-700 flex items-center justify-center">
-                      <span className="text-lg font-semibold text-gray-500 dark:text-gray-400">
-                        {software.name.substring(0, 2).toUpperCase()}
-                      </span>
                     </div>
                   </div>
                 )}

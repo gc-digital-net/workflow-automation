@@ -12,8 +12,7 @@
 }
 
 /* Ensure proper text wrapping */
-p, span, div, h1, h2, h3, h4, h5, h6, li, td, th, article {
-  max-width: 100%;
+p, span, h1, h2, h3, h4, h5, h6, li, td, th, article {
   word-wrap: break-word;
   overflow-wrap: break-word;
 }

@@ -614,9 +614,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
       
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content Column */}
-          <div className="lg:col-span-2">
+        <div className="space-y-8">
             {/* Enhanced Scores Section - Compact */}
             {software.scores && (
               <section className="mb-8 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
@@ -657,6 +655,213 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 initialDisplayCount={3}
               />
             )}
+            
+            {/* Key Information Section - Moved from sidebar to top */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {/* Company Info Card */}
+              {software.companyInfo && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-bold mb-4 flex items-center">
+                    <BuildingOfficeIcon className="h-5 w-5 mr-2 text-gray-600" />
+                    Company Info
+                  </h3>
+                  <dl className="space-y-3">
+                    {software.companyInfo.founded && (
+                      <div>
+                        <dt className="text-sm text-gray-500 dark:text-gray-400">Founded</dt>
+                        <dd className="font-semibold">{software.companyInfo.founded}</dd>
+                      </div>
+                    )}
+                    {software.companyInfo.headquarters && (
+                      <div>
+                        <dt className="text-sm text-gray-500 dark:text-gray-400">Headquarters</dt>
+                        <dd className="font-semibold">{software.companyInfo.headquarters}</dd>
+                      </div>
+                    )}
+                    {software.companyInfo.companySize && (
+                      <div>
+                        <dt className="text-sm text-gray-500 dark:text-gray-400">Company Size</dt>
+                        <dd className="font-semibold">{software.companyInfo.companySize}</dd>
+                      </div>
+                    )}
+                    {software.companyInfo.funding && (
+                      <div>
+                        <dt className="text-sm text-gray-500 dark:text-gray-400">Funding</dt>
+                        <dd className="font-semibold">{software.companyInfo.funding}</dd>
+                      </div>
+                    )}
+                  </dl>
+                </div>
+              )}
+              
+              {/* Quick Pricing Overview */}
+              {software.pricing && software.pricing.length > 0 && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+                  <div className="p-4 bg-primary-600 text-white">
+                    <h3 className="text-lg font-bold flex items-center">
+                      <CurrencyDollarIcon className="h-5 w-5 mr-2" />
+                      Quick Pricing
+                    </h3>
+                  </div>
+                  <div className="p-4 space-y-3">
+                    {software.pricing.slice(0, 3).map((plan: any, index: number) => (
+                      <div 
+                        key={index} 
+                        className={`p-3 rounded-lg border ${
+                          plan.recommended || plan.highlighted
+                            ? 'border-primary-600 bg-primary-50 dark:bg-primary-900/20' 
+                            : 'border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900/50'
+                        }`}
+                      >
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1 mb-2">
+                          <h4 className="font-semibold text-sm break-words" title={plan.name}>
+                            {plan.name}
+                          </h4>
+                          {(plan.recommended || plan.highlighted) && (
+                            <span className="text-xs bg-primary-600 text-white px-2 py-0.5 rounded-full self-start sm:self-auto whitespace-nowrap">
+                              Popular
+                            </span>
+                          )}
+                        </div>
+                        <div className="flex items-baseline flex-wrap">
+                          <span className="text-xl font-bold text-gray-900 dark:text-white">
+                            {typeof plan.price === 'number' ? 
+                              plan.price === 0 ? 'Free' : `$${plan.price}` 
+                              : plan.price}
+                          </span>
+                          {plan.price !== 'Free' && plan.price !== 'Custom' && typeof plan.price === 'number' && plan.price > 0 && (
+                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
+                              /user/month
+                            </span>
+                          )}
+                        </div>
+                        {plan.userLimit && (
+                          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 break-words">
+                            {plan.userLimit}
+                          </p>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+              
+              {/* Popular Integrations */}
+              {software.popularIntegrations && software.popularIntegrations.length > 0 && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-bold mb-4 flex items-center">
+                    <GlobeAltIcon className="h-5 w-5 mr-2 text-gray-600" />
+                    Popular Integrations
+                  </h3>
+                  <div className="flex flex-wrap gap-2">
+                    {software.popularIntegrations.slice(0, 8).map((integration: string, index: number) => (
+                      <span 
+                        key={index}
+                        className="px-3 py-1 bg-gray-100 dark:bg-gray-700 rounded-full text-xs font-medium"
+                      >
+                        {integration}
+                      </span>
+                    ))}
+                  </div>
+                  {software.integrationsCount && (
+                    <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                      +{software.integrationsCount - 8} more integrations available
+                    </p>
+                  )}
+                </div>
+              )}
+              
+              {/* Support Info */}
+              {software.supportInfo && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-bold mb-4 flex items-center">
+                    <ChatBubbleLeftRightIcon className="h-5 w-5 mr-2 text-gray-600" />
+                    Support
+                  </h3>
+                  <ul className="space-y-3">
+                    {software.supportInfo.liveChat && (
+                      <li className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">24/7 Live Chat</span>
+                      </li>
+                    )}
+                    {software.supportInfo.emailSupport && (
+                      <li className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">Email Support</span>
+                      </li>
+                    )}
+                    {software.supportInfo.knowledgeBase && (
+                      <li className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">Knowledge Base</span>
+                      </li>
+                    )}
+                    {software.supportInfo.videoTutorials && (
+                      <li className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">Video Tutorials</span>
+                      </li>
+                    )}
+                  </ul>
+                  {software.supportInfo.supportDetails && (
+                    <p className="mt-4 text-xs text-gray-600 dark:text-gray-400">
+                      {software.supportInfo.supportDetails}
+                    </p>
+                  )}
+                </div>
+              )}
+              
+              {/* Security & Compliance */}
+              {software.securityInfo && (
+                <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-bold mb-4 flex items-center">
+                    <ShieldCheckIcon className="h-5 w-5 mr-2 text-gray-600" />
+                    Security & Compliance
+                  </h3>
+                  <ul className="space-y-3">
+                    {software.securityInfo.soc2 && (
+                      <li className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">SOC 2 Type II</span>
+                      </li>
+                    )}
+                    {software.securityInfo.gdpr && (
+                      <li className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">GDPR Compliant</span>
+                      </li>
+                    )}
+                    {software.securityInfo.ssl && (
+                      <li className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">256-bit SSL</span>
+                      </li>
+                    )}
+                    {software.securityInfo.uptime && (
+                      <li className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">{software.securityInfo.uptime} Uptime SLA</span>
+                      </li>
+                    )}
+                    {software.securityInfo.otherCertifications?.map((cert: string) => (
+                      <li key={cert} className="flex items-center">
+                        <CheckIcon className="h-5 w-5 text-green-500 mr-3" />
+                        <span className="text-sm">{cert}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              
+              {/* Affiliate Disclosure */}
+              <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-800 flex items-center">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
+                  <strong>Disclosure:</strong> We may receive a commission when you purchase through our links, 
+                  but this doesn't influence our reviews or ratings.
+                </p>
+              </div>
+            </div>
             
             {/* Main Content - All sections on single page */}
             <div className="space-y-16">
@@ -908,12 +1113,11 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 />
               </section>
             </div>
-          </div>
-          
-          {/* Sidebar */}
-          <aside className="lg:col-span-1 space-y-6">
-            {/* Company Info Card */}
-            {software.companyInfo && (
+        </div>
+      </main>
+    </div>
+  )
+}
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
                 <h3 className="text-lg font-bold mb-4 flex items-center">
                   <BuildingOfficeIcon className="h-5 w-5 mr-2 text-gray-600" />
@@ -1159,10 +1363,3 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 <strong>Disclosure:</strong> We may receive a commission when you purchase through our links, 
                 but this doesn't influence our reviews or ratings.
               </p>
-            </div>
-          </aside>
-        </div>
-      </main>
-    </div>
-  )
-}

@@ -54,7 +54,7 @@ export default function InlineScreenshotGallery({
               <button
                 key={idx}
                 onClick={() => setSelectedImage(idx)}
-                className="group relative aspect-video bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden hover:ring-2 hover:ring-primary-500 transition-all"
+                className="group relative aspect-video bg-gray-100 dark:bg-gray-700 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-600 hover:ring-2 hover:ring-primary-500 transition-all"
                 aria-label={`View screenshot ${idx + 1}`}
               >
                 <Image

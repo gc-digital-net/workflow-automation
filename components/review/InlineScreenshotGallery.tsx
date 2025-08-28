@@ -12,7 +12,7 @@ interface InlineScreenshotGalleryProps {
 
 export default function InlineScreenshotGallery({ 
   screenshots, 
-  initialDisplayCount = 3 
+  initialDisplayCount = 6 
 }: InlineScreenshotGalleryProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [selectedImage, setSelectedImage] = useState<number | null>(null)

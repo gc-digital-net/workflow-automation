@@ -112,14 +112,14 @@ const portableTextComponents = {
         <h3 className="text-2xl font-bold mb-8 text-center">{value.title || 'Pricing Plans'}</h3>
         {/* Horizontal scroll container for mobile/tablet, grid for desktop */}
         <div className="relative">
-          <div className="overflow-x-auto pb-4 xl:overflow-visible">
+          <div className="overflow-x-auto pb-4 xl:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">
             <div className="flex gap-4 xl:grid xl:grid-cols-3 xl:gap-6 min-w-max xl:min-w-0">
               {value.plans?.map((plan: any, idx: number) => (
                 <div 
                   key={idx} 
                   className={`rounded-xl p-6 relative flex flex-col min-w-[280px] lg:min-w-0 ${
                     plan.highlighted 
-                      ? 'bg-gradient-to-b from-blue-50 to-white dark:from-blue-900/30 dark:to-gray-800 border-2 border-blue-500 shadow-xl scale-105 lg:scale-110' 
+                      ? 'bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-500 shadow-xl scale-105 lg:scale-110' 
                       : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm'
                   }`}
                 >
@@ -158,8 +158,6 @@ const portableTextComponents = {
               ))}
             </div>
           </div>
-          {/* Scroll indicator for mobile */}
-          <div className="lg:hidden absolute right-0 top-1/2 transform -translate-y-1/2 bg-gradient-to-l from-white dark:from-gray-900 to-transparent w-12 h-full pointer-events-none" />
         </div>
       </div>
     ),
@@ -167,7 +165,7 @@ const portableTextComponents = {
     comparisonTable: ({ value }: any) => (
       <div className="my-12">
         <h3 className="text-2xl font-bold mb-6">{value.title || 'Comparison'}</h3>
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
           <table className="w-full border-collapse bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm">
             <thead>
               <tr className="bg-gray-100 dark:bg-gray-700">
@@ -193,7 +191,7 @@ const portableTextComponents = {
     ),
     
     ctaBlock: ({ value }: any) => (
-      <div className="my-12 bg-gradient-to-br from-blue-600 to-purple-700 rounded-2xl p-10 text-center text-white shadow-2xl">
+      <div className="my-12 bg-blue-600 rounded-2xl p-6 md:p-10 text-center text-white shadow-2xl">
         <h3 className="text-3xl font-bold mb-4">{value.title}</h3>
         <p className="text-lg mb-8 opacity-95 max-w-2xl mx-auto">{value.description}</p>
         <a
@@ -308,7 +306,7 @@ const portableTextComponents = {
       </h4>
     ),
     blockquote: ({ children }: any) => (
-      <blockquote className="my-8 p-6 bg-gradient-to-r from-slate-50 to-gray-50 dark:from-slate-900/50 dark:to-gray-900/50 border-l-4 border-slate-400 dark:border-slate-600 rounded-r-lg shadow-md">
+      <blockquote className="my-8 p-6 bg-slate-50 dark:bg-slate-900/50 border-l-4 border-slate-400 dark:border-slate-600 rounded-r-lg shadow-md">
         <div className="text-gray-700 dark:text-gray-300 italic leading-relaxed text-lg">
           {children}
         </div>
@@ -345,13 +343,13 @@ function ScoreDisplay({ score, label }: { score: number; label: string }) {
   const percentage = (score / 10) * 100
   
   const getScoreColor = (score: number) => {
-    if (score >= 9) return 'bg-gradient-to-r from-emerald-500 via-emerald-400 to-emerald-500'
-    if (score >= 8) return 'bg-gradient-to-r from-green-500 via-green-400 to-green-500'
-    if (score >= 7) return 'bg-gradient-to-r from-blue-500 via-blue-400 to-blue-500'
-    if (score >= 6) return 'bg-gradient-to-r from-indigo-500 via-indigo-400 to-indigo-500'
-    if (score >= 5) return 'bg-gradient-to-r from-yellow-500 via-yellow-400 to-yellow-500'
-    if (score >= 4) return 'bg-gradient-to-r from-orange-500 via-orange-400 to-orange-500'
-    return 'bg-gradient-to-r from-red-500 via-red-400 to-red-500'
+    if (score >= 9) return 'bg-emerald-500'
+    if (score >= 8) return 'bg-green-500'
+    if (score >= 7) return 'bg-blue-500'
+    if (score >= 6) return 'bg-indigo-500'
+    if (score >= 5) return 'bg-yellow-500'
+    if (score >= 4) return 'bg-orange-500'
+    return 'bg-red-500'
   }
   
   const getScoreTextColor = (score: number) => {
@@ -372,11 +370,9 @@ function ScoreDisplay({ score, label }: { score: number; label: string }) {
       </div>
       <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 shadow-inner overflow-hidden">
         <div 
-          className={`h-full ${getScoreColor(score)} transition-all duration-1000 rounded-full shadow-md relative overflow-hidden`}
+          className={`h-full ${getScoreColor(score)} transition-all duration-1000 rounded-full shadow-md`}
           style={{ width: `${percentage}%` }}
-        >
-          <div className="absolute inset-0 bg-white/30 bg-gradient-to-b from-white/40 to-transparent" />
-        </div>
+        />
       </div>
     </div>
   )
@@ -623,7 +619,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
           <div className="lg:col-span-2">
             {/* Enhanced Scores Section - Compact */}
             {software.scores && (
-              <section className="mb-8 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-800/50 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+              <section className="mb-8 bg-white dark:bg-gray-800 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
                 <div className="flex items-center justify-between mb-4">
                   <h2 className="text-xl font-bold flex items-center text-gray-900 dark:text-white">
                     <ChartBarIcon className="h-5 w-5 text-primary-600 dark:text-primary-400 mr-2" />
@@ -658,7 +654,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
             {software.screenshotGallery && software.screenshotGallery.length > 0 && (
               <InlineScreenshotGallery 
                 screenshots={software.screenshotGallery} 
-                initialDisplayCount={4}
+                initialDisplayCount={6}
               />
             )}
             
@@ -714,12 +710,8 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 <section className="overflow-hidden">
                   <h2 className="text-2xl font-bold mb-6">Pricing Plans</h2>
                   <div className="relative">
-                    {/* Gradient fade indicators for scroll */}
-                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
-                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
-                    
                     {/* Scrollable container on mobile, responsive grid on larger screens */}
-                    <div className="overflow-x-auto pb-4 xl:overflow-visible">
+                    <div className="overflow-x-auto pb-4 xl:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">
                       <div className={`flex gap-4 min-w-max ${
                         software.pricing.length === 4
                           ? 'xl:grid xl:grid-cols-2 xl:gap-8 xl:min-w-0 max-w-4xl mx-auto'
@@ -959,7 +951,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
             {/* Quick Pricing Overview */}
             {software.pricing && software.pricing.length > 0 && (
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div className="p-4 bg-gradient-to-r from-primary-600 to-primary-700 text-white">
+                <div className="p-4 bg-primary-600 text-white">
                   <h3 className="text-lg font-bold flex items-center">
                     <CurrencyDollarIcon className="h-5 w-5 mr-2" />
                     Quick Pricing

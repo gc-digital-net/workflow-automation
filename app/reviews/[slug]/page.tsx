@@ -499,7 +499,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
   const totalReviews = software.reviews?.length || 47 // Fixed number until we have real reviews
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header Section with G2-style layout */}
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

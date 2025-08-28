@@ -85,7 +85,7 @@ export default function RootLayout({
           {/* <BackgroundBlobs /> */}
           {/* <FloatingShapes /> */}
           
-          <div className="relative flex min-h-screen flex-col overflow-x-hidden">
+          <div className="relative flex min-h-screen flex-col">
             <Header />
             <main className="flex-1 relative z-10">{children}</main>
             <Footer />

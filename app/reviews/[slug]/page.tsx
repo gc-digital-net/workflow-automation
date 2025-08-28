@@ -715,7 +715,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                       const planPrice = typeof plan.price === 'number' ? plan.price : 
                                        plan.price === 'Free' ? 0 : 
                                        plan.price === 'Custom' ? null : 
-                                       parseFloat(plan.price.replace(/[^0-9.]/g, ''));
+                                       typeof plan.price === 'string' ? parseFloat(plan.price.replace(/[^0-9.]/g, '')) : null;
                       
                       return (
                         <div
@@ -769,7 +769,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                                   <span className="text-gray-500 dark:text-gray-400 ml-1">
                                     /user/month
                                   </span>
-                                  {plan.yearlyPrice && (
+                                  {plan.yearlyPrice && planPrice && (
                                     <p className="text-sm text-green-600 dark:text-green-400 mt-1">
                                       Save ${Math.round((planPrice * 12) - plan.yearlyPrice)} yearly
                                     </p>

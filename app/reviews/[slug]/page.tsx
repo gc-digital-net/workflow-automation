@@ -620,30 +620,34 @@ export default async function G2StyleReviewPage({ params }: Props) {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Main Content Column */}
           <div className="lg:col-span-2">
-            {/* Enhanced Scores Section */}
+            {/* Enhanced Scores Section - Compact */}
             {software.scores && (
-              <section className="mb-10 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-800/50 rounded-2xl p-8 shadow-lg border border-gray-200 dark:border-gray-700">
-                <div className="flex items-center justify-between mb-8">
-                  <h2 className="text-2xl font-bold flex items-center text-gray-900 dark:text-white">
-                    <div className="p-2 bg-primary-100 dark:bg-primary-900/30 rounded-lg mr-3">
-                      <ChartBarIcon className="h-6 w-6 text-primary-800 dark:text-primary-400" />
-                    </div>
+              <section className="mb-8 bg-gradient-to-br from-white to-gray-50 dark:from-gray-800 dark:to-gray-800/50 rounded-xl p-6 shadow-lg border border-gray-200 dark:border-gray-700">
+                <div className="flex items-center justify-between mb-4">
+                  <h2 className="text-xl font-bold flex items-center text-gray-900 dark:text-white">
+                    <ChartBarIcon className="h-5 w-5 text-primary-600 dark:text-primary-400 mr-2" />
                     Performance Metrics
                   </h2>
-                  <div className="flex items-center gap-2">
-                    <span className="text-3xl font-bold text-primary-800 dark:text-primary-400">
+                  <div className="flex items-center gap-1">
+                    <span className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                       {software.overallScore?.toFixed(1) || '8.5'}
                     </span>
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Overall</span>
+                    <span className="text-xs text-gray-500 dark:text-gray-400">/10</span>
                   </div>
                 </div>
-                <div className="grid gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
                   {Object.entries(software.scores).map(([key, value]: [string, any]) => (
-                    <ScoreDisplay
-                      key={key}
-                      score={value}
-                      label={key.replace(/([A-Z])/g, ' $1').trim().replace(/^./, str => str.toUpperCase())}
-                    />
+                    <div key={key} className="flex items-center justify-between p-2.5 bg-white dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600">
+                      <span className="text-xs text-gray-600 dark:text-gray-300 font-medium">
+                        {key.replace(/([A-Z])/g, ' $1').trim().replace(/^./, str => str.toUpperCase())}
+                      </span>
+                      <div className="flex items-center gap-1">
+                        <span className="text-sm font-semibold text-gray-900 dark:text-white">
+                          {typeof value === 'number' ? value.toFixed(1) : '—'}
+                        </span>
+                        <span className="text-[10px] text-gray-400">/10</span>
+                      </div>
+                    </div>
                   ))}
                 </div>
               </section>
@@ -755,10 +759,10 @@ export default async function G2StyleReviewPage({ params }: Props) {
                               )}
                             </div>
                             
-                            {/* Features list with fixed height and scroll if needed */}
+                            {/* Features list - display all features */}
                             <div className="mb-6">
                               {plan.features && (
-                                <ul className="space-y-2 max-h-64 overflow-y-auto pr-2">
+                                <ul className="space-y-2">
                                   {plan.features.map((feature: string, idx: number) => (
                                     <li key={idx} className="flex items-start">
                                       <CheckIcon className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />

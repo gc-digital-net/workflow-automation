@@ -1022,15 +1022,15 @@ export default async function G2StyleReviewPage({ params }: Props) {
               
               {/* User Reviews Section */}
               <section>
-                <div className="flex items-center justify-between mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
                   <h2 className="text-2xl font-bold">User Reviews</h2>
                   {software.reviewCount > 0 && (
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-2 sm:gap-3">
                       <div className="flex items-center gap-1">
                         {[...Array(5)].map((_, i) => (
                           <StarIcon
                             key={i}
-                            className={`h-5 w-5 ${
+                            className={`h-4 sm:h-5 w-4 sm:w-5 ${
                               i < Math.floor(software.averageRating || 0)
                                 ? 'text-yellow-400 fill-yellow-400'
                                 : 'text-gray-300'
@@ -1038,10 +1038,10 @@ export default async function G2StyleReviewPage({ params }: Props) {
                           />
                         ))}
                       </div>
-                      <span className="text-lg font-semibold">
+                      <span className="text-base sm:text-lg font-semibold">
                         {(software.averageRating || 0).toFixed(1)}
                       </span>
-                      <span className="text-gray-500">({software.reviewCount} reviews)</span>
+                      <span className="text-sm sm:text-base text-gray-500">({software.reviewCount} reviews)</span>
                     </div>
                   )}
                 </div>
@@ -1051,10 +1051,10 @@ export default async function G2StyleReviewPage({ params }: Props) {
                   <div className="space-y-6 mb-8">
                     {software.reviews.map((review: any) => (
                       <div key={review._id} className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
-                        <div className="flex items-start justify-between mb-4">
-                          <div>
+                        <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-4">
+                          <div className="flex-1">
                             <h4 className="font-semibold text-lg">{review.headline}</h4>
-                            <div className="flex items-center gap-3 mt-1">
+                            <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-3 mt-1">
                               <div className="flex items-center gap-1">
                                 {[...Array(5)].map((_, i) => (
                                   <StarIcon
@@ -1075,7 +1075,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                             </div>
                           </div>
                           {review.verified && (
-                            <span className="px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded-full">
+                            <span className="self-start px-3 py-1 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-medium rounded-full whitespace-nowrap">
                               ✓ Verified
                             </span>
                           )}

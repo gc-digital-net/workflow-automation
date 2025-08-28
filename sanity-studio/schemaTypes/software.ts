@@ -302,6 +302,60 @@ export default defineType({
               }
             }
           }
+        },
+        
+        // Pricing Table Block (for content blocks)
+        {
+          type: 'object',
+          name: 'pricingTable',
+          title: 'Pricing Table',
+          fields: [
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              initialValue: 'Pricing Plans',
+            },
+            {
+              name: 'plans',
+              title: 'Plans',
+              type: 'array',
+              of: [
+                {
+                  type: 'object',
+                  fields: [
+                    { name: 'name', title: 'Plan Name', type: 'string' },
+                    { name: 'price', title: 'Price', type: 'string' },
+                    { name: 'features', title: 'Features', type: 'array', of: [{ type: 'string' }] },
+                    { name: 'highlighted', title: 'Highlight this plan?', type: 'boolean' },
+                  ],
+                  preview: {
+                    select: {
+                      title: 'name',
+                      price: 'price',
+                      highlighted: 'highlighted'
+                    },
+                    prepare({title, price, highlighted}) {
+                      return {
+                        title: highlighted ? `⭐ ${title}` : title,
+                        subtitle: price
+                      }
+                    }
+                  }
+                },
+              ],
+            },
+          ],
+          preview: {
+            select: { title: 'title', plans: 'plans' },
+            prepare({title, plans}) {
+              const count = plans ? plans.length : 0
+              return {
+                title: title || 'Pricing Table',
+                subtitle: `${count} plan${count !== 1 ? 's' : ''}`
+              }
+            }
+          },
         }
       ]
     }),

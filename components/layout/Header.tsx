@@ -47,8 +47,8 @@ export default function Header() {
   }, []);
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm">
-      <nav className="w-full px-4 lg:px-8 h-20" aria-label="Global">
+    <header className="sticky top-0 z-50 w-full bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-800 shadow-sm overflow-visible">
+      <nav className="w-full px-4 lg:px-8 h-20 overflow-visible" aria-label="Global">
         <div className="flex h-full items-center justify-between">
           {/* Logo Section with company logo */}
           <div className="flex items-center gap-4 lg:flex-1">
@@ -74,7 +74,7 @@ export default function Header() {
           </div>
 
           {/* Desktop navigation */}
-          <div className="hidden lg:flex lg:gap-x-10">
+          <div className="hidden lg:flex lg:gap-x-10 overflow-visible">
             {NAVIGATION_ITEMS.map((item) => (
               <div
                 key={item.name}

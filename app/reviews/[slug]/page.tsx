@@ -66,7 +66,7 @@ const portableTextComponents = {
             {value.pros?.map((pro: string, idx: number) => (
               <li key={idx} className="flex items-start">
                 <CheckIcon className="h-5 w-5 text-green-600 dark:text-green-400 mr-3 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300">{pro}</span>
+                <span className="text-gray-700 dark:text-gray-300 break-words">{pro}</span>
               </li>
             ))}
           </ul>
@@ -81,7 +81,7 @@ const portableTextComponents = {
             {value.cons?.map((con: string, idx: number) => (
               <li key={idx} className="flex items-start">
                 <XMarkIcon className="h-5 w-5 text-red-600 dark:text-red-400 mr-3 mt-0.5 flex-shrink-0" />
-                <span className="text-gray-700 dark:text-gray-300">{con}</span>
+                <span className="text-gray-700 dark:text-gray-300 break-words">{con}</span>
               </li>
             ))}
           </ul>
@@ -98,7 +98,7 @@ const portableTextComponents = {
               <h4 className="font-semibold text-gray-900 dark:text-white mb-2 text-lg">
                 {feature.name}
               </h4>
-              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed break-words">
                 {feature.description}
               </p>
             </div>
@@ -291,29 +291,29 @@ const portableTextComponents = {
   
   block: {
     h2: ({ children }: any) => (
-      <h2 className="text-2xl font-bold mt-10 mb-5 text-gray-900 dark:text-white">
+      <h2 className="text-2xl font-bold mt-10 mb-5 text-gray-900 dark:text-white break-words">
         {children}
       </h2>
     ),
     h3: ({ children }: any) => (
-      <h3 className="text-xl font-semibold mt-8 mb-4 text-gray-900 dark:text-white">
+      <h3 className="text-xl font-semibold mt-8 mb-4 text-gray-900 dark:text-white break-words">
         {children}
       </h3>
     ),
     h4: ({ children }: any) => (
-      <h4 className="text-lg font-semibold mt-6 mb-3 text-gray-900 dark:text-white">
+      <h4 className="text-lg font-semibold mt-6 mb-3 text-gray-900 dark:text-white break-words">
         {children}
       </h4>
     ),
     blockquote: ({ children }: any) => (
       <blockquote className="my-8 p-6 bg-slate-50 dark:bg-slate-900/50 border-l-4 border-slate-400 dark:border-slate-600 rounded-r-lg shadow-md">
-        <div className="text-gray-700 dark:text-gray-300 italic leading-relaxed text-lg">
+        <div className="text-gray-700 dark:text-gray-300 italic leading-relaxed text-lg break-words">
           {children}
         </div>
       </blockquote>
     ),
     normal: ({ children }: any) => (
-      <p className="mb-5 text-gray-700 dark:text-gray-300 leading-relaxed">
+      <p className="mb-5 text-gray-700 dark:text-gray-300 leading-relaxed break-words">
         {children}
       </p>
     )
@@ -499,7 +499,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
   const totalReviews = software.reviews?.length || 47 // Fixed number until we have real reviews
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
       {/* Header Section with G2-style layout */}
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -524,7 +524,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                   {software.name}
                 </h1>
                 {software.tagline && (
-                  <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+                  <p className="text-lg text-gray-600 dark:text-gray-400 mb-6 break-words">
                     {software.tagline}
                   </p>
                 )}
@@ -663,7 +663,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
               {/* Main Content */}
               {software.content && (
                 <section>
-                  <article className="prose dark:prose-invert max-w-none">
+                  <article className="prose dark:prose-invert max-w-none prose-p:break-words prose-headings:break-words prose-li:break-words overflow-hidden">
                     <PortableText
                       value={software.content}
                       components={portableTextComponents}
@@ -683,7 +683,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                         {software.pros.map((pro: string, index: number) => (
                           <li key={index} className="flex items-start">
                             <CheckIcon className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                            <span>{pro}</span>
+                            <span className="break-words">{pro}</span>
                           </li>
                         ))}
                       </ul>
@@ -695,7 +695,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                           {software.cons.map((con: string, index: number) => (
                             <li key={index} className="flex items-start">
                               <XMarkIcon className="h-5 w-5 text-red-500 mr-3 mt-0.5 flex-shrink-0" />
-                              <span>{con}</span>
+                              <span className="break-words">{con}</span>
                             </li>
                           ))}
                         </ul>

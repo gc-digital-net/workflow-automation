@@ -595,7 +595,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                     href={software.affiliateLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full inline-flex items-center justify-center px-6 py-3 bg-primary-800 hover:bg-primary-900 text-white font-semibold rounded-xl transition-colors shadow-md"
+                    className="w-full inline-flex items-center justify-center px-6 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-xl transition-colors shadow-md"
                   >
                     Visit Website
                     <ArrowRightIcon className="h-5 w-5 ml-2" />

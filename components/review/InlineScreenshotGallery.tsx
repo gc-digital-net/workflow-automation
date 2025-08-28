@@ -12,7 +12,7 @@ interface InlineScreenshotGalleryProps {
 
 export default function InlineScreenshotGallery({ 
   screenshots, 
-  initialDisplayCount = 6 
+  initialDisplayCount = 3 
 }: InlineScreenshotGalleryProps) {
   const [isExpanded, setIsExpanded] = useState(false)
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
@@ -49,7 +49,7 @@ export default function InlineScreenshotGallery({
           </div>
           
           {/* Thumbnail Grid */}
-          <div className={`grid ${screenshots.length === 1 ? 'grid-cols-1' : 'grid-cols-2 md:grid-cols-3'} gap-3`}>
+          <div className={`grid ${screenshots.length === 1 ? 'grid-cols-1' : 'grid-cols-1 sm:grid-cols-2 md:grid-cols-3'} gap-3`}>
             {displayedScreenshots.map((screenshot, idx) => (
               <button
                 key={idx}

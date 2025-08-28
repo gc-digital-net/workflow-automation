@@ -112,7 +112,7 @@ const portableTextComponents = {
         <h3 className="text-2xl font-bold mb-8 text-center">{value.title || 'Pricing Plans'}</h3>
         {/* Horizontal scroll container for mobile/tablet, grid for desktop */}
         <div className="relative">
-          <div className="overflow-x-auto pb-4 xl:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">
+          <div className="overflow-x-auto pb-4 xl:overflow-visible">
             <div className="flex gap-4 xl:grid xl:grid-cols-3 xl:gap-6 min-w-max xl:min-w-0">
               {value.plans?.map((plan: any, idx: number) => (
                 <div 
@@ -165,7 +165,7 @@ const portableTextComponents = {
     comparisonTable: ({ value }: any) => (
       <div className="my-12">
         <h3 className="text-2xl font-bold mb-6">{value.title || 'Comparison'}</h3>
-        <div className="overflow-x-auto -mx-4 px-4 sm:mx-0 sm:px-0">
+        <div className="overflow-x-auto">
           <table className="w-full border-collapse bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm">
             <thead>
               <tr className="bg-gray-100 dark:bg-gray-700">
@@ -499,7 +499,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
   const totalReviews = software.reviews?.length || 47 // Fixed number until we have real reviews
   
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Header Section with G2-style layout */}
       <header className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -632,7 +632,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                     <span className="text-xs text-gray-500 dark:text-gray-400">/10</span>
                   </div>
                 </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
                   {Object.entries(software.scores).map(([key, value]: [string, any]) => (
                     <div key={key} className="flex items-center justify-between p-2.5 bg-white dark:bg-gray-700/50 rounded-lg border border-gray-100 dark:border-gray-600">
                       <span className="text-xs text-gray-600 dark:text-gray-300 font-medium">
@@ -654,7 +654,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
             {software.screenshotGallery && software.screenshotGallery.length > 0 && (
               <InlineScreenshotGallery 
                 screenshots={software.screenshotGallery} 
-                initialDisplayCount={6}
+                initialDisplayCount={3}
               />
             )}
             
@@ -663,7 +663,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
               {/* Main Content */}
               {software.content && (
                 <section>
-                  <article className="prose dark:prose-invert max-w-none prose-p:break-words prose-headings:break-words prose-li:break-words overflow-hidden">
+                  <article className="prose dark:prose-invert max-w-none prose-p:break-words prose-headings:break-words prose-li:break-words">
                     <PortableText
                       value={software.content}
                       components={portableTextComponents}
@@ -711,7 +711,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
                   <h2 className="text-2xl font-bold mb-6">Pricing Plans</h2>
                   <div className="relative">
                     {/* Scrollable container on mobile, responsive grid on larger screens */}
-                    <div className="overflow-x-auto pb-4 xl:overflow-visible -mx-4 px-4 sm:mx-0 sm:px-0">
+                    <div className="overflow-x-auto pb-4 xl:overflow-visible">
                       <div className={`flex gap-4 min-w-max ${
                         software.pricing.length === 4
                           ? 'xl:grid xl:grid-cols-2 xl:gap-8 xl:min-w-0 max-w-4xl mx-auto'

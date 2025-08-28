@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
-import { StarIcon, CheckIcon, XMarkIcon, ArrowRightIcon, BuildingOfficeIcon, UsersIcon, CalendarIcon, ShieldCheckIcon, CurrencyDollarIcon, UserGroupIcon, CloudIcon } from '@heroicons/react/24/solid'
+import { StarIcon, CheckIcon, XMarkIcon, ArrowRightIcon, BuildingOfficeIcon, UsersIcon, CalendarIcon, ShieldCheckIcon, CurrencyDollarIcon } from '@heroicons/react/24/solid'
 import { ChartBarIcon, ClockIcon, GlobeAltIcon, DocumentTextIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
 import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
@@ -698,163 +698,112 @@ export default async function G2StyleReviewPage({ params }: Props) {
               
               {/* Pricing Section */}
               {software.pricing && software.pricing.length > 0 && (
-                <section id="pricing" className="my-12">
-                  <h2 className="text-3xl font-bold mb-8 text-center">Pricing Plans</h2>
-                  
-                  {/* Pricing cards grid */}
-                  <div className={`grid gap-6 ${
-                    software.pricing.length === 1 ? 'max-w-md mx-auto' :
-                    software.pricing.length === 2 ? 'md:grid-cols-2 max-w-4xl mx-auto' :
-                    software.pricing.length === 3 ? 'md:grid-cols-3 max-w-6xl mx-auto' :
-                    software.pricing.length === 4 ? 'md:grid-cols-2 lg:grid-cols-4' :
-                    'md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'
-                  }`}>
-                    {software.pricing.map((plan: any, index: number) => {
-                      const isPopular = plan.recommended || plan.mostPopular || 
-                                       (index === 1 && software.pricing.length > 2);
-                      const planPrice = typeof plan.price === 'number' ? plan.price : 
-                                       plan.price === 'Free' ? 0 : 
-                                       plan.price === 'Custom' ? null : 
-                                       typeof plan.price === 'string' ? parseFloat(plan.price.replace(/[^0-9.]/g, '')) : null;
-                      
-                      return (
-                        <div
-                          key={index}
-                          className={`relative bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transform transition-all duration-300 hover:scale-105 ${
-                            isPopular ? 'ring-2 ring-blue-500 shadow-xl' : ''
-                          }`}
-                        >
-                          {/* Popular badge */}
-                          {isPopular && (
-                            <div className="absolute top-0 right-0 bg-gradient-to-r from-blue-500 to-blue-600 text-white px-4 py-1 rounded-bl-lg text-sm font-semibold">
-                              MOST POPULAR
-                            </div>
-                          )}
-                          
-                          {/* Card Content */}
-                          <div className="p-6">
-                            {/* Plan Name */}
-                            <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
+                <section className="overflow-hidden">
+                  <h2 className="text-2xl font-bold mb-6">Pricing Plans</h2>
+                  <div className="relative">
+                    {/* Gradient fade indicators for scroll */}
+                    <div className="absolute left-0 top-0 bottom-0 w-8 bg-gradient-to-r from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
+                    <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-l from-gray-50 dark:from-gray-900 to-transparent z-10 pointer-events-none md:hidden" />
+                    
+                    {/* Scrollable container on mobile, responsive grid on larger screens */}
+                    <div className="overflow-x-auto pb-4 xl:overflow-visible">
+                      <div className={`flex gap-4 min-w-max ${
+                        software.pricing.length === 4
+                          ? 'xl:grid xl:grid-cols-2 xl:gap-8 xl:min-w-0 max-w-6xl mx-auto'
+                          : software.pricing.length === 3
+                          ? 'xl:grid xl:grid-cols-3 xl:gap-6 xl:min-w-0' 
+                          : software.pricing.length === 2 
+                          ? 'xl:grid xl:grid-cols-2 xl:gap-6 xl:min-w-0 max-w-4xl mx-auto' 
+                          : software.pricing.length > 4
+                          ? 'xl:grid xl:grid-cols-3 xl:gap-6 xl:min-w-0'
+                          : 'xl:grid xl:grid-cols-1 xl:gap-6 xl:min-w-0 max-w-md mx-auto'
+                      }`}>
+                        {software.pricing.map((plan: any, index: number) => (
+                          <div
+                            key={index}
+                            className={`flex-shrink-0 w-80 xl:w-auto rounded-xl border-2 p-6 ${
+                              plan.recommended
+                                ? 'border-primary-600 shadow-xl relative'
+                                : 'border-gray-200 dark:border-gray-700'
+                            }`}
+                          >
+                            {plan.recommended && (
+                              <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
+                                <span className="inline-block px-4 py-1 text-sm font-medium text-white bg-primary-600 rounded-full whitespace-nowrap">
+                                  Recommended
+                                </span>
+                              </div>
+                            )}
+                            <h3 className="text-xl font-bold mb-2 break-words" title={plan.name}>
                               {plan.name}
                             </h3>
-                            
-                            {/* Plan Description if exists */}
-                            {plan.description && (
-                              <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">
-                                {plan.description}
-                              </p>
-                            )}
-                            
-                            {/* Price */}
                             <div className="mb-6">
-                              {planPrice === null ? (
-                                <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                                  Custom
-                                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400 block mt-1">
-                                    Contact for pricing
-                                  </span>
-                                </div>
-                              ) : planPrice === 0 ? (
-                                <div className="text-3xl font-bold text-gray-900 dark:text-white">
-                                  Free
-                                  <span className="text-sm font-normal text-gray-500 dark:text-gray-400 block mt-1">
-                                    Forever
-                                  </span>
-                                </div>
-                              ) : (
-                                <div>
-                                  <span className="text-3xl font-bold text-gray-900 dark:text-white">
-                                    ${planPrice}
-                                  </span>
-                                  <span className="text-gray-500 dark:text-gray-400 ml-1">
-                                    /user/month
-                                  </span>
-                                  {plan.yearlyPrice && planPrice && (
-                                    <p className="text-sm text-green-600 dark:text-green-400 mt-1">
-                                      Save ${Math.round((planPrice * 12) - plan.yearlyPrice)} yearly
-                                    </p>
-                                  )}
-                                </div>
+                              <div className="flex items-baseline gap-1 flex-wrap">
+                                <span className="text-2xl md:text-3xl font-bold">
+                                  {typeof plan.price === 'number' ? `$${plan.price}` : 
+                                   typeof plan.price === 'string' ? plan.price : 
+                                   'Custom'}
+                                </span>
+                                {plan.price !== 'Free' && plan.price !== 'Custom' && (
+                                  <span className="text-sm text-gray-500 dark:text-gray-400">/month</span>
+                                )}
+                              </div>
+                              {plan.yearlyPrice && (
+                                <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                                  or ${plan.yearlyPrice}/year
+                                </p>
                               )}
                             </div>
                             
-                            {/* CTA Button */}
-                            {software.affiliateLink && (
-                              <a
-                                href={software.affiliateLink}
-                                target="_blank"
-                                rel="noopener noreferrer sponsored"
-                                className={`block w-full text-center py-3 px-6 rounded-lg font-semibold transition-all ${
-                                  isPopular
-                                    ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white hover:from-blue-600 hover:to-blue-700 shadow-lg'
-                                    : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600'
-                                }`}
-                              >
-                                {planPrice === 0 ? 'Start Free' : 
-                                 planPrice === null ? 'Contact Sales' : 
-                                 'Start Free Trial'}
-                              </a>
-                            )}
-                            
-                            {/* Divider */}
-                            <div className="my-6 border-t border-gray-200 dark:border-gray-700"></div>
-                            
-                            {/* Features List */}
-                            <div className="space-y-3">
-                              <p className="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide">
-                                What's included:
-                              </p>
+                            {/* Features list with fixed height and scroll if needed */}
+                            <div className="mb-6">
                               {plan.features && (
-                                <ul className="space-y-3">
-                                  {plan.features.slice(0, 8).map((feature: string, idx: number) => (
+                                <ul className="space-y-2 max-h-64 overflow-y-auto pr-2">
+                                  {plan.features.map((feature: string, idx: number) => (
                                     <li key={idx} className="flex items-start">
-                                      <CheckIcon className="h-5 w-5 text-green-500 mr-3 mt-0.5 flex-shrink-0" />
-                                      <span className="text-sm text-gray-700 dark:text-gray-300 leading-tight">
+                                      <CheckIcon className="h-4 w-4 text-green-500 mr-2 mt-0.5 flex-shrink-0" />
+                                      <span className="text-sm leading-relaxed break-words">
                                         {feature}
                                       </span>
                                     </li>
                                   ))}
                                 </ul>
                               )}
-                              
-                              {plan.features && plan.features.length > 8 && (
-                                <p className="text-sm text-blue-600 dark:text-blue-400 font-medium pt-2">
-                                  + {plan.features.length - 8} more features
+                              {plan.userLimit && (
+                                <p className="mt-4 text-sm text-gray-600 dark:text-gray-400">
+                                  <strong>Users:</strong> {plan.userLimit}
                                 </p>
                               )}
-                              
-                              {/* User and Storage Limits */}
-                              <div className="pt-4 space-y-2">
-                                {plan.userLimit && (
-                                  <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                                    <UserGroupIcon className="h-4 w-4 mr-2" />
-                                    {plan.userLimit}
-                                  </div>
-                                )}
-                                {plan.storageLimit && (
-                                  <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
-                                    <CloudIcon className="h-4 w-4 mr-2" />
-                                    {plan.storageLimit} storage
-                                  </div>
-                                )}
-                              </div>
+                              {plan.storageLimit && (
+                                <p className="text-sm text-gray-600 dark:text-gray-400">
+                                  <strong>Storage:</strong> {plan.storageLimit}
+                                </p>
+                              )}
                             </div>
+                            
+                            {software.affiliateLink && (
+                              <a
+                                href={software.affiliateLink}
+                                target="_blank"
+                                rel="noopener noreferrer sponsored"
+                                className={`block w-full text-center py-3 px-4 rounded-lg font-semibold transition-colors ${
+                                  plan.recommended
+                                    ? 'bg-primary-600 text-white hover:bg-primary-700'
+                                    : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
+                                }`}
+                              >
+                                Get Started
+                              </a>
+                            )}
                           </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  
-                  {/* Additional pricing info */}
-                  <div className="mt-8 text-center">
-                    <p className="text-gray-600 dark:text-gray-400">
-                      All plans include 24/7 support • No setup fees • Cancel anytime
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Scroll hint for mobile */}
+                    <p className="text-center text-sm text-gray-500 dark:text-gray-400 mt-4 md:hidden">
+                      ← Swipe to see more plans →
                     </p>
-                    {software.freeTrial && (
-                      <p className="mt-2 text-green-600 dark:text-green-400 font-semibold">
-                        ✓ {software.freeTrial === true ? '14-day' : software.freeTrial} free trial available
-                      </p>
-                    )}
                   </div>
                 </section>
               )}

@@ -103,7 +103,7 @@ export default function InlineScreenshotGallery({
           className="fixed inset-0 z-50 bg-black/95 backdrop-blur-sm flex items-center justify-center p-2 sm:p-4"
           onClick={() => setSelectedImage(null)}
         >
-          <div className="relative w-full h-full max-w-[95vw] max-h-[95vh] flex flex-col">
+          <div className="relative w-full h-full max-w-[95vw] max-h-[90vh] flex flex-col">
             {/* Close Button */}
             <button
               onClick={() => setSelectedImage(null)}

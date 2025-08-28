@@ -114,7 +114,7 @@ export default function InlineScreenshotGallery({
             </button>
             
             {/* Image Container */}
-            <div className="relative flex-1 bg-black rounded-lg overflow-hidden">
+            <div className="relative w-full h-full min-h-[400px] bg-black rounded-lg overflow-hidden">
               <Image
                 src={getImageSrc(screenshots[selectedImage])}
                 alt={screenshots[selectedImage].caption || `Screenshot ${selectedImage + 1}`}

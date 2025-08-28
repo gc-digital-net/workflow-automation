@@ -505,7 +505,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col lg:flex-row items-start gap-8">
             {/* Logo and Basic Info */}
-            <div className="flex items-start gap-6 flex-1">
+            <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 flex-1">
               {software.logo && (
                 <div className="flex-shrink-0">
                   <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-md border border-gray-200 dark:border-gray-700">

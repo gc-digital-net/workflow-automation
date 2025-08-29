@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import Logo from '@/components/ui/Logo';
-import NewsletterSignup from '../interactive/NewsletterSignup';
 
 const footerNavigation = {
   reviews: [
@@ -199,10 +198,6 @@ export default function Footer() {
         </div>
         
         <div className="mt-16 border-t border-gray-900/10 pt-8 dark:border-gray-100/10 sm:mt-20 lg:mt-24">
-          <NewsletterSignup />
-        </div>
-        
-        <div className="mt-8 border-t border-gray-900/10 pt-8 dark:border-gray-100/10">
           <p className="text-xs leading-5 text-gray-500 dark:text-gray-400">
             &copy; {new Date().getFullYear()} {process.env.NEXT_PUBLIC_SITE_NAME || 'Workflow Automation'}. All rights reserved.
           </p>

@@ -109,12 +109,12 @@ export default async function CategoryPage({ params }: { params: { slug: string 
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center gap-3">
                         {item.logo && (
-                          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-gray-100 dark:bg-gray-700">
+                          <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white dark:bg-gray-800 p-2">
                             <Image
                               src={urlFor(item.logo).url()}
                               alt={item.name}
                               fill
-                              className="object-contain p-2"
+                              className="object-contain"
                             />
                           </div>
                         )}

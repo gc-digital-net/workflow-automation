@@ -271,12 +271,12 @@ export default async function HomePage() {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center gap-3">
                     {software.logo && (
-                      <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white dark:bg-gray-800">
+                      <div className="relative w-12 h-12 rounded-lg overflow-hidden bg-white dark:bg-gray-800 p-2">
                         <Image
                           src={urlFor(software.logo).url()}
                           alt={software.name}
                           fill
-                          className="object-contain p-2"
+                          className="object-contain"
                         />
                       </div>
                     )}

@@ -510,12 +510,12 @@ export default async function G2StyleReviewPage({ params }: Props) {
               <div className="flex items-start gap-4 mb-6">
                 {software.logo && (
                   <div className="flex-shrink-0">
-                    <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-md border border-gray-200 dark:border-gray-700">
+                    <div className="relative w-20 h-20 rounded-xl overflow-hidden bg-white shadow-md border border-gray-200 dark:border-gray-700 p-3">
                       <Image
                         src={urlFor(software.logo).url()}
                         alt={`${software.name} logo`}
                         fill
-                        className="object-contain p-2"
+                        className="object-contain"
                       />
                     </div>
                   </div>

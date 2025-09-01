@@ -12,6 +12,9 @@ import { GuideBuyersGuide } from '@/components/guides/GuideBuyersGuide'
 import { GuideFAQ } from '@/components/guides/GuideFAQ'
 import { NewsletterCTA } from '@/components/cta/NewsletterCTA'
 import { RelatedGuides } from '@/components/guides/RelatedGuides'
+import { GuideStructuredData } from '@/components/seo/GuideStructuredData'
+import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData'
+import { Breadcrumbs } from '@/components/ui/Breadcrumbs'
 
 interface GuidePageProps {
   params: {
@@ -77,8 +80,28 @@ export default async function GuidePage({ params }: GuidePageProps) {
   // Check if we should show newsletter CTA (after 3rd item)
   const showNewsletterAfter = 3
 
+  const guideUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/guides/${params.slug}`
+  
+  const breadcrumbItems = [
+    { name: 'Guides', href: '/guides' },
+    { name: guide.title, href: `/guides/${params.slug}` }
+  ]
+
+  const breadcrumbData = [
+    { name: 'Home', url: process.env.NEXT_PUBLIC_SITE_URL || 'https://workflowautomation.net' },
+    { name: 'Guides', url: `${process.env.NEXT_PUBLIC_SITE_URL}/guides` },
+    { name: guide.title, url: guideUrl }
+  ]
+
   return (
     <article className="min-h-screen">
+      <GuideStructuredData guide={guide} url={guideUrl} />
+      <BreadcrumbStructuredData items={breadcrumbData} />
+      
+      <div className="container mx-auto px-4 py-4">
+        <Breadcrumbs items={breadcrumbItems} />
+      </div>
+      
       <GuideHero guide={guide} />
       
       <div className="container mx-auto px-4 py-8">

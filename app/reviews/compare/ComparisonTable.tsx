@@ -39,6 +39,25 @@ interface Software {
   popularIntegrations?: string[];
   supportedPlatforms?: string[];
   deploymentOptions?: string[];
+  platformInfo?: {
+    webApp?: boolean;
+    mobileApps?: {
+      ios?: boolean;
+      android?: boolean;
+    };
+    desktopApps?: {
+      windows?: boolean;
+      mac?: boolean;
+      linux?: boolean;
+    };
+    browserExtensions?: string[];
+    api?: {
+      rest?: boolean;
+      graphql?: boolean;
+      webhooks?: boolean;
+    };
+    deploymentOptions?: string[];
+  };
   affiliateLink?: string;
   quickInfo?: {
     startingPrice?: string;
@@ -459,7 +478,50 @@ export default function ComparisonTable({
               </td>
               {selectedSoftware.map((software) => software && (
                 <td key={software._id} className="p-4">
-                  {software.supportedPlatforms && software.supportedPlatforms.length > 0 ? (
+                  {software.platformInfo ? (
+                    <div className="space-y-2">
+                      {/* Web & Browser */}
+                      {(software.platformInfo.webApp || software.platformInfo.browserExtensions) && (
+                        <div>
+                          {software.platformInfo.webApp && (
+                            <div className="text-xs text-center">✓ Web App</div>
+                          )}
+                          {software.platformInfo.browserExtensions && software.platformInfo.browserExtensions.length > 0 && (
+                            <div className="text-xs text-center text-gray-600 dark:text-gray-400">
+                              Extensions: {software.platformInfo.browserExtensions.join(', ')}
+                            </div>
+                          )}
+                        </div>
+                      )}
+                      
+                      {/* Mobile */}
+                      {software.platformInfo.mobileApps && (
+                        <div className="text-xs text-center">
+                          {software.platformInfo.mobileApps.ios && '✓ iOS '}
+                          {software.platformInfo.mobileApps.android && '✓ Android'}
+                        </div>
+                      )}
+                      
+                      {/* Desktop */}
+                      {software.platformInfo.desktopApps && (
+                        <div className="text-xs text-center">
+                          {software.platformInfo.desktopApps.windows && '✓ Windows '}
+                          {software.platformInfo.desktopApps.mac && '✓ macOS '}
+                          {software.platformInfo.desktopApps.linux && '✓ Linux'}
+                        </div>
+                      )}
+                      
+                      {/* API */}
+                      {software.platformInfo.api && (
+                        <div className="text-xs text-center text-gray-600 dark:text-gray-400">
+                          {software.platformInfo.api.rest && 'REST API '}
+                          {software.platformInfo.api.graphql && 'GraphQL '}
+                          {software.platformInfo.api.webhooks && 'Webhooks'}
+                        </div>
+                      )}
+                    </div>
+                  ) : software.supportedPlatforms && software.supportedPlatforms.length > 0 ? (
+                    // Fallback to old supportedPlatforms if platformInfo not available
                     <div className="flex flex-wrap gap-1 justify-center">
                       {software.supportedPlatforms.map((platform, i) => (
                         <span key={i} className="inline-block px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 rounded">

@@ -42,6 +42,7 @@ async function getSoftwareDetails(slugs: string[]) {
     popularIntegrations,
     supportedPlatforms,
     deploymentOptions,
+    platformInfo,
     affiliateLink,
     quickInfo,
     companyInfo,

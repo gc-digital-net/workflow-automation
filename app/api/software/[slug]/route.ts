@@ -23,6 +23,7 @@ export async function GET(
       popularIntegrations,
       supportedPlatforms,
       deploymentOptions,
+      platformInfo,
       affiliateLink,
       quickInfo,
       companyInfo,

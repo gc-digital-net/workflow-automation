@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { urlFor } from '@/lib/sanity';
@@ -15,6 +15,12 @@ export function BlogGrid({ initialPosts, featuredPost }: BlogGridProps) {
   const [displayedPosts, setDisplayedPosts] = useState(initialPosts.slice(0, 12));
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 12;
+
+  // Reset displayed posts when initialPosts changes (due to filtering)
+  useEffect(() => {
+    setDisplayedPosts(initialPosts.slice(0, postsPerPage));
+    setCurrentPage(1);
+  }, [initialPosts]);
 
   const loadMore = () => {
     const nextPage = currentPage + 1;
@@ -128,6 +134,12 @@ export function BlogGrid({ initialPosts, featuredPost }: BlogGridProps) {
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Recent Articles</h2>
         </div>
 
+        {displayedPosts.length === 0 ? (
+          <div className="text-center py-12 bg-gray-50 dark:bg-gray-800 rounded-xl">
+            <BookOpenIcon className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <p className="text-gray-600 dark:text-gray-400">No articles found in this category.</p>
+          </div>
+        ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {displayedPosts.map((post: any) => (
             <article key={post._id} className="bg-white dark:bg-gray-800 rounded-xl shadow-md hover:shadow-lg transition-shadow">
@@ -199,6 +211,7 @@ export function BlogGrid({ initialPosts, featuredPost }: BlogGridProps) {
             </article>
           ))}
         </div>
+        )}
 
         {/* Load More */}
         {hasMore && (

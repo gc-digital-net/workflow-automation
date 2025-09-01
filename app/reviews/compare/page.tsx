@@ -43,9 +43,7 @@ async function getSoftwareDetails(slugs: string[]) {
     supportedPlatforms,
     deploymentOptions,
     affiliateLink,
-    "quickInfo": coalesce(quickInfo, {
-      "startingPrice": pricing[0].price
-    }),
+    quickInfo,
     categories[]-> {
       name,
       slug

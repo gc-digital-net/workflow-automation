@@ -115,7 +115,8 @@ export default function ComparisonTable({
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Comparison Table */}
+      {/* Comparison Table - Show when there's at least one software selected */}
+      {selectedSoftware.length > 0 && (
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
@@ -373,6 +374,7 @@ export default function ComparisonTable({
           </tbody>
         </table>
       </div>
+      )}
 
       {/* Add Software Modal */}
       {showAddModal && (

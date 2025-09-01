@@ -1,0 +1,6 @@
+@echo off
+echo Setting extended API timeout for Claude Code...
+set API_TIMEOUT_MS=600000
+echo API_TIMEOUT_MS set to 600000ms (10 minutes)
+echo Launching Claude Code...
+claude

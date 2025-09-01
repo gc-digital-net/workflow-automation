@@ -6,6 +6,14 @@ export async function GET(
   { params }: { params: { slug: string } }
 ) {
   try {
+    // Check if Sanity is configured
+    if (!client) {
+      return NextResponse.json(
+        { error: 'Service temporarily unavailable' },
+        { status: 503 }
+      );
+    }
+    
     const { slug } = params;
     
     const query = `*[_type == "software" && slug.current == $slug][0] {

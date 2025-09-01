@@ -3,6 +3,14 @@ import { client } from '@/lib/sanity'
 
 export async function POST(request: NextRequest) {
   try {
+    // Check if Sanity is configured
+    if (!client) {
+      return NextResponse.json(
+        { error: 'Review submission is currently unavailable' },
+        { status: 503 }
+      )
+    }
+    
     const data = await request.json()
     
     // Get IP address and user agent for security

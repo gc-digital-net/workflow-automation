@@ -7,20 +7,22 @@ let client: any = null
 function getClient() {
   if (!client) {
     // Check if we have valid Sanity configuration
-    const isConfigured = projectId && projectId !== 'temp123'
+    // Only skip if we have the temp placeholder
+    if (!projectId || projectId === 'temp123') {
+      console.warn('Sanity not configured, using placeholder')
+      return null
+    }
     
-    if (isConfigured) {
-      try {
-        client = createClient({
-          apiVersion,
-          dataset,
-          projectId,
-          useCdn,
-        })
-      } catch (error) {
-        console.warn('Failed to create Sanity client:', error)
-        return null
-      }
+    try {
+      client = createClient({
+        apiVersion,
+        dataset,
+        projectId,
+        useCdn,
+      })
+    } catch (error) {
+      console.warn('Failed to create Sanity client:', error)
+      return null
     }
   }
   return client

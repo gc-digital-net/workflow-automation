@@ -6,12 +6,18 @@ let client: any = null
 
 function getClient() {
   if (!client) {
-    // Validate and sanitize project ID
+    // Validate and sanitize project ID and dataset
     const cleanProjectId = projectId?.trim()
+    const cleanDataset = dataset?.trim()
     
     // Check if we have valid Sanity configuration
     if (!cleanProjectId || cleanProjectId.length === 0) {
       console.warn('Sanity project ID not configured')
+      return null
+    }
+    
+    if (!cleanDataset || cleanDataset.length === 0) {
+      console.warn('Sanity dataset not configured')
       return null
     }
     
@@ -21,11 +27,17 @@ function getClient() {
       return null
     }
     
+    // Validate dataset format
+    if (!/^[a-z0-9_-]+$/.test(cleanDataset)) {
+      console.error(`Invalid Sanity dataset format: "${cleanDataset}". Only lowercase letters, numbers, underscores, and dashes are allowed.`)
+      return null
+    }
+    
     try {
-      console.log('Creating Sanity client with project ID:', cleanProjectId)
+      console.log('Creating Sanity client with:', { projectId: cleanProjectId, dataset: cleanDataset })
       client = createClient({
         apiVersion,
-        dataset,
+        dataset: cleanDataset,
         projectId: cleanProjectId,
         useCdn,
       })

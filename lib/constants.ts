@@ -22,13 +22,23 @@ export const NAVIGATION_ITEMS = [
     ],
   },
   {
+    name: 'Guides',
+    href: '/guides',
+    children: [
+      { name: 'All Guides', href: '/guides' },
+      { name: 'Project Management', href: '/guides/best-project-management-software' },
+      { name: 'Workflow Automation', href: '/guides/best-workflow-automation-tools' },
+      { name: 'Team Collaboration', href: '/guides/best-team-collaboration-software' },
+    ],
+  },
+  {
     name: 'Blog',
     href: '/blog',
     children: [
       { name: 'All Articles', href: '/blog' },
-      { name: 'Guides', href: '/blog/category/guides' },
+      { name: 'How-To Guides', href: '/blog/category/guides' },
       { name: 'News', href: '/blog/category/news' },
-      { name: 'Top Software', href: '/top' },
+      { name: 'Tips & Tricks', href: '/blog/category/tips' },
     ],
   },
   {

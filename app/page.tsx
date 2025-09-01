@@ -88,29 +88,42 @@ async function getHomePageData() {
       publishedAt
     }`
 
-    const [software, cats, posts] = await Promise.all([
+    // Fetch latest guides
+    const guidesQuery = `*[_type == "topSoftware"] | order(publishedAt desc) [0...3] {
+      _id,
+      title,
+      slug,
+      excerpt,
+      "itemCount": count(listItems),
+      featuredImage
+    }`
+
+    const [software, cats, posts, guides] = await Promise.all([
       client.fetch(softwareQuery),
       client.fetch(categoriesQuery),
-      client.fetch(postsQuery)
+      client.fetch(postsQuery),
+      client.fetch(guidesQuery)
     ])
 
     return {
       featuredSoftware: software || [],
       categories: cats || [],
-      latestPosts: posts || []
+      latestPosts: posts || [],
+      latestGuides: guides || []
     }
   } catch (error) {
     console.error('Error fetching homepage data:', error)
     return {
       featuredSoftware: [],
       categories: [],
-      latestPosts: []
+      latestPosts: [],
+      latestGuides: []
     }
   }
 }
 
 export default async function HomePage() {
-  const { featuredSoftware, categories, latestPosts } = await getHomePageData()
+  const { featuredSoftware, categories, latestPosts, latestGuides } = await getHomePageData()
 
   return (
     <div className="min-h-screen">
@@ -355,6 +368,77 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Software Guides Section */}
+      {latestGuides && latestGuides.length > 0 && (
+        <section className="py-20 bg-gray-50 dark:bg-gray-900">
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+                Software Guides
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+                In-depth comparisons and rankings to help you choose the right tools
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-8">
+              {latestGuides.map((guide) => (
+                <Link
+                  key={guide._id}
+                  href={`/guides/${guide.slug?.current}`}
+                  className="group bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-lg transition-all"
+                >
+                  <div className="aspect-video bg-gradient-to-br from-primary-500 to-indigo-600 relative">
+                    {guide.featuredImage ? (
+                      <Image
+                        src={urlFor(guide.featuredImage).url()}
+                        alt={guide.title}
+                        width={400}
+                        height={225}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="flex items-center justify-center h-full">
+                        <div className="text-white text-center">
+                          <div className="text-4xl font-bold mb-2">{guide.itemCount || 10}</div>
+                          <div className="text-sm opacity-90">Tools Reviewed</div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 line-clamp-2">
+                      {guide.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2 mb-4">
+                      {guide.excerpt || 'Comprehensive guide and comparison of top tools in this category.'}
+                    </p>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-primary-600 dark:text-primary-400 font-semibold">
+                        Read Guide →
+                      </span>
+                      <span className="text-xs text-gray-500 dark:text-gray-400">
+                        {guide.itemCount} tools
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            
+            <div className="text-center mt-12">
+              <Link
+                href="/guides"
+                className="inline-flex items-center px-6 py-3 bg-primary-600 text-white rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+              >
+                View All Guides
+                <ArrowRightIcon className="ml-2 h-5 w-5" />
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Latest Content */}
       {latestPosts.length > 0 && (

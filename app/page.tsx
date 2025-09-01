@@ -54,6 +54,16 @@ const benefits = [
 ]
 
 async function getHomePageData() {
+  if (!client) {
+    console.warn('Sanity client not initialized')
+    return {
+      featuredSoftware: [],
+      categories: [],
+      latestPosts: [],
+      latestGuides: []
+    }
+  }
+
   try {
     // Fetch featured software
     const softwareQuery = `*[_type == "software"] | order(overallScore desc) [0...6] {

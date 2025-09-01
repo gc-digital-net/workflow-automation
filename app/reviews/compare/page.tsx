@@ -8,6 +8,11 @@ import Link from 'next/link';
 
 // Fetch all available software for comparison
 async function getAvailableSoftware() {
+  if (!client) {
+    console.warn('Sanity client not initialized')
+    return []
+  }
+
   const query = `*[_type == "software"] | order(overallScore desc) {
     _id,
     name,
@@ -20,11 +25,21 @@ async function getAvailableSoftware() {
     }
   }`;
   
-  return await client.fetch(query);
+  try {
+    return await client.fetch(query);
+  } catch (error) {
+    console.error('Error fetching available software:', error)
+    return []
+  }
 }
 
 // Fetch detailed software data for comparison
 async function getSoftwareDetails(slugs: string[]) {
+  if (!client) {
+    console.warn('Sanity client not initialized')
+    return []
+  }
+
   if (!slugs || slugs.length === 0) return [];
   
   const query = `*[_type == "software" && slug.current in $slugs] {
@@ -54,7 +69,12 @@ async function getSoftwareDetails(slugs: string[]) {
     }
   }`;
   
-  return await client.fetch(query, { slugs });
+  try {
+    return await client.fetch(query, { slugs });
+  } catch (error) {
+    console.error('Error fetching software details:', error)
+    return []
+  }
 }
 
 // Popular comparisons data

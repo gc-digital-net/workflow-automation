@@ -40,6 +40,11 @@ const categoryConfig: Record<string, { icon: any; color: string }> = {
 
 // Fetch categories with actual software counts
 async function getCategories() {
+  if (!client) {
+    console.warn('Sanity client not initialized')
+    return []
+  }
+
   const query = `*[_type == "softwareCategory"] | order(name asc) {
     _id,
     name,
@@ -52,7 +57,12 @@ async function getCategories() {
     }
   }`;
   
-  return await client.fetch(query);
+  try {
+    return await client.fetch(query);
+  } catch (error) {
+    console.error('Error fetching categories:', error)
+    return []
+  }
 }
 
 // Featured comparisons (could also come from Sanity in the future)

@@ -5,6 +5,11 @@ import { StarIcon, ArrowLeftIcon } from '@heroicons/react/24/solid'
 import { client, urlFor } from '@/lib/sanity'
 
 async function getCategoryData(slug: string) {
+  if (!client) {
+    console.warn('Sanity client not initialized')
+    return null
+  }
+  
   try {
     // Fetch category details
     const categoryQuery = `*[_type == "softwareCategory" && slug.current == $slug][0] {
@@ -162,9 +167,18 @@ export default async function CategoryPage({ params }: { params: { slug: string 
 
 // Generate static params for all categories
 export async function generateStaticParams() {
-  const categories = await client.fetch(`*[_type == "softwareCategory"] { slug }`)
+  if (!client) {
+    return []
+  }
   
-  return categories.map((category: any) => ({
-    slug: category.slug.current,
-  }))
+  try {
+    const categories = await client.fetch(`*[_type == "softwareCategory"] { slug }`)
+    
+    return categories.map((category: any) => ({
+      slug: category.slug.current,
+    }))
+  } catch (error) {
+    console.warn('Failed to generate category params:', error)
+    return []
+  }
 }

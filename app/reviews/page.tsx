@@ -6,6 +6,14 @@ import { client, urlFor } from '@/lib/sanity'
 import ReviewsClient from './reviews-client'
 
 async function getReviewsData() {
+  if (!client) {
+    console.warn('Sanity client not initialized')
+    return {
+      softwareReviews: [],
+      categories: []
+    }
+  }
+
   try {
     // Fetch software with categories
     const softwareQuery = `*[_type == "software"] {

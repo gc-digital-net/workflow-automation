@@ -400,6 +400,11 @@ function RatingStars({ rating }: { rating: number }) {
 }
 
 async function getSoftware(slug: string) {
+  if (!client) {
+    console.warn('Sanity client not initialized')
+    return null
+  }
+
   const query = `
     *[_type == "software" && slug.current == $slug][0] {
       _id,
@@ -461,8 +466,13 @@ async function getSoftware(slug: string) {
     }
   `
   
-  const software = await client.fetch(query, { slug })
-  return software
+  try {
+    const software = await client.fetch(query, { slug })
+    return software
+  } catch (error) {
+    console.error('Error fetching software:', error)
+    return null
+  }
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {

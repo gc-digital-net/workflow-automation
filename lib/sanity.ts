@@ -1,8 +1,8 @@
 import { createClient } from '@sanity/client'
 import imageUrlBuilder from '@sanity/image-url'
 
-// During build, env vars might not be available
-const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || ''
+// During build, env vars might not be available - use valid placeholder
+const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'x1zu4x72'
 const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 
 // Create client only if we have valid configuration

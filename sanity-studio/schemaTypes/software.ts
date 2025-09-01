@@ -618,33 +618,33 @@ export default defineType({
       type: 'object',
       group: 'details',
       fields: [
-        {
+        defineField({
           name: 'webApp',
           title: 'Web Application',
           type: 'boolean',
           description: 'Available as web browser application',
           initialValue: true
-        },
-        {
+        }),
+        defineField({
           name: 'mobileApps',
           title: 'Mobile Apps',
           type: 'object',
           fields: [
-            { name: 'ios', title: 'iOS App', type: 'boolean' },
-            { name: 'android', title: 'Android App', type: 'boolean' }
+            defineField({ name: 'ios', title: 'iOS App', type: 'boolean' }),
+            defineField({ name: 'android', title: 'Android App', type: 'boolean' })
           ]
-        },
-        {
+        }),
+        defineField({
           name: 'desktopApps',
           title: 'Desktop Apps',
           type: 'object',
           fields: [
-            { name: 'windows', title: 'Windows', type: 'boolean' },
-            { name: 'mac', title: 'macOS', type: 'boolean' },
-            { name: 'linux', title: 'Linux', type: 'boolean' }
+            defineField({ name: 'windows', title: 'Windows', type: 'boolean' }),
+            defineField({ name: 'mac', title: 'macOS', type: 'boolean' }),
+            defineField({ name: 'linux', title: 'Linux', type: 'boolean' })
           ]
-        },
-        {
+        }),
+        defineField({
           name: 'browserExtensions',
           title: 'Browser Extensions',
           type: 'array',
@@ -657,18 +657,18 @@ export default defineType({
               { title: 'Edge', value: 'Edge' }
             ]
           }
-        },
-        {
+        }),
+        defineField({
           name: 'api',
           title: 'API Access',
           type: 'object',
           fields: [
-            { name: 'rest', title: 'REST API', type: 'boolean' },
-            { name: 'graphql', title: 'GraphQL API', type: 'boolean' },
-            { name: 'webhooks', title: 'Webhooks', type: 'boolean' }
+            defineField({ name: 'rest', title: 'REST API', type: 'boolean' }),
+            defineField({ name: 'graphql', title: 'GraphQL API', type: 'boolean' }),
+            defineField({ name: 'webhooks', title: 'Webhooks', type: 'boolean' })
           ]
-        },
-        {
+        }),
+        defineField({
           name: 'deploymentOptions',
           title: 'Deployment Options',
           type: 'array',
@@ -681,7 +681,7 @@ export default defineType({
               { title: 'Private Cloud', value: 'Private Cloud' }
             ]
           }
-        }
+        })
       ]
     }),
     

@@ -39,52 +39,81 @@ const authorPostsQuery = `
 `
 
 export async function generateStaticParams() {
-  const authors = await client.fetch(`
-    *[_type == "author"] {
-      slug
-    }
-  `)
+  if (!client) {
+    return []
+  }
   
-  return authors.map((author: any) => ({
-    slug: author.slug.current,
-  }))
+  try {
+    const authors = await client.fetch(`
+      *[_type == "author"] {
+        slug
+      }
+    `)
+    
+    return authors.map((author: any) => ({
+      slug: author.slug.current,
+    }))
+  } catch (error) {
+    console.warn('Failed to generate author params:', error)
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }) {
-  const author = await client.fetch(authorQuery, { slug: params.slug })
-  
-  if (!author) {
+  if (!client) {
     return {
-      title: 'Author Not Found',
+      title: 'Author',
+      description: 'Author profile'
     }
   }
   
-  return {
-    title: `${author.name} - Workflow Automation`,
-    description: author.bio || `Articles and content by ${author.name}`,
-    openGraph: {
+  try {
+    const author = await client.fetch(authorQuery, { slug: params.slug })
+    
+    if (!author) {
+      return {
+        title: 'Author Not Found',
+      }
+    }
+  
+    return {
       title: `${author.name} - Workflow Automation`,
       description: author.bio || `Articles and content by ${author.name}`,
-      type: 'profile',
-      images: author.avatar ? [urlFor(author.avatar).width(1200).height(630).url()] : [],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: `${author.name} - Workflow Automation`,
-      description: author.bio || `Articles and content by ${author.name}`,
-      images: author.avatar ? [urlFor(author.avatar).width(1200).height(630).url()] : [],
-    },
+      openGraph: {
+        title: `${author.name} - Workflow Automation`,
+        description: author.bio || `Articles and content by ${author.name}`,
+        type: 'profile',
+        images: author.avatar ? [urlFor(author.avatar).width(1200).height(630).url()] : [],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: `${author.name} - Workflow Automation`,
+        description: author.bio || `Articles and content by ${author.name}`,
+        images: author.avatar ? [urlFor(author.avatar).width(1200).height(630).url()] : [],
+      },
+    }
+  } catch (error) {
+    console.warn('Failed to generate author metadata:', error)
+    return {
+      title: 'Author',
+      description: 'Author profile'
+    }
   }
 }
 
 export default async function AuthorPage({ params }: { params: { slug: string } }) {
-  const author = await client.fetch(authorQuery, { slug: params.slug })
-  
-  if (!author) {
+  if (!client) {
     notFound()
   }
   
-  const posts = await client.fetch(authorPostsQuery, { authorId: author._id })
+  try {
+    const author = await client.fetch(authorQuery, { slug: params.slug })
+    
+    if (!author) {
+      notFound()
+    }
+    
+    const posts = await client.fetch(authorPostsQuery, { authorId: author._id })
   
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -245,4 +274,8 @@ export default async function AuthorPage({ params }: { params: { slug: string } 
       </div>
     </div>
   )
+  } catch (error) {
+    console.warn('Failed to load author page:', error)
+    notFound()
+  }
 }

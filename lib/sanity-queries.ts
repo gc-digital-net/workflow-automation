@@ -10,7 +10,7 @@ export const postsQuery = `
     publishedAt,
     featuredImage,
     "author": author->name,
-    "categories": categories[]->name
+    "categories": categories[]->{name, slug}
   }
 `
 

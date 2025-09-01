@@ -6,21 +6,31 @@ let client: any = null
 
 function getClient() {
   if (!client) {
+    // Validate and sanitize project ID
+    const cleanProjectId = projectId?.trim()
+    
     // Check if we have valid Sanity configuration
-    if (!projectId || projectId.length === 0) {
+    if (!cleanProjectId || cleanProjectId.length === 0) {
       console.warn('Sanity project ID not configured')
       return null
     }
     
+    // Validate project ID format (only a-z, 0-9, and dashes allowed)
+    if (!/^[a-z0-9-]+$/.test(cleanProjectId)) {
+      console.error(`Invalid Sanity project ID format: "${cleanProjectId}". Only lowercase letters, numbers, and dashes are allowed.`)
+      return null
+    }
+    
     try {
+      console.log('Creating Sanity client with project ID:', cleanProjectId)
       client = createClient({
         apiVersion,
         dataset,
-        projectId,
+        projectId: cleanProjectId,
         useCdn,
       })
     } catch (error) {
-      console.warn('Failed to create Sanity client:', error)
+      console.error('Failed to create Sanity client:', error)
       return null
     }
   }

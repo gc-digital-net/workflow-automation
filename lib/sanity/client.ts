@@ -6,39 +6,16 @@ let client: any = null
 
 function getClient() {
   if (!client) {
-    // Validate and sanitize project ID and dataset
-    const cleanProjectId = projectId?.trim()
-    const cleanDataset = dataset?.trim()
-    
     // Check if we have valid Sanity configuration
-    if (!cleanProjectId || cleanProjectId.length === 0) {
-      console.warn('Sanity project ID not configured')
-      return null
-    }
-    
-    if (!cleanDataset || cleanDataset.length === 0) {
-      console.warn('Sanity dataset not configured')
-      return null
-    }
-    
-    // Validate project ID format (only a-z, 0-9, and dashes allowed)
-    if (!/^[a-z0-9-]+$/.test(cleanProjectId)) {
-      console.error(`Invalid Sanity project ID format: "${cleanProjectId}". Only lowercase letters, numbers, and dashes are allowed.`)
-      return null
-    }
-    
-    // Validate dataset format
-    if (!/^[a-z0-9_-]+$/.test(cleanDataset)) {
-      console.error(`Invalid Sanity dataset format: "${cleanDataset}". Only lowercase letters, numbers, underscores, and dashes are allowed.`)
+    if (!projectId || projectId.length === 0 || !dataset || dataset.length === 0) {
       return null
     }
     
     try {
-      console.log('Creating Sanity client with:', { projectId: cleanProjectId, dataset: cleanDataset })
       client = createClient({
         apiVersion,
-        dataset: cleanDataset,
-        projectId: cleanProjectId,
+        dataset,
+        projectId,
         useCdn,
       })
     } catch (error) {
@@ -62,7 +39,6 @@ export async function sanityFetch<QueryResponse>({
   
   // Return empty data if Sanity is not configured
   if (!sanityClient) {
-    console.warn('Sanity client not configured. Returning empty data.')
     return null as QueryResponse
   }
   
@@ -74,7 +50,7 @@ export async function sanityFetch<QueryResponse>({
       },
     })
   } catch (error) {
-    console.warn('Sanity fetch error:', error)
+    console.error('Sanity fetch error:', error)
     return null as QueryResponse
   }
 }

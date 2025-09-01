@@ -668,18 +668,6 @@ export default async function G2StyleReviewPage({ params }: Props) {
             
             {/* Key Information Section - Mobile/Tablet Only */}
             <div className="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-              {/* Platforms Card - Mobile */}
-              <div className="md:col-span-2">
-                <PlatformsSidebar 
-                  webApp={software.platformInfo?.webApp}
-                  mobileApps={software.platformInfo?.mobileApps}
-                  desktopApps={software.platformInfo?.desktopApps}
-                  browserExtensions={software.platformInfo?.browserExtensions}
-                  api={software.platformInfo?.api}
-                  deploymentOptions={software.platformInfo?.deploymentOptions}
-                />
-              </div>
-              
               {/* Company Info Card */}
               {software.companyInfo && (
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
@@ -792,6 +780,18 @@ export default async function G2StyleReviewPage({ params }: Props) {
                   )}
                 </div>
               )}
+              
+              {/* Platforms Card - Mobile */}
+              <div className="md:col-span-2">
+                <PlatformsSidebar 
+                  webApp={software.platformInfo?.webApp}
+                  mobileApps={software.platformInfo?.mobileApps}
+                  desktopApps={software.platformInfo?.desktopApps}
+                  browserExtensions={software.platformInfo?.browserExtensions}
+                  api={software.platformInfo?.api}
+                  deploymentOptions={software.platformInfo?.deploymentOptions}
+                />
+              </div>
               
               {/* Support Info */}
               {software.supportInfo && (
@@ -1139,16 +1139,6 @@ export default async function G2StyleReviewPage({ params }: Props) {
           
           {/* Desktop Sidebar - Hidden on Mobile/Tablet */}
           <aside className="hidden lg:block lg:col-span-1 space-y-6">
-            {/* Platforms Card */}
-            <PlatformsSidebar 
-              webApp={software.platformInfo?.webApp}
-              mobileApps={software.platformInfo?.mobileApps}
-              desktopApps={software.platformInfo?.desktopApps}
-              browserExtensions={software.platformInfo?.browserExtensions}
-              api={software.platformInfo?.api}
-              deploymentOptions={software.platformInfo?.deploymentOptions}
-            />
-            
             {/* Company Info Card */}
             {software.companyInfo && (
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
@@ -1261,6 +1251,16 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 )}
               </div>
             )}
+            
+            {/* Platforms Card */}
+            <PlatformsSidebar 
+              webApp={software.platformInfo?.webApp}
+              mobileApps={software.platformInfo?.mobileApps}
+              desktopApps={software.platformInfo?.desktopApps}
+              browserExtensions={software.platformInfo?.browserExtensions}
+              api={software.platformInfo?.api}
+              deploymentOptions={software.platformInfo?.deploymentOptions}
+            />
             
             {/* Support Info */}
             {software.supportInfo && (

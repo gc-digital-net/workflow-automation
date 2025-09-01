@@ -417,6 +417,7 @@ async function getSoftware(slug: string) {
       companyInfo,
       supportInfo,
       securityInfo,
+      platformInfo,
       affiliateLink,
       pricing,
       pros,
@@ -671,9 +672,9 @@ export default async function G2StyleReviewPage({ params }: Props) {
               <div className="md:col-span-2">
                 <PlatformsSidebar 
                   webApp={software.platformInfo?.webApp}
-                  mobileApps={software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android}
-                  desktopApps={software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux}
-                  api={software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks}
+                  mobileApps={!!(software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android)}
+                  desktopApps={!!(software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux)}
+                  api={!!(software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks)}
                 />
               </div>
               
@@ -1139,9 +1140,9 @@ export default async function G2StyleReviewPage({ params }: Props) {
             {/* Platforms Card */}
             <PlatformsSidebar 
               webApp={software.platformInfo?.webApp}
-              mobileApps={software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android}
-              desktopApps={software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux}
-              api={software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks}
+              mobileApps={!!(software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android)}
+              desktopApps={!!(software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux)}
+              api={!!(software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks)}
             />
             
             {/* Company Info Card */}

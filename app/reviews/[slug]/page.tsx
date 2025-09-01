@@ -670,11 +670,10 @@ export default async function G2StyleReviewPage({ params }: Props) {
               {/* Platforms Card - Mobile */}
               <div className="md:col-span-2">
                 <PlatformsSidebar 
-                  platforms={software.supportedPlatforms}
-                  webApp={software.webApp !== false}
-                  mobileApps={software.mobileApps !== false}
-                  desktopApps={software.desktopApps === true}
-                  api={software.api !== false}
+                  webApp={software.platformInfo?.webApp}
+                  mobileApps={software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android}
+                  desktopApps={software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux}
+                  api={software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks}
                   integrations={software.popularIntegrations || software.integrations}
                 />
               </div>
@@ -1140,11 +1139,10 @@ export default async function G2StyleReviewPage({ params }: Props) {
           <aside className="hidden lg:block lg:col-span-1 space-y-6">
             {/* Platforms Card */}
             <PlatformsSidebar 
-              platforms={software.supportedPlatforms}
-              webApp={software.webApp !== false}
-              mobileApps={software.mobileApps !== false}
-              desktopApps={software.desktopApps === true}
-              api={software.api !== false}
+              webApp={software.platformInfo?.webApp}
+              mobileApps={software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android}
+              desktopApps={software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux}
+              api={software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks}
               integrations={software.popularIntegrations || software.integrations}
             />
             

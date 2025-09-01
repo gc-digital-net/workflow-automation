@@ -613,6 +613,79 @@ export default defineType({
     }),
     
     defineField({
+      name: 'platformInfo',
+      title: 'Platform & Availability',
+      type: 'object',
+      group: 'details',
+      fields: [
+        {
+          name: 'webApp',
+          title: 'Web Application',
+          type: 'boolean',
+          description: 'Available as web browser application',
+          initialValue: true
+        },
+        {
+          name: 'mobileApps',
+          title: 'Mobile Apps',
+          type: 'object',
+          fields: [
+            { name: 'ios', title: 'iOS App', type: 'boolean' },
+            { name: 'android', title: 'Android App', type: 'boolean' }
+          ]
+        },
+        {
+          name: 'desktopApps',
+          title: 'Desktop Apps',
+          type: 'object',
+          fields: [
+            { name: 'windows', title: 'Windows', type: 'boolean' },
+            { name: 'mac', title: 'macOS', type: 'boolean' },
+            { name: 'linux', title: 'Linux', type: 'boolean' }
+          ]
+        },
+        {
+          name: 'browserExtensions',
+          title: 'Browser Extensions',
+          type: 'array',
+          of: [{ type: 'string' }],
+          options: {
+            list: [
+              { title: 'Chrome', value: 'Chrome' },
+              { title: 'Firefox', value: 'Firefox' },
+              { title: 'Safari', value: 'Safari' },
+              { title: 'Edge', value: 'Edge' }
+            ]
+          }
+        },
+        {
+          name: 'api',
+          title: 'API Access',
+          type: 'object',
+          fields: [
+            { name: 'rest', title: 'REST API', type: 'boolean' },
+            { name: 'graphql', title: 'GraphQL API', type: 'boolean' },
+            { name: 'webhooks', title: 'Webhooks', type: 'boolean' }
+          ]
+        },
+        {
+          name: 'deploymentOptions',
+          title: 'Deployment Options',
+          type: 'array',
+          of: [{ type: 'string' }],
+          options: {
+            list: [
+              { title: 'Cloud (SaaS)', value: 'Cloud (SaaS)' },
+              { title: 'On-Premise', value: 'On-Premise' },
+              { title: 'Hybrid', value: 'Hybrid' },
+              { title: 'Private Cloud', value: 'Private Cloud' }
+            ]
+          }
+        }
+      ]
+    }),
+    
+    defineField({
       name: 'screenshotGallery',
       title: 'Screenshot Gallery',
       type: 'array',

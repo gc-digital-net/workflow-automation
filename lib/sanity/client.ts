@@ -2,7 +2,7 @@ import { createClient } from 'next-sanity'
 import { apiVersion, dataset, projectId, useCdn } from './env'
 
 // Check if we have valid Sanity configuration
-const isConfigured = projectId && projectId !== 'placeholder-id'
+const isConfigured = projectId && projectId !== 'temp123'
 
 export const client = isConfigured ? createClient({
   apiVersion,

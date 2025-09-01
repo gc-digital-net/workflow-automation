@@ -14,12 +14,14 @@ export default async function GuidesPage() {
   let guides
   
   try {
+    console.log('Fetching guides with query:', guidesQuery)
     guides = await sanityFetch({
       query: guidesQuery,
       tags: ['topSoftware'],
     })
+    console.log('Guides fetched:', guides?.length || 0, 'guides')
   } catch (error) {
-    console.warn('Unable to fetch guides:', error)
+    console.error('Unable to fetch guides:', error)
     guides = []
   }
 
@@ -49,6 +51,15 @@ export default async function GuidesPage() {
           <p className="text-sm text-muted-foreground">
             Check back soon for our expert software recommendations.
           </p>
+          {/* Debug info - remove in production */}
+          {process.env.NODE_ENV === 'development' && (
+            <div className="mt-8 p-4 bg-gray-100 dark:bg-gray-800 rounded-lg text-left max-w-2xl mx-auto">
+              <p className="font-mono text-xs">Debug Info:</p>
+              <pre className="text-xs mt-2 overflow-auto">
+                {JSON.stringify({ guides, count: guides?.length }, null, 2)}
+              </pre>
+            </div>
+          )}
         </div>
       )}
 

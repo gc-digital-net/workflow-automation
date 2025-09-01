@@ -148,11 +148,23 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
             {/* Author & Meta */}
             <div className="flex items-center justify-between flex-wrap gap-4 pb-6 border-b border-gray-200 dark:border-gray-700">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
-                  <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">
-                    {getInitials(post.author?.name || post.author || 'Anonymous')}
-                  </span>
-                </div>
+                {post.author?.avatar ? (
+                  <div className="relative w-12 h-12 rounded-full overflow-hidden">
+                    <Image
+                      src={urlFor(post.author.avatar).url()}
+                      alt={post.author.name}
+                      fill
+                      className="object-cover"
+                      sizes="48px"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center">
+                    <span className="text-sm font-semibold text-primary-600 dark:text-primary-400">
+                      {getInitials(post.author?.name || post.author || 'Anonymous')}
+                    </span>
+                  </div>
+                )}
                 <div>
                   <Link 
                     href={post.author?.slug ? `/author/${post.author.slug.current}` : '#'}
@@ -244,11 +256,23 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
                 About the Author
               </h3>
               <div className="flex items-start gap-4">
-                <div className="w-16 h-16 rounded-full bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center flex-shrink-0">
-                  <span className="text-lg font-semibold text-primary-600 dark:text-primary-400">
-                    {getInitials(post.author.name)}
-                  </span>
-                </div>
+                {post.author?.avatar ? (
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden flex-shrink-0">
+                    <Image
+                      src={urlFor(post.author.avatar).url()}
+                      alt={post.author.name}
+                      fill
+                      className="object-cover"
+                      sizes="64px"
+                    />
+                  </div>
+                ) : (
+                  <div className="w-16 h-16 rounded-full bg-primary-100 dark:bg-primary-900/20 flex items-center justify-center flex-shrink-0">
+                    <span className="text-lg font-semibold text-primary-600 dark:text-primary-400">
+                      {getInitials(post.author.name)}
+                    </span>
+                  </div>
+                )}
                 <div>
                   <Link 
                     href={post.author?.slug ? `/author/${post.author.slug.current}` : '#'}

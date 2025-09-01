@@ -23,8 +23,8 @@ interface Software {
   scores?: {
     easeOfUse?: number;
     features?: number;
-    valueForMoney?: number;
-    customerSupport?: number;
+    value?: number;
+    support?: number;
     integrations?: number;
   };
   pricing?: Array<{
@@ -108,7 +108,12 @@ export default function ComparisonTable({
       return software.quickInfo.startingPrice;
     }
     if (software.pricing && software.pricing.length > 0) {
-      return software.pricing[0].price;
+      const price = software.pricing[0].price;
+      if (price === 0) {
+        return 'Free';
+      } else if (price) {
+        return `$${price}/user/mo`;
+      }
     }
     return 'Contact for pricing';
   };
@@ -222,15 +227,21 @@ export default function ComparisonTable({
             </tr>
 
             {/* Individual Scores */}
-            {['easeOfUse', 'features', 'valueForMoney', 'customerSupport', 'integrations'].map((scoreKey) => (
-              <tr key={scoreKey} className="border-t border-gray-200 dark:border-gray-700">
-                <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0 capitalize">
-                  {scoreKey.replace(/([A-Z])/g, ' $1').trim()}
+            {[
+              { key: 'easeOfUse', label: 'Ease of Use' },
+              { key: 'features', label: 'Features' },
+              { key: 'value', label: 'Value for Money' },
+              { key: 'support', label: 'Customer Support' },
+              { key: 'integrations', label: 'Integrations' }
+            ].map(({ key, label }) => (
+              <tr key={key} className="border-t border-gray-200 dark:border-gray-700">
+                <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
+                  {label}
                 </td>
                 {selectedSoftware.map((software) => software && (
                   <td key={software._id} className="p-4 text-center">
-                    <span className={`text-lg font-semibold ${getScoreColor(software.scores?.[scoreKey as keyof typeof software.scores])}`}>
-                      {software.scores?.[scoreKey as keyof typeof software.scores]?.toFixed(1) || 'N/A'}
+                    <span className={`text-lg font-semibold ${getScoreColor(software.scores?.[key as keyof typeof software.scores])}`}>
+                      {software.scores?.[key as keyof typeof software.scores]?.toFixed(1) || 'N/A'}
                     </span>
                     <span className="text-gray-500 dark:text-gray-400">/10</span>
                   </td>
@@ -335,16 +346,20 @@ export default function ComparisonTable({
               </td>
               {selectedSoftware.map((software) => software && (
                 <td key={software._id} className="p-4 text-center">
-                  {software.integrations ? (
+                  {software.popularIntegrations && software.popularIntegrations.length > 0 ? (
+                    <div>
+                      <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
+                        {software.popularIntegrations.length}+
+                      </div>
+                      <div className="mt-2 text-xs text-gray-500">
+                        Including: {software.popularIntegrations.slice(0, 3).join(', ')}
+                      </div>
+                    </div>
+                  ) : software.integrations ? (
                     <div>
                       <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                         {software.integrations.length}+
                       </div>
-                      {software.popularIntegrations && software.popularIntegrations.length > 0 && (
-                        <div className="mt-2 text-xs text-gray-500">
-                          Including: {software.popularIntegrations.slice(0, 3).join(', ')}
-                        </div>
-                      )}
                     </div>
                   ) : (
                     <span className="text-sm text-gray-500">Not specified</span>

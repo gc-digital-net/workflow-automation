@@ -64,6 +64,7 @@ export default function ComparisonTable({
   const [selectedSoftware, setSelectedSoftware] = useState<Software[]>(initialSelectedSoftware);
   const [showAddModal, setShowAddModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [isLoadingSoftware, setIsLoadingSoftware] = useState(false);
 
   // Update URL when selection changes
   useEffect(() => {
@@ -80,11 +81,29 @@ export default function ComparisonTable({
   );
 
   // Add software to comparison
-  const addSoftware = (software: Software) => {
+  const addSoftware = async (software: Software) => {
     if (selectedSoftware.length < 4) {
-      setSelectedSoftware([...selectedSoftware, software]);
+      setIsLoadingSoftware(true);
       setShowAddModal(false);
       setSearchTerm('');
+      
+      // Fetch detailed data for the software
+      try {
+        const response = await fetch(`/api/software/${software.slug.current}`);
+        if (response.ok) {
+          const detailedSoftware = await response.json();
+          setSelectedSoftware([...selectedSoftware, detailedSoftware]);
+        } else {
+          // Fallback to basic data if fetch fails
+          setSelectedSoftware([...selectedSoftware, software]);
+        }
+      } catch (error) {
+        console.error('Error fetching software details:', error);
+        // Fallback to basic data if fetch fails
+        setSelectedSoftware([...selectedSoftware, software]);
+      } finally {
+        setIsLoadingSoftware(false);
+      }
     }
   };
 
@@ -177,13 +196,20 @@ export default function ComparisonTable({
               ))}
               {selectedSoftware.length < 4 && (
                 <th className="p-4 bg-gray-50 dark:bg-gray-800 min-w-[200px]">
-                  <button
-                    onClick={() => setShowAddModal(true)}
-                    className="w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-primary-400 dark:hover:border-primary-500 transition-colors flex flex-col items-center justify-center"
-                  >
-                    <PlusIcon className="h-8 w-8 text-gray-400 mb-2" />
-                    <span className="text-sm text-gray-600 dark:text-gray-400">Add Software</span>
-                  </button>
+                  {isLoadingSoftware ? (
+                    <div className="w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex flex-col items-center justify-center">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mb-2"></div>
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Loading...</span>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={() => setShowAddModal(true)}
+                      className="w-full h-32 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg hover:border-primary-400 dark:hover:border-primary-500 transition-colors flex flex-col items-center justify-center"
+                    >
+                      <PlusIcon className="h-8 w-8 text-gray-400 mb-2" />
+                      <span className="text-sm text-gray-600 dark:text-gray-400">Add Software</span>
+                    </button>
+                  )}
                 </th>
               )}
             </tr>

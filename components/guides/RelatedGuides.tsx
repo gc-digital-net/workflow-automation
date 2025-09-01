@@ -1,13 +1,12 @@
 import Link from 'next/link'
 import { sanityFetch } from '@/lib/sanity/client'
-import { groq } from 'next-sanity'
 import { ArrowRightIcon } from '@heroicons/react/24/outline'
 
 interface RelatedGuidesProps {
   currentGuideId: string
 }
 
-const relatedGuidesQuery = groq`
+const relatedGuidesQuery = `
   *[_type == "topSoftware" && _id != $currentId] | order(publishedAt desc) [0...3] {
     _id,
     title,

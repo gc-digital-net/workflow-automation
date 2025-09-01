@@ -1,6 +1,4 @@
-import { groq } from 'next-sanity'
-
-export const guidesQuery = groq`
+export const guidesQuery = `
   *[_type == "topSoftware"] | order(publishedAt desc) {
     _id,
     title,
@@ -22,7 +20,7 @@ export const guidesQuery = groq`
   }
 `
 
-export const guideBySlugQuery = groq`
+export const guideBySlugQuery = `
   *[_type == "topSoftware" && slug.current == $slug][0] {
     _id,
     title,
@@ -71,6 +69,6 @@ export const guideBySlugQuery = groq`
   }
 `
 
-export const guideSlugsQuery = groq`
+export const guideSlugsQuery = `
   *[_type == "topSoftware" && defined(slug.current)][].slug.current
 `

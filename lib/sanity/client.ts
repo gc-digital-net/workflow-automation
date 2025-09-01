@@ -1,15 +1,30 @@
 import { createClient } from 'next-sanity'
 import { apiVersion, dataset, projectId, useCdn } from './env'
 
-// Check if we have valid Sanity configuration
-const isConfigured = projectId && projectId !== 'temp123'
+// Create client lazily to avoid errors during build
+let client: any = null
 
-export const client = isConfigured ? createClient({
-  apiVersion,
-  dataset,
-  projectId,
-  useCdn,
-}) : null
+function getClient() {
+  if (!client) {
+    // Check if we have valid Sanity configuration
+    const isConfigured = projectId && projectId !== 'temp123'
+    
+    if (isConfigured) {
+      try {
+        client = createClient({
+          apiVersion,
+          dataset,
+          projectId,
+          useCdn,
+        })
+      } catch (error) {
+        console.warn('Failed to create Sanity client:', error)
+        return null
+      }
+    }
+  }
+  return client
+}
 
 export async function sanityFetch<QueryResponse>({
   query,
@@ -20,16 +35,26 @@ export async function sanityFetch<QueryResponse>({
   params?: any
   tags?: string[]
 }): Promise<QueryResponse> {
+  const sanityClient = getClient()
+  
   // Return empty data if Sanity is not configured
-  if (!client) {
+  if (!sanityClient) {
     console.warn('Sanity client not configured. Returning empty data.')
     return null as QueryResponse
   }
   
-  return client.fetch<QueryResponse>(query, params, {
-    next: {
-      revalidate: 60,
-      tags,
-    },
-  })
+  try {
+    return await sanityClient.fetch<QueryResponse>(query, params, {
+      next: {
+        revalidate: 60,
+        tags,
+      },
+    })
+  } catch (error) {
+    console.warn('Sanity fetch error:', error)
+    return null as QueryResponse
+  }
 }
+
+// Export client getter for places that need direct access
+export { getClient as client }

@@ -175,41 +175,101 @@ export const faqsQuery = `
 
 // Fetch functions
 export async function getPosts() {
-  return await client.fetch(postsQuery)
+  if (!client) return []
+  try {
+    return await client.fetch(postsQuery)
+  } catch (error) {
+    console.warn('Failed to fetch posts:', error)
+    return []
+  }
 }
 
 export async function getPostBySlug(slug: string) {
-  return await client.fetch(postBySlugQuery, { slug })
+  if (!client) return null
+  try {
+    return await client.fetch(postBySlugQuery, { slug })
+  } catch (error) {
+    console.warn('Failed to fetch post:', error)
+    return null
+  }
 }
 
 export async function getSoftware() {
-  return await client.fetch(softwareQuery)
+  if (!client) return []
+  try {
+    return await client.fetch(softwareQuery)
+  } catch (error) {
+    console.warn('Failed to fetch software:', error)
+    return []
+  }
 }
 
 export async function getSoftwareBySlug(slug: string) {
-  return await client.fetch(softwareBySlugQuery, { slug })
+  if (!client) return null
+  try {
+    return await client.fetch(softwareBySlugQuery, { slug })
+  } catch (error) {
+    console.warn('Failed to fetch software:', error)
+    return null
+  }
 }
 
 export async function getBestOfGuides() {
-  return await client.fetch(bestOfGuidesQuery)
+  if (!client) return []
+  try {
+    return await client.fetch(bestOfGuidesQuery)
+  } catch (error) {
+    console.warn('Failed to fetch best of guides:', error)
+    return []
+  }
 }
 
 export async function getBestOfGuideBySlug(slug: string) {
-  return await client.fetch(bestOfGuideBySlugQuery, { slug })
+  if (!client) return null
+  try {
+    return await client.fetch(bestOfGuideBySlugQuery, { slug })
+  } catch (error) {
+    console.warn('Failed to fetch best of guide:', error)
+    return null
+  }
 }
 
 export async function getHomepageData() {
-  return await client.fetch(homepageDataQuery)
+  if (!client) return { featuredSoftware: [], categories: [], testimonials: [] }
+  try {
+    return await client.fetch(homepageDataQuery)
+  } catch (error) {
+    console.warn('Failed to fetch homepage data:', error)
+    return { featuredSoftware: [], categories: [], testimonials: [] }
+  }
 }
 
 export async function getCategories() {
-  return await client.fetch(categoriesQuery)
+  if (!client) return []
+  try {
+    return await client.fetch(categoriesQuery)
+  } catch (error) {
+    console.warn('Failed to fetch categories:', error)
+    return []
+  }
 }
 
 export async function getComparisons() {
-  return await client.fetch(comparisonsQuery)
+  if (!client) return []
+  try {
+    return await client.fetch(comparisonsQuery)
+  } catch (error) {
+    console.warn('Failed to fetch comparisons:', error)
+    return []
+  }
 }
 
 export async function getFaqs() {
-  return await client.fetch(faqsQuery)
+  if (!client) return []
+  try {
+    return await client.fetch(faqsQuery)
+  } catch (error) {
+    console.warn('Failed to fetch FAQs:', error)
+    return []
+  }
 }

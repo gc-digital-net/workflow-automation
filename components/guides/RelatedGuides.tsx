@@ -18,15 +18,16 @@ const relatedGuidesQuery = groq`
 `
 
 export async function RelatedGuides({ currentGuideId }: RelatedGuidesProps) {
-  const guides = await sanityFetch({
-    query: relatedGuidesQuery,
-    params: { currentId: currentGuideId },
-    tags: ['topSoftware'],
-  })
+  try {
+    const guides = await sanityFetch({
+      query: relatedGuidesQuery,
+      params: { currentId: currentGuideId },
+      tags: ['topSoftware'],
+    })
 
-  if (!guides || guides.length === 0) {
-    return null
-  }
+    if (!guides || guides.length === 0) {
+      return null
+    }
 
   return (
     <section className="mt-16 pt-12 border-t">
@@ -60,4 +61,8 @@ export async function RelatedGuides({ currentGuideId }: RelatedGuidesProps) {
       </div>
     </section>
   )
+  } catch (error) {
+    console.error('Error fetching related guides:', error)
+    return null
+  }
 }

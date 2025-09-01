@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { client } from '@/lib/sanity';
 import { 
   CogIcon,
   ChartBarIcon,
@@ -9,166 +10,98 @@ import {
   DocumentTextIcon,
   ServerStackIcon,
   BriefcaseIcon,
-  AcademicCapIcon,
+  ChatBubbleBottomCenterTextIcon,
   ShieldCheckIcon,
-  BeakerIcon
+  BeakerIcon,
+  ArrowRightIcon
 } from '@heroicons/react/24/outline';
+import { Metadata } from 'next';
 
-export default function CategoriesPage() {
-  const categories = [
-    {
-      name: 'Workflow Automation',
-      slug: 'workflow-automation',
-      description: 'End-to-end workflow automation platforms for business process optimization',
-      icon: CogIcon,
-      count: 45,
-      color: 'from-blue-500 to-blue-600',
-      popular: ['Zapier', 'Make', 'n8n', 'Workato'],
-    },
-    {
-      name: 'Project Management',
-      slug: 'project-management',
-      description: 'Tools for planning, tracking, and managing projects and teams',
-      icon: ClipboardDocumentListIcon,
-      count: 38,
-      color: 'from-purple-500 to-purple-600',
-      popular: ['Asana', 'Monday.com', 'ClickUp', 'Notion'],
-    },
-    {
-      name: 'Business Process Management',
-      slug: 'business-process-management',
-      description: 'BPM software for modeling, implementing, and optimizing business processes',
-      icon: ChartBarIcon,
-      count: 27,
-      color: 'from-green-500 to-green-600',
-      popular: ['Kissflow', 'ProcessMaker', 'Nintex', 'Bizagi'],
-    },
-    {
-      name: 'HR Automation',
-      slug: 'hr-automation',
-      description: 'Automate HR processes from recruiting to employee management',
-      icon: UserGroupIcon,
-      count: 32,
-      color: 'from-orange-500 to-orange-600',
-      popular: ['BambooHR', 'Workday', 'Gusto', 'Rippling'],
-    },
-    {
-      name: 'Sales Automation',
-      slug: 'sales-automation',
-      description: 'CRM and sales tools to automate your sales pipeline',
-      icon: CurrencyDollarIcon,
-      count: 41,
-      color: 'from-red-500 to-red-600',
-      popular: ['Salesforce', 'HubSpot', 'Pipedrive', 'Close'],
-    },
-    {
-      name: 'Marketing Automation',
-      slug: 'marketing-automation',
-      description: 'Automate marketing campaigns, email sequences, and lead nurturing',
-      icon: MegaphoneIcon,
-      count: 35,
-      color: 'from-pink-500 to-pink-600',
-      popular: ['Marketo', 'ActiveCampaign', 'Mailchimp', 'Brevo'],
-    },
-    {
-      name: 'Document Automation',
-      slug: 'document-automation',
-      description: 'Generate, manage, and process documents automatically',
-      icon: DocumentTextIcon,
-      count: 24,
-      color: 'from-indigo-500 to-indigo-600',
-      popular: ['PandaDoc', 'DocuSign', 'Conga', 'Formstack'],
-    },
-    {
-      name: 'IT Process Automation',
-      slug: 'it-process-automation',
-      description: 'ITSM and infrastructure automation tools',
-      icon: ServerStackIcon,
-      count: 29,
-      color: 'from-cyan-500 to-cyan-600',
-      popular: ['ServiceNow', 'Ansible', 'Puppet', 'Jenkins'],
-    },
-    {
-      name: 'Finance Automation',
-      slug: 'finance-automation',
-      description: 'Automate accounting, invoicing, and financial processes',
-      icon: BriefcaseIcon,
-      count: 26,
-      color: 'from-yellow-500 to-yellow-600',
-      popular: ['QuickBooks', 'Xero', 'Bill.com', 'Expensify'],
-    },
-    {
-      name: 'Customer Service',
-      slug: 'customer-service',
-      description: 'Help desk and customer support automation platforms',
-      icon: AcademicCapIcon,
-      count: 33,
-      color: 'from-teal-500 to-teal-600',
-      popular: ['Zendesk', 'Freshdesk', 'Intercom', 'Help Scout'],
-    },
-    {
-      name: 'Security & Compliance',
-      slug: 'security-compliance',
-      description: 'Automate security monitoring and compliance management',
-      icon: ShieldCheckIcon,
-      count: 21,
-      color: 'from-gray-500 to-gray-600',
-      popular: ['OneTrust', 'Vanta', 'Drata', 'SecureFrame'],
-    },
-    {
-      name: 'Testing & QA',
-      slug: 'testing-qa',
-      description: 'Automated testing and quality assurance tools',
-      icon: BeakerIcon,
-      count: 18,
-      color: 'from-lime-500 to-lime-600',
-      popular: ['Selenium', 'Cypress', 'TestRail', 'BrowserStack'],
-    },
-  ];
+export const metadata: Metadata = {
+  title: 'Software Categories | Workflow Automation',
+  description: 'Browse automation software by category. Find the perfect tools for project management, workflow automation, sales, marketing, and more.',
+};
 
-  const featuredComparisons = [
-    {
-      title: 'Zapier vs Make',
-      description: 'Compare the top two no-code automation platforms',
-      href: '/reviews/compare/zapier-vs-make',
-    },
-    {
-      title: 'Monday vs Asana',
-      description: 'Which project management tool is right for you?',
-      href: '/reviews/compare/monday-vs-asana',
-    },
-    {
-      title: 'HubSpot vs Salesforce',
-      description: 'CRM comparison for growing businesses',
-      href: '/reviews/compare/hubspot-vs-salesforce',
-    },
-  ];
+// Map category slugs to icons and colors
+const categoryConfig: Record<string, { icon: any; color: string }> = {
+  'workflow-automation': { icon: CogIcon, color: 'bg-blue-500' },
+  'project-management': { icon: ClipboardDocumentListIcon, color: 'bg-purple-500' },
+  'business-process-management': { icon: ChartBarIcon, color: 'bg-green-500' },
+  'hr-automation': { icon: UserGroupIcon, color: 'bg-orange-500' },
+  'sales-automation': { icon: CurrencyDollarIcon, color: 'bg-red-500' },
+  'marketing-automation': { icon: MegaphoneIcon, color: 'bg-pink-500' },
+  'document-automation': { icon: DocumentTextIcon, color: 'bg-indigo-500' },
+  'it-process-automation': { icon: ServerStackIcon, color: 'bg-cyan-500' },
+  'finance-automation': { icon: BriefcaseIcon, color: 'bg-yellow-500' },
+  'customer-service': { icon: ChatBubbleBottomCenterTextIcon, color: 'bg-teal-500' },
+  'security-compliance': { icon: ShieldCheckIcon, color: 'bg-gray-500' },
+  'testing-qa': { icon: BeakerIcon, color: 'bg-lime-500' },
+};
+
+// Fetch categories with actual software counts
+async function getCategories() {
+  const query = `*[_type == "softwareCategory"] | order(name asc) {
+    _id,
+    name,
+    slug,
+    description,
+    "softwareCount": count(*[_type == "software" && references(^._id)]),
+    "topSoftware": *[_type == "software" && references(^._id)] | order(overallScore desc) [0...4] {
+      name,
+      slug
+    }
+  }`;
+  
+  return await client.fetch(query);
+}
+
+// Featured comparisons (could also come from Sanity in the future)
+const featuredComparisons = [
+  {
+    title: 'Zapier vs Make',
+    description: 'Compare the top two no-code automation platforms',
+    href: '/reviews/compare?tools=zapier,make',
+  },
+  {
+    title: 'Monday vs Asana',
+    description: 'Which project management tool is right for you?',
+    href: '/reviews/compare?tools=monday,asana',
+  },
+  {
+    title: 'HubSpot vs Salesforce',
+    description: 'CRM comparison for growing businesses',
+    href: '/reviews/compare?tools=hubspot,salesforce',
+  },
+];
+
+export default async function CategoriesPage() {
+  const categories = await getCategories();
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+    <main className="min-h-screen bg-gray-50 dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="relative overflow-hidden px-6 py-24 sm:py-32 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-6xl">
-              Browse by Category
+      <section className="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-20">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl lg:text-6xl">
+              Browse Software by Category
             </h1>
-            <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-300">
-              Explore automation software organized by business function and use case. 
+            <p className="mt-4 text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+              Explore our comprehensive collection of automation software organized by business function. 
               Find the perfect tools for your specific needs.
             </p>
-            <div className="mt-10 flex items-center justify-center gap-x-6">
+            <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
               <Link
                 href="/reviews"
-                className="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors"
+                className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-primary-600 hover:bg-primary-700 transition-colors"
               >
                 View All Reviews
               </Link>
               <Link
-                href="/tools/software-finder"
-                className="text-base font-semibold leading-6 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                href="/reviews/compare"
+                className="inline-flex items-center justify-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-base font-medium rounded-lg text-gray-700 dark:text-gray-200 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
               >
-                Use Software Finder →
+                Compare Software
               </Link>
             </div>
           </div>
@@ -176,62 +109,81 @@ export default function CategoriesPage() {
       </section>
 
       {/* Categories Grid */}
-      <section className="py-24 sm:py-32">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {categories.map((category) => (
-              <Link
-                key={category.slug}
-                href={`/categories/${category.slug}`}
-                className="group relative rounded-2xl border border-gray-200 dark:border-gray-700 p-8 hover:shadow-xl transition-all bg-white dark:bg-gray-800"
-              >
-                <div className={`inline-flex p-3 rounded-lg bg-gradient-to-r ${category.color} mb-4`}>
-                  <category.icon className="h-6 w-6 text-white" />
-                </div>
+      <section className="py-16 sm:py-20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          {categories.length === 0 ? (
+            <div className="text-center py-12">
+              <p className="text-gray-500 dark:text-gray-400">No categories found.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {categories.map((category: any) => {
+                const config = categoryConfig[category.slug?.current] || { 
+                  icon: CogIcon, 
+                  color: 'bg-gray-500' 
+                };
+                const Icon = config.icon;
                 
-                <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-                  {category.name}
-                </h3>
-                
-                <p className="text-sm text-gray-600 dark:text-gray-300 mb-4">
-                  {category.description}
-                </p>
-                
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500 dark:text-gray-400">
-                      {category.count} tools reviewed
-                    </span>
-                    <span className="text-blue-600 dark:text-blue-400 group-hover:underline">
-                      View all →
-                    </span>
-                  </div>
-                  
-                  <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
-                    <p className="text-xs text-gray-500 dark:text-gray-400 mb-2">Popular:</p>
-                    <div className="flex flex-wrap gap-1">
-                      {category.popular.map((tool) => (
-                        <span
-                          key={tool}
-                          className="inline-flex items-center rounded-full bg-gray-100 dark:bg-gray-700 px-2 py-1 text-xs text-gray-700 dark:text-gray-300"
-                        >
-                          {tool}
+                return (
+                  <Link
+                    key={category._id}
+                    href={`/categories/${category.slug?.current}`}
+                    className="group relative bg-white dark:bg-gray-800 rounded-xl shadow-sm hover:shadow-lg transition-all duration-200 overflow-hidden border border-gray-200 dark:border-gray-700"
+                  >
+                    <div className="p-6">
+                      <div className="flex items-start justify-between mb-4">
+                        <div className={`${config.color} rounded-lg p-3 text-white`}>
+                          <Icon className="h-6 w-6" />
+                        </div>
+                        <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200">
+                          {category.softwareCount} tools
                         </span>
-                      ))}
+                      </div>
+                      
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                        {category.name}
+                      </h3>
+                      
+                      <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-2">
+                        {category.description || 'Discover top-rated software in this category'}
+                      </p>
+                      
+                      {category.topSoftware && category.topSoftware.length > 0 && (
+                        <div className="space-y-2">
+                          <p className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                            Popular Tools
+                          </p>
+                          <div className="flex flex-wrap gap-1">
+                            {category.topSoftware.map((software: any) => (
+                              <span
+                                key={software.slug?.current}
+                                className="inline-flex items-center px-2 py-1 rounded-md text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300"
+                              >
+                                {software.name}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+                      
+                      <div className="mt-4 flex items-center text-sm font-medium text-primary-600 dark:text-primary-400 group-hover:text-primary-700 dark:group-hover:text-primary-300">
+                        View category
+                        <ArrowRightIcon className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                      </div>
                     </div>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </div>
       </section>
 
       {/* Featured Comparisons */}
-      <section className="py-24 sm:py-32 bg-gray-50 dark:bg-gray-900">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center mb-12">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
+      <section className="py-16 sm:py-20 bg-white dark:bg-gray-800">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white">
               Popular Comparisons
             </h2>
             <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
@@ -244,14 +196,18 @@ export default function CategoriesPage() {
               <Link
                 key={comparison.href}
                 href={comparison.href}
-                className="rounded-lg border border-gray-200 dark:border-gray-700 p-6 hover:shadow-lg transition-shadow bg-white dark:bg-gray-800"
+                className="group bg-gray-50 dark:bg-gray-900 rounded-lg p-6 hover:shadow-md transition-all border border-gray-200 dark:border-gray-700"
               >
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
                   {comparison.title}
                 </h3>
                 <p className="text-sm text-gray-600 dark:text-gray-300">
                   {comparison.description}
                 </p>
+                <div className="mt-4 flex items-center text-sm font-medium text-primary-600 dark:text-primary-400">
+                  Compare now
+                  <ArrowRightIcon className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </div>
               </Link>
             ))}
           </div>
@@ -259,28 +215,30 @@ export default function CategoriesPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="mx-auto max-w-2xl text-center">
-            <h2 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-4xl">
-              Can't Find What You're Looking For?
-            </h2>
-            <p className="mt-4 text-lg text-gray-600 dark:text-gray-300">
-              Our software finder tool can help you discover the perfect solution
-            </p>
-            <div className="mt-8 flex items-center justify-center gap-x-6">
-              <Link
-                href="/tools/software-finder"
-                className="rounded-md bg-blue-600 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-blue-500 transition-colors"
-              >
-                Use Software Finder
-              </Link>
-              <Link
-                href="/contact"
-                className="text-base font-semibold leading-6 text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-              >
-                Request a Review →
-              </Link>
+      <section className="py-16 sm:py-20 bg-gray-50 dark:bg-gray-900">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="bg-primary-600 rounded-2xl px-6 py-12 sm:px-12 sm:py-16 lg:px-16">
+            <div className="mx-auto max-w-2xl text-center">
+              <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                Need Help Finding the Right Software?
+              </h2>
+              <p className="mt-4 text-lg text-primary-100">
+                Our team has reviewed hundreds of automation tools. Let us help you find the perfect solution for your needs.
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
+                <Link
+                  href="/reviews/compare"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-primary-600 bg-white hover:bg-gray-100 transition-colors"
+                >
+                  Compare Tools
+                </Link>
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-primary-700 transition-colors"
+                >
+                  Get Recommendations
+                </Link>
+              </div>
             </div>
           </div>
         </div>

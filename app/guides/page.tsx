@@ -11,10 +11,17 @@ export const metadata: Metadata = {
 }
 
 export default async function GuidesPage() {
-  const guides = await sanityFetch({
-    query: guidesQuery,
-    tags: ['topSoftware'],
-  })
+  let guides
+  
+  try {
+    guides = await sanityFetch({
+      query: guidesQuery,
+      tags: ['topSoftware'],
+    })
+  } catch (error) {
+    console.warn('Unable to fetch guides:', error)
+    guides = []
+  }
 
   return (
     <div className="container mx-auto px-4 py-12">

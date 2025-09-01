@@ -23,52 +23,75 @@ interface GuidePageProps {
 }
 
 export async function generateStaticParams() {
-  const slugs = await sanityFetch({
-    query: guideSlugsQuery,
-    tags: ['topSoftware'],
-  })
+  try {
+    const slugs = await sanityFetch({
+      query: guideSlugsQuery,
+      tags: ['topSoftware'],
+    })
 
-  return slugs?.map((slug: string) => ({ slug })) || []
+    return slugs?.map((slug: string) => ({ slug })) || []
+  } catch (error) {
+    console.warn('Unable to generate static params for guides:', error)
+    return []
+  }
 }
 
 export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
-  const guide = await sanityFetch({
-    query: guideBySlugQuery,
-    params: { slug: params.slug },
-    tags: ['topSoftware'],
-  })
+  try {
+    const guide = await sanityFetch({
+      query: guideBySlugQuery,
+      params: { slug: params.slug },
+      tags: ['topSoftware'],
+    })
 
-  if (!guide) {
-    return {}
-  }
+    if (!guide) {
+      return {
+        title: 'Guide Not Found',
+        description: 'The requested guide could not be found.',
+      }
+    }
 
-  const title = guide.seo?.metaTitle || guide.title
-  const description = guide.seo?.metaDescription || guide.excerpt
+    const title = guide.seo?.metaTitle || guide.title
+    const description = guide.seo?.metaDescription || guide.excerpt
 
-  return {
-    title,
-    description,
-    openGraph: {
+    return {
       title,
       description,
-      type: 'article',
-      publishedTime: guide.publishedAt,
-      authors: guide.author?.name ? [guide.author.name] : undefined,
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title,
-      description,
-    },
+      openGraph: {
+        title,
+        description,
+        type: 'article',
+        publishedTime: guide.publishedAt,
+        authors: guide.author?.name ? [guide.author.name] : undefined,
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title,
+        description,
+      },
+    }
+  } catch (error) {
+    console.warn('Unable to generate metadata for guide:', error)
+    return {
+      title: 'Software Guide',
+      description: 'Comprehensive software guides and comparisons.',
+    }
   }
 }
 
 export default async function GuidePage({ params }: GuidePageProps) {
-  const guide = await sanityFetch({
-    query: guideBySlugQuery,
-    params: { slug: params.slug },
-    tags: ['topSoftware'],
-  })
+  let guide
+  
+  try {
+    guide = await sanityFetch({
+      query: guideBySlugQuery,
+      params: { slug: params.slug },
+      tags: ['topSoftware'],
+    })
+  } catch (error) {
+    console.warn('Unable to fetch guide:', error)
+    notFound()
+  }
 
   if (!guide) {
     notFound()

@@ -671,10 +671,12 @@ export default async function G2StyleReviewPage({ params }: Props) {
               {/* Platforms Card - Mobile */}
               <div className="md:col-span-2">
                 <PlatformsSidebar 
-                  webApp={software.platformInfo?.webApp ?? true}
-                  mobileApps={!!(software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android)}
-                  desktopApps={!!(software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux)}
-                  api={!!(software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks)}
+                  webApp={software.platformInfo?.webApp}
+                  mobileApps={software.platformInfo?.mobileApps}
+                  desktopApps={software.platformInfo?.desktopApps}
+                  browserExtensions={software.platformInfo?.browserExtensions}
+                  api={software.platformInfo?.api}
+                  deploymentOptions={software.platformInfo?.deploymentOptions}
                 />
               </div>
               
@@ -1139,10 +1141,12 @@ export default async function G2StyleReviewPage({ params }: Props) {
           <aside className="hidden lg:block lg:col-span-1 space-y-6">
             {/* Platforms Card */}
             <PlatformsSidebar 
-              webApp={software.platformInfo?.webApp ?? true}
-              mobileApps={!!(software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android)}
-              desktopApps={!!(software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux)}
-              api={!!(software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks)}
+              webApp={software.platformInfo?.webApp}
+              mobileApps={software.platformInfo?.mobileApps}
+              desktopApps={software.platformInfo?.desktopApps}
+              browserExtensions={software.platformInfo?.browserExtensions}
+              api={software.platformInfo?.api}
+              deploymentOptions={software.platformInfo?.deploymentOptions}
             />
             
             {/* Company Info Card */}

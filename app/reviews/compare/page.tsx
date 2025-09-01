@@ -44,6 +44,9 @@ async function getSoftwareDetails(slugs: string[]) {
     deploymentOptions,
     affiliateLink,
     quickInfo,
+    companyInfo,
+    securityInfo,
+    supportInfo,
     categories[]-> {
       name,
       slug

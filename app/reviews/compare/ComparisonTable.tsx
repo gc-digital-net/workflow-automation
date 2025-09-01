@@ -42,6 +42,33 @@ interface Software {
   affiliateLink?: string;
   quickInfo?: {
     startingPrice?: string;
+    bestFor?: string;
+    freeTrial?: string;
+    integrations?: string;
+  };
+  companyInfo?: {
+    founded?: number;
+    headquarters?: string;
+    funding?: string;
+    companySize?: string;
+    employeeCount?: string;
+    customers?: string;
+    notableClients?: string[];
+  };
+  securityInfo?: {
+    soc2?: boolean;
+    gdpr?: boolean;
+    ssl?: boolean;
+    gdprCompliant?: boolean;
+    uptime?: string;
+    otherCertifications?: string[];
+  };
+  supportInfo?: {
+    emailSupport?: boolean;
+    liveChat?: boolean;
+    knowledgeBase?: boolean;
+    videoTutorials?: boolean;
+    supportDetails?: string;
   };
   categories?: Array<{
     name: string;
@@ -386,6 +413,171 @@ export default function ComparisonTable({
                       <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
                         {software.integrations.length}+
                       </div>
+                    </div>
+                  ) : (
+                    <span className="text-sm text-gray-500">Not specified</span>
+                  )}
+                </td>
+              ))}
+              {selectedSoftware.length < 4 && <td />}
+            </tr>
+
+            {/* Company Info Section */}
+            <tr className="border-t-2 border-gray-300 dark:border-gray-600">
+              <td colSpan={selectedSoftware.length + 2} className="p-2 bg-gray-100 dark:bg-gray-800">
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+                  Company Information
+                </span>
+              </td>
+            </tr>
+
+            {/* Best For */}
+            <tr className="border-t border-gray-200 dark:border-gray-700">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
+                Best For
+              </td>
+              {selectedSoftware.map((software) => software && (
+                <td key={software._id} className="p-4 text-center">
+                  <span className="text-sm text-gray-700 dark:text-gray-300">
+                    {software.quickInfo?.bestFor || 'Not specified'}
+                  </span>
+                </td>
+              ))}
+              {selectedSoftware.length < 4 && <td />}
+            </tr>
+
+            {/* Company Details */}
+            <tr className="border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 sticky left-0">
+                Company Details
+              </td>
+              {selectedSoftware.map((software) => software && (
+                <td key={software._id} className="p-4">
+                  {software.companyInfo ? (
+                    <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
+                      {software.companyInfo.founded && (
+                        <div>Founded: {software.companyInfo.founded}</div>
+                      )}
+                      {software.companyInfo.headquarters && (
+                        <div>HQ: {software.companyInfo.headquarters}</div>
+                      )}
+                      {(software.companyInfo.companySize || software.companyInfo.employeeCount) && (
+                        <div>Size: {software.companyInfo.companySize || software.companyInfo.employeeCount}</div>
+                      )}
+                      {software.companyInfo.funding && (
+                        <div>Funding: {software.companyInfo.funding}</div>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-sm text-gray-500">Not specified</span>
+                  )}
+                </td>
+              ))}
+              {selectedSoftware.length < 4 && <td />}
+            </tr>
+
+            {/* Free Trial */}
+            <tr className="border-t border-gray-200 dark:border-gray-700">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
+                Free Trial
+              </td>
+              {selectedSoftware.map((software) => software && (
+                <td key={software._id} className="p-4 text-center">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {software.quickInfo?.freeTrial || 'Contact sales'}
+                  </span>
+                </td>
+              ))}
+              {selectedSoftware.length < 4 && <td />}
+            </tr>
+
+            {/* Support Section */}
+            <tr className="border-t-2 border-gray-300 dark:border-gray-600">
+              <td colSpan={selectedSoftware.length + 2} className="p-2 bg-gray-100 dark:bg-gray-800">
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+                  Support & Security
+                </span>
+              </td>
+            </tr>
+
+            {/* Support Options */}
+            <tr className="border-t border-gray-200 dark:border-gray-700">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
+                Support Options
+              </td>
+              {selectedSoftware.map((software) => software && (
+                <td key={software._id} className="p-4">
+                  {software.supportInfo ? (
+                    <div className="space-y-1">
+                      {software.supportInfo.emailSupport && (
+                        <div className="flex items-center gap-2">
+                          <CheckIcon className="h-4 w-4 text-green-500" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Email Support</span>
+                        </div>
+                      )}
+                      {software.supportInfo.liveChat && (
+                        <div className="flex items-center gap-2">
+                          <CheckIcon className="h-4 w-4 text-green-500" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Live Chat</span>
+                        </div>
+                      )}
+                      {software.supportInfo.knowledgeBase && (
+                        <div className="flex items-center gap-2">
+                          <CheckIcon className="h-4 w-4 text-green-500" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Knowledge Base</span>
+                        </div>
+                      )}
+                      {software.supportInfo.videoTutorials && (
+                        <div className="flex items-center gap-2">
+                          <CheckIcon className="h-4 w-4 text-green-500" />
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Video Tutorials</span>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <span className="text-sm text-gray-500">Not specified</span>
+                  )}
+                </td>
+              ))}
+              {selectedSoftware.length < 4 && <td />}
+            </tr>
+
+            {/* Security & Compliance */}
+            <tr className="border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 sticky left-0">
+                Security & Compliance
+              </td>
+              {selectedSoftware.map((software) => software && (
+                <td key={software._id} className="p-4">
+                  {software.securityInfo ? (
+                    <div className="space-y-1">
+                      <div className="flex flex-wrap gap-1">
+                        {software.securityInfo.soc2 && (
+                          <span className="inline-block px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">
+                            SOC 2
+                          </span>
+                        )}
+                        {software.securityInfo.gdpr && (
+                          <span className="inline-block px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">
+                            GDPR
+                          </span>
+                        )}
+                        {software.securityInfo.ssl && (
+                          <span className="inline-block px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">
+                            SSL
+                          </span>
+                        )}
+                        {software.securityInfo.otherCertifications?.map((cert, i) => (
+                          <span key={i} className="inline-block px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded">
+                            {cert}
+                          </span>
+                        ))}
+                      </div>
+                      {software.securityInfo.uptime && (
+                        <div className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                          Uptime: {software.securityInfo.uptime}
+                        </div>
+                      )}
                     </div>
                   ) : (
                     <span className="text-sm text-gray-500">Not specified</span>

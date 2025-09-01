@@ -25,6 +25,9 @@ export async function GET(
       deploymentOptions,
       affiliateLink,
       quickInfo,
+      companyInfo,
+      securityInfo,
+      supportInfo,
       categories[]-> {
         name,
         slug

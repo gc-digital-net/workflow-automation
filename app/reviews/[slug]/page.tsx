@@ -12,6 +12,7 @@ import ReviewAuthor from '@/components/review/ReviewAuthor'
 import InfoBox from '@/components/review/InfoBox'
 // Removed ReviewTabs - all content on single page now
 import ReviewSubmissionForm from '@/components/review/ReviewSubmissionForm'
+import PlatformsSection from '@/components/review/PlatformsSection'
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600
@@ -1025,6 +1026,44 @@ export default async function G2StyleReviewPage({ params }: Props) {
                   </div>
                 </section>
               )}
+              
+              {/* Platforms & Availability Section */}
+              <PlatformsSection 
+                data={{
+                  // Use actual data if available, otherwise use sensible defaults for SaaS tools
+                  supportedPlatforms: software.supportedPlatforms || ['Web Browser', 'iOS', 'Android', 'Windows', 'macOS'],
+                  mobileApps: software.mobileApps || {
+                    ios: true,
+                    android: true
+                  },
+                  desktopApps: software.desktopApps || {
+                    windows: false,
+                    mac: false,
+                    linux: false
+                  },
+                  webApp: software.webApp !== false ? true : false,
+                  browserExtensions: software.browserExtensions || [],
+                  deploymentOptions: software.deploymentOptions || ['Cloud (SaaS)'],
+                  cloudHosted: software.cloudHosted !== false ? true : false,
+                  onPremise: software.onPremise || false,
+                  hybrid: software.hybrid || false,
+                  privateCloud: software.privateCloud || false,
+                  api: software.api || {
+                    rest: true,
+                    graphql: false,
+                    webhooks: true
+                  },
+                  sdks: software.sdks || [],
+                  cli: software.cli || false,
+                  systemRequirements: software.systemRequirements || {
+                    internetSpeed: 'Broadband connection recommended',
+                    storage: 'No local storage required',
+                    ram: 'Standard browser requirements',
+                    processor: 'Any modern processor'
+                  },
+                  integrations: software.integrations
+                }}
+              />
               
               {/* User Reviews Section */}
               <section>

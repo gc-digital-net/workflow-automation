@@ -69,7 +69,7 @@ export function BlogGrid({ initialPosts, featuredPost }: BlogGridProps) {
                 <div className="absolute bottom-0 left-0 right-0 p-8">
                   {featuredPost.categories && featuredPost.categories[0] && (
                     <span className="inline-block px-3 py-1 bg-primary-600 text-white text-sm font-medium rounded-full mb-4">
-                      {featuredPost.categories[0]}
+                      {typeof featuredPost.categories[0] === 'string' ? featuredPost.categories[0] : featuredPost.categories[0].name}
                     </span>
                   )}
                   <h3 className="text-3xl font-bold text-white mb-2">
@@ -149,7 +149,7 @@ export function BlogGrid({ initialPosts, featuredPost }: BlogGridProps) {
                   {post.categories && post.categories[0] && (
                     <div className="absolute top-4 left-4">
                       <span className="px-2 py-1 bg-white/90 dark:bg-gray-900/90 backdrop-blur-sm text-xs font-medium text-gray-700 dark:text-gray-300 rounded">
-                        {post.categories[0]}
+                        {typeof post.categories[0] === 'string' ? post.categories[0] : post.categories[0].name}
                       </span>
                     </div>
                   )}

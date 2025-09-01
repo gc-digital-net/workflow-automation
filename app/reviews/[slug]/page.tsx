@@ -12,7 +12,7 @@ import ReviewAuthor from '@/components/review/ReviewAuthor'
 import InfoBox from '@/components/review/InfoBox'
 // Removed ReviewTabs - all content on single page now
 import ReviewSubmissionForm from '@/components/review/ReviewSubmissionForm'
-import PlatformsSection from '@/components/review/PlatformsSection'
+import PlatformsSidebar from '@/components/review/PlatformsSidebar'
 
 // Enable ISR - revalidate every hour
 export const revalidate = 3600
@@ -667,6 +667,18 @@ export default async function G2StyleReviewPage({ params }: Props) {
             
             {/* Key Information Section - Mobile/Tablet Only */}
             <div className="lg:hidden grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+              {/* Platforms Card - Mobile */}
+              <div className="md:col-span-2">
+                <PlatformsSidebar 
+                  platforms={software.supportedPlatforms}
+                  webApp={software.webApp !== false}
+                  mobileApps={software.mobileApps !== false}
+                  desktopApps={software.desktopApps === true}
+                  api={software.api !== false}
+                  integrations={software.popularIntegrations || software.integrations}
+                />
+              </div>
+              
               {/* Company Info Card */}
               {software.companyInfo && (
                 <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">
@@ -1027,44 +1039,6 @@ export default async function G2StyleReviewPage({ params }: Props) {
                 </section>
               )}
               
-              {/* Platforms & Availability Section */}
-              <PlatformsSection 
-                data={{
-                  // Use actual data if available, otherwise use sensible defaults for SaaS tools
-                  supportedPlatforms: software.supportedPlatforms || ['Web Browser', 'iOS', 'Android', 'Windows', 'macOS'],
-                  mobileApps: software.mobileApps || {
-                    ios: true,
-                    android: true
-                  },
-                  desktopApps: software.desktopApps || {
-                    windows: false,
-                    mac: false,
-                    linux: false
-                  },
-                  webApp: software.webApp !== false ? true : false,
-                  browserExtensions: software.browserExtensions || [],
-                  deploymentOptions: software.deploymentOptions || ['Cloud (SaaS)'],
-                  cloudHosted: software.cloudHosted !== false ? true : false,
-                  onPremise: software.onPremise || false,
-                  hybrid: software.hybrid || false,
-                  privateCloud: software.privateCloud || false,
-                  api: software.api || {
-                    rest: true,
-                    graphql: false,
-                    webhooks: true
-                  },
-                  sdks: software.sdks || [],
-                  cli: software.cli || false,
-                  systemRequirements: software.systemRequirements || {
-                    internetSpeed: 'Broadband connection recommended',
-                    storage: 'No local storage required',
-                    ram: 'Standard browser requirements',
-                    processor: 'Any modern processor'
-                  },
-                  integrations: software.integrations
-                }}
-              />
-              
               {/* User Reviews Section */}
               <section>
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-6">
@@ -1164,6 +1138,16 @@ export default async function G2StyleReviewPage({ params }: Props) {
           
           {/* Desktop Sidebar - Hidden on Mobile/Tablet */}
           <aside className="hidden lg:block lg:col-span-1 space-y-6">
+            {/* Platforms Card */}
+            <PlatformsSidebar 
+              platforms={software.supportedPlatforms}
+              webApp={software.webApp !== false}
+              mobileApps={software.mobileApps !== false}
+              desktopApps={software.desktopApps === true}
+              api={software.api !== false}
+              integrations={software.popularIntegrations || software.integrations}
+            />
+            
             {/* Company Info Card */}
             {software.companyInfo && (
               <div className="bg-white dark:bg-gray-800 rounded-xl p-6 shadow-sm border border-gray-200 dark:border-gray-700">

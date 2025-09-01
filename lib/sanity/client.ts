@@ -7,9 +7,8 @@ let client: any = null
 function getClient() {
   if (!client) {
     // Check if we have valid Sanity configuration
-    // Only skip if we have the temp placeholder
-    if (!projectId || projectId === 'temp123') {
-      console.warn('Sanity not configured, using placeholder')
+    if (!projectId || projectId.length === 0) {
+      console.warn('Sanity project ID not configured')
       return null
     }
     

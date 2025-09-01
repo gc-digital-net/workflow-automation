@@ -3,8 +3,8 @@ export const apiVersion = process.env.NEXT_PUBLIC_SANITY_API_VERSION || '2024-01
 // Use fallback values during build time if env vars are not set
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
 
-// Use a valid placeholder that meets Sanity's validation (only lowercase a-z, 0-9, and dashes)
-export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'temp123'
+// Use the actual project ID as fallback to ensure consistency
+export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'x1zu4x72'
 
 // Use CDN for better performance
 export const useCdn = true

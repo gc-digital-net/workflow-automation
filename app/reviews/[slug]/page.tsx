@@ -674,7 +674,6 @@ export default async function G2StyleReviewPage({ params }: Props) {
                   mobileApps={software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android}
                   desktopApps={software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux}
                   api={software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks}
-                  integrations={software.popularIntegrations || software.integrations}
                 />
               </div>
               
@@ -1143,7 +1142,6 @@ export default async function G2StyleReviewPage({ params }: Props) {
               mobileApps={software.platformInfo?.mobileApps?.ios || software.platformInfo?.mobileApps?.android}
               desktopApps={software.platformInfo?.desktopApps?.windows || software.platformInfo?.desktopApps?.mac || software.platformInfo?.desktopApps?.linux}
               api={software.platformInfo?.api?.rest || software.platformInfo?.api?.graphql || software.platformInfo?.api?.webhooks}
-              integrations={software.popularIntegrations || software.integrations}
             />
             
             {/* Company Info Card */}

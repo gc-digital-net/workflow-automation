@@ -15,7 +15,6 @@ interface PlatformsSidebarProps {
   mobileApps?: boolean;
   desktopApps?: boolean;
   api?: boolean;
-  integrations?: number | string[];
 }
 
 export default function PlatformsSidebar({ 
@@ -23,8 +22,7 @@ export default function PlatformsSidebar({
   webApp = true,
   mobileApps = true,
   desktopApps = false,
-  api = true,
-  integrations
+  api = true
 }: PlatformsSidebarProps) {
   
   return (
@@ -75,18 +73,6 @@ export default function PlatformsSidebar({
           </div>
         )}
       </div>
-      
-      {/* Integrations Count */}
-      {integrations && (
-        <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
-          <div className="text-center">
-            <div className="text-2xl font-bold text-primary-600 dark:text-primary-400">
-              {typeof integrations === 'number' ? integrations : integrations.length}+
-            </div>
-            <div className="text-xs text-gray-500 dark:text-gray-400">Integrations</div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

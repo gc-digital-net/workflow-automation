@@ -242,29 +242,112 @@ export default function ComparisonTable({
             </tr>
           </thead>
           <tbody>
+            {/* Quick Overview Section */}
+            <tr className="border-t-2 border-gray-300 dark:border-gray-600">
+              <td colSpan={selectedSoftware.length + 2} className="p-2 bg-gray-100 dark:bg-gray-800">
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+                  Quick Overview
+                </span>
+              </td>
+            </tr>
+
             {/* Description */}
             <tr className="border-t border-gray-200 dark:border-gray-700">
               <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
                 Description
               </td>
               {selectedSoftware.map((software) => software && (
-                <td key={software._id} className="p-4 text-sm text-gray-600 dark:text-gray-400">
-                  {software.tagline || 'No description available'}
+                <td key={software._id} className="p-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center">
+                    {software.tagline || 'No description available'}
+                  </p>
                 </td>
               ))}
               {selectedSoftware.length < 4 && <td />}
             </tr>
 
-            {/* Starting Price */}
+            {/* Best For */}
             <tr className="border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
               <td className="p-4 font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 sticky left-0">
+                Best For
+              </td>
+              {selectedSoftware.map((software) => software && (
+                <td key={software._id} className="p-4">
+                  <p className="text-sm text-gray-700 dark:text-gray-300 text-center font-medium">
+                    {software.quickInfo?.bestFor || 'Not specified'}
+                  </p>
+                </td>
+              ))}
+              {selectedSoftware.length < 4 && <td />}
+            </tr>
+
+            {/* Company Details */}
+            <tr className="border-t border-gray-200 dark:border-gray-700">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
+                Company
+              </td>
+              {selectedSoftware.map((software) => software && (
+                <td key={software._id} className="p-4">
+                  {software.companyInfo ? (
+                    <div className="text-center space-y-1">
+                      {software.companyInfo.founded && (
+                        <div className="text-sm text-gray-600 dark:text-gray-400">
+                          <span className="font-medium">Est.</span> {software.companyInfo.founded}
+                        </div>
+                      )}
+                      {software.companyInfo.headquarters && (
+                        <div className="text-xs text-gray-500 dark:text-gray-500">
+                          {software.companyInfo.headquarters}
+                        </div>
+                      )}
+                      {(software.companyInfo.companySize || software.companyInfo.employeeCount) && (
+                        <div className="text-xs text-gray-500 dark:text-gray-500">
+                          {software.companyInfo.companySize || software.companyInfo.employeeCount}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-gray-500 text-center">Not specified</p>
+                  )}
+                </td>
+              ))}
+              {selectedSoftware.length < 4 && <td />}
+            </tr>
+
+            {/* Pricing Section */}
+            <tr className="border-t-2 border-gray-300 dark:border-gray-600">
+              <td colSpan={selectedSoftware.length + 2} className="p-2 bg-gray-100 dark:bg-gray-800">
+                <span className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
+                  Pricing & Trial
+                </span>
+              </td>
+            </tr>
+
+            {/* Starting Price */}
+            <tr className="border-t border-gray-200 dark:border-gray-700">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
                 Starting Price
               </td>
               {selectedSoftware.map((software) => software && (
                 <td key={software._id} className="p-4 text-center">
-                  <div className="text-lg font-semibold text-gray-900 dark:text-white">
+                  <div className="text-lg font-bold text-gray-900 dark:text-white">
                     {getStartingPrice(software)}
                   </div>
+                </td>
+              ))}
+              {selectedSoftware.length < 4 && <td />}
+            </tr>
+
+            {/* Free Trial */}
+            <tr className="border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 sticky left-0">
+                Free Trial
+              </td>
+              {selectedSoftware.map((software) => software && (
+                <td key={software._id} className="p-4 text-center">
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    {software.quickInfo?.freeTrial || 'Contact sales'}
+                  </span>
                 </td>
               ))}
               {selectedSoftware.length < 4 && <td />}
@@ -314,22 +397,22 @@ export default function ComparisonTable({
 
             {/* Pros */}
             <tr className="border-t border-gray-200 dark:border-gray-700">
-              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0 align-top">
                 Key Pros
               </td>
               {selectedSoftware.map((software) => software && (
-                <td key={software._id} className="p-4">
+                <td key={software._id} className="p-4 align-top">
                   {software.pros && software.pros.length > 0 ? (
                     <ul className="space-y-2">
                       {software.pros.slice(0, 3).map((pro, i) => (
                         <li key={i} className="flex items-start gap-2">
                           <CheckIcon className="h-4 w-4 text-green-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{pro}</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300 text-left">{pro}</span>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <span className="text-sm text-gray-500">No pros listed</span>
+                    <p className="text-sm text-gray-500 text-center">No pros listed</p>
                   )}
                 </td>
               ))}
@@ -338,22 +421,22 @@ export default function ComparisonTable({
 
             {/* Cons */}
             <tr className="border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
-              <td className="p-4 font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 sticky left-0">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 sticky left-0 align-top">
                 Key Cons
               </td>
               {selectedSoftware.map((software) => software && (
-                <td key={software._id} className="p-4">
+                <td key={software._id} className="p-4 align-top">
                   {software.cons && software.cons.length > 0 ? (
                     <ul className="space-y-2">
                       {software.cons.slice(0, 3).map((con, i) => (
                         <li key={i} className="flex items-start gap-2">
                           <MinusIcon className="h-4 w-4 text-red-500 flex-shrink-0 mt-0.5" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">{con}</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300 text-left">{con}</span>
                         </li>
                       ))}
                     </ul>
                   ) : (
-                    <span className="text-sm text-gray-500">No cons listed</span>
+                    <p className="text-sm text-gray-500 text-center">No cons listed</p>
                   )}
                 </td>
               ))}
@@ -377,7 +460,7 @@ export default function ComparisonTable({
               {selectedSoftware.map((software) => software && (
                 <td key={software._id} className="p-4">
                   {software.supportedPlatforms && software.supportedPlatforms.length > 0 ? (
-                    <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-wrap gap-1 justify-center">
                       {software.supportedPlatforms.map((platform, i) => (
                         <span key={i} className="inline-block px-2 py-1 text-xs bg-gray-100 dark:bg-gray-700 rounded">
                           {platform}
@@ -385,7 +468,7 @@ export default function ComparisonTable({
                       ))}
                     </div>
                   ) : (
-                    <span className="text-sm text-gray-500">Not specified</span>
+                    <p className="text-sm text-gray-500 text-center">Not specified</p>
                   )}
                 </td>
               ))}
@@ -422,74 +505,6 @@ export default function ComparisonTable({
               {selectedSoftware.length < 4 && <td />}
             </tr>
 
-            {/* Company Info Section */}
-            <tr className="border-t-2 border-gray-300 dark:border-gray-600">
-              <td colSpan={selectedSoftware.length + 2} className="p-2 bg-gray-100 dark:bg-gray-800">
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-600 dark:text-gray-400">
-                  Company Information
-                </span>
-              </td>
-            </tr>
-
-            {/* Best For */}
-            <tr className="border-t border-gray-200 dark:border-gray-700">
-              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
-                Best For
-              </td>
-              {selectedSoftware.map((software) => software && (
-                <td key={software._id} className="p-4 text-center">
-                  <span className="text-sm text-gray-700 dark:text-gray-300">
-                    {software.quickInfo?.bestFor || 'Not specified'}
-                  </span>
-                </td>
-              ))}
-              {selectedSoftware.length < 4 && <td />}
-            </tr>
-
-            {/* Company Details */}
-            <tr className="border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-800/50">
-              <td className="p-4 font-medium text-gray-900 dark:text-white bg-gray-50 dark:bg-gray-800 sticky left-0">
-                Company Details
-              </td>
-              {selectedSoftware.map((software) => software && (
-                <td key={software._id} className="p-4">
-                  {software.companyInfo ? (
-                    <div className="space-y-1 text-sm text-gray-600 dark:text-gray-400">
-                      {software.companyInfo.founded && (
-                        <div>Founded: {software.companyInfo.founded}</div>
-                      )}
-                      {software.companyInfo.headquarters && (
-                        <div>HQ: {software.companyInfo.headquarters}</div>
-                      )}
-                      {(software.companyInfo.companySize || software.companyInfo.employeeCount) && (
-                        <div>Size: {software.companyInfo.companySize || software.companyInfo.employeeCount}</div>
-                      )}
-                      {software.companyInfo.funding && (
-                        <div>Funding: {software.companyInfo.funding}</div>
-                      )}
-                    </div>
-                  ) : (
-                    <span className="text-sm text-gray-500">Not specified</span>
-                  )}
-                </td>
-              ))}
-              {selectedSoftware.length < 4 && <td />}
-            </tr>
-
-            {/* Free Trial */}
-            <tr className="border-t border-gray-200 dark:border-gray-700">
-              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
-                Free Trial
-              </td>
-              {selectedSoftware.map((software) => software && (
-                <td key={software._id} className="p-4 text-center">
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                    {software.quickInfo?.freeTrial || 'Contact sales'}
-                  </span>
-                </td>
-              ))}
-              {selectedSoftware.length < 4 && <td />}
-            </tr>
 
             {/* Support Section */}
             <tr className="border-t-2 border-gray-300 dark:border-gray-600">
@@ -502,17 +517,17 @@ export default function ComparisonTable({
 
             {/* Support Options */}
             <tr className="border-t border-gray-200 dark:border-gray-700">
-              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0">
+              <td className="p-4 font-medium text-gray-900 dark:text-white bg-white dark:bg-gray-900 sticky left-0 align-top">
                 Support Options
               </td>
               {selectedSoftware.map((software) => software && (
-                <td key={software._id} className="p-4">
+                <td key={software._id} className="p-4 align-top">
                   {software.supportInfo ? (
-                    <div className="space-y-1">
+                    <div className="flex flex-col items-center space-y-1">
                       {software.supportInfo.emailSupport && (
                         <div className="flex items-center gap-2">
                           <CheckIcon className="h-4 w-4 text-green-500" />
-                          <span className="text-sm text-gray-700 dark:text-gray-300">Email Support</span>
+                          <span className="text-sm text-gray-700 dark:text-gray-300">Email</span>
                         </div>
                       )}
                       {software.supportInfo.liveChat && (
@@ -535,7 +550,7 @@ export default function ComparisonTable({
                       )}
                     </div>
                   ) : (
-                    <span className="text-sm text-gray-500">Not specified</span>
+                    <p className="text-sm text-gray-500 text-center">Not specified</p>
                   )}
                 </td>
               ))}
@@ -550,8 +565,8 @@ export default function ComparisonTable({
               {selectedSoftware.map((software) => software && (
                 <td key={software._id} className="p-4">
                   {software.securityInfo ? (
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap gap-1">
+                    <div className="flex flex-col items-center space-y-2">
+                      <div className="flex flex-wrap gap-1 justify-center">
                         {software.securityInfo.soc2 && (
                           <span className="inline-block px-2 py-1 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded">
                             SOC 2
@@ -574,13 +589,13 @@ export default function ComparisonTable({
                         ))}
                       </div>
                       {software.securityInfo.uptime && (
-                        <div className="text-xs text-gray-600 dark:text-gray-400 mt-2">
+                        <div className="text-xs text-gray-600 dark:text-gray-400">
                           Uptime: {software.securityInfo.uptime}
                         </div>
                       )}
                     </div>
                   ) : (
-                    <span className="text-sm text-gray-500">Not specified</span>
+                    <p className="text-sm text-gray-500 text-center">Not specified</p>
                   )}
                 </td>
               ))}

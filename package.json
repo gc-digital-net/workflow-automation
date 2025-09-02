@@ -13,7 +13,7 @@
     "@heroicons/react": "^2.2.0",
     "@hookform/resolvers": "^3.10.0",
     "@portabletext/react": "^4.0.1",
-    "@sanity/client": "^7.9.0",
+    "@sanity/client": "^7.10.0",
     "@sanity/image-url": "^1.1.0",
     "@types/uuid": "^10.0.0",
     "@types/xml2js": "^0.4.14",
@@ -30,6 +30,7 @@
     "next-sanity": "^9.12.3",
     "next-themes": "^0.2.1",
     "postcss": "^8.5.6",
+    "puppeteer": "^24.18.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.62.0",
@@ -44,13 +45,14 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
+    "@types/node": "^20.19.11",
     "@types/node-fetch": "^2.6.13",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "eslint": "^9",
     "eslint-config-next": "15.5.0",
     "node-fetch": "^2.7.0",
+    "playwright": "^1.55.0",
     "typescript": "^5"
   }
 }

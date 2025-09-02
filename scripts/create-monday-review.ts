@@ -25,8 +25,8 @@ const client = createClient({
 async function createMondayReview() {
   console.log('📝 Creating Monday.com review in Sanity...\n')
 
-  // Read the markdown content
-  const markdownPath = path.join(process.cwd(), 'monday-com-review.md')
+  // Read the markdown content - using the new review file
+  const markdownPath = path.join(process.cwd(), 'monday-review-final.md')
   const markdownContent = fs.readFileSync(markdownPath, 'utf-8')
   
   // Parse the markdown to extract sections
@@ -42,7 +42,7 @@ async function createMondayReview() {
       excerpt: 'Monday.com is the most visually intuitive project management platform that transforms how teams work together. With colorful boards, powerful automation, and incredible flexibility, it makes project management actually enjoyable.',
       
       // Scoring based on review
-      overallScore: 8.5,
+      overallScore: 9.0,
       scores: {
         easeOfUse: 9.0,
         features: 8.5,

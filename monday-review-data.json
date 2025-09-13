@@ -1,0 +1,238 @@
+{
+  "_type": "software",
+  "name": "Monday.com",
+  "slug": {
+    "current": "monday-com"
+  },
+  "tagline": "The Visual Work OS That Makes Work Flow",
+  "excerpt": "Monday.com is the most visually intuitive project management platform that transforms how teams work together. With colorful boards, powerful automation, and incredible flexibility, it makes project management actually enjoyable.",
+  "overallScore": 8.5,
+  "scores": {
+    "easeOfUse": 9.0,
+    "features": 8.5,
+    "value": 7.5,
+    "support": 8.0,
+    "integrations": 9.0,
+    "performance": 8.5,
+    "customization": 9.5,
+    "collaboration": 9.0,
+    "automation": 9.0,
+    "reporting": 7.0,
+    "mobile": 6.5,
+    "scalability": 9.0,
+    "security": 8.5,
+    "innovation": 8.5,
+    "documentation": 8.0
+  },
+  "quickInfo": {
+    "startingPrice": "$9/user/month",
+    "freeTrialDays": "14",
+    "freePlanAvailable": "Limited (2 users max)",
+    "setupTime": "< 30 minutes",
+    "bestForTeamSize": "5-500",
+    "deploymentOptions": ["Cloud"],
+    "industries": ["Marketing", "Operations", "Creative", "Tech", "Remote Teams"]
+  },
+  "companyInfo": {
+    "founded": "2012",
+    "headquarters": "Tel Aviv, Israel",
+    "companySize": "1,800+ employees",
+    "funding": "$574M raised",
+    "publicCompany": "Yes (NASDAQ: MNDY)",
+    "revenue": "$700M+ ARR",
+    "customers": "180,000+"
+  },
+  "supportInfo": {
+    "liveChat": false,
+    "emailSupport": true,
+    "phoneSupport": "Enterprise only",
+    "knowledgeBase": true,
+    "videoTutorials": true,
+    "supportDetails": "Email support 24-48h response. Priority support on Pro plan. Phone support and CSM on Enterprise.",
+    "languages": ["English", "Spanish", "French", "German", "Portuguese", "Italian", "Dutch", "Japanese"]
+  },
+  "securityInfo": {
+    "soc2": true,
+    "gdpr": true,
+    "ssl": true,
+    "iso27001": true,
+    "hipaa": "Enterprise only",
+    "uptime": "99.9%",
+    "twoFactorAuth": true,
+    "sso": "Enterprise plan",
+    "dataEncryption": "AES-256",
+    "dataBackup": "Continuous",
+    "otherCertifications": ["ISO 27017", "ISO 27018", "TRUSTe certified"]
+  },
+  "popularIntegrations": [
+    "Slack",
+    "Microsoft Teams",
+    "Gmail",
+    "Outlook",
+    "Google Drive",
+    "Dropbox",
+    "Zoom",
+    "Salesforce",
+    "HubSpot",
+    "Jira",
+    "GitHub",
+    "Zapier"
+  ],
+  "platformInfo": {
+    "mobileApps": ["iOS", "Android"],
+    "desktopApps": ["Windows", "Mac"],
+    "browserSupport": ["Chrome", "Firefox", "Safari", "Edge"],
+    "api": true,
+    "webhooks": true,
+    "customApps": true,
+    "offlineMode": false,
+    "dataExport": ["CSV", "Excel", "PDF"],
+    "dataImport": ["CSV", "Excel", "Trello", "Asana", "Basecamp"]
+  },
+  "pricing": [
+    {
+      "name": "Individual",
+      "price": "$0",
+      "billingPeriod": "Forever",
+      "features": [
+        "Up to 2 users",
+        "Up to 3 boards",
+        "200 items max",
+        "Basic features only"
+      ],
+      "limitations": [
+        "No Timeline view",
+        "No integrations",
+        "No automation",
+        "No guest access"
+      ],
+      "highlighted": false
+    },
+    {
+      "name": "Basic",
+      "price": "$9/user/month",
+      "billingPeriod": "Billed annually",
+      "features": [
+        "Unlimited boards",
+        "Unlimited items",
+        "5GB storage",
+        "250 automation actions/month",
+        "iOS & Android apps"
+      ],
+      "limitations": [
+        "No Timeline/Gantt view",
+        "No guest access",
+        "Limited integrations",
+        "No calendar sync"
+      ],
+      "highlighted": false
+    },
+    {
+      "name": "Standard",
+      "price": "$12/user/month",
+      "billingPeriod": "Billed annually",
+      "features": [
+        "Everything in Basic",
+        "Timeline & Calendar views",
+        "Guest access",
+        "250 integrations",
+        "250 automation actions/month/seat",
+        "Forms"
+      ],
+      "limitations": [
+        "No time tracking",
+        "No private boards",
+        "Basic dashboards only"
+      ],
+      "highlighted": true,
+      "recommended": true
+    },
+    {
+      "name": "Pro",
+      "price": "$20/user/month",
+      "billingPeriod": "Billed annually",
+      "features": [
+        "Everything in Standard",
+        "Time tracking",
+        "Formula columns",
+        "Dependency columns",
+        "Private boards",
+        "25,000 automation actions/month",
+        "Chart views",
+        "API access"
+      ],
+      "limitations": [
+        "No advanced security",
+        "No enterprise features"
+      ],
+      "highlighted": false
+    },
+    {
+      "name": "Enterprise",
+      "price": "Custom",
+      "billingPeriod": "Contact sales",
+      "features": [
+        "Everything in Pro",
+        "Enterprise-grade security",
+        "Advanced permissions",
+        "SAML SSO",
+        "Audit logs",
+        "Multi-level permissions",
+        "99.9% uptime SLA",
+        "Dedicated CSM",
+        "Premium support"
+      ],
+      "limitations": [],
+      "highlighted": false
+    }
+  ],
+  "pros": [
+    "Most visually intuitive interface in the market",
+    "Powerful automation saves hours weekly",
+    "Incredible customization flexibility",
+    "Excellent template library",
+    "Strong integration ecosystem",
+    "Scales beautifully from small to large teams",
+    "Color coding makes status instantly clear",
+    "Multiple views for different work styles",
+    "Guest access for client collaboration",
+    "Regular feature updates and improvements"
+  ],
+  "cons": [
+    "Gets expensive quickly with larger teams",
+    "Mobile app lacks many features",
+    "Search functionality is basic",
+    "Reporting across boards is complicated",
+    "3-seat minimum even for small teams",
+    "Timeline view requires paid plan",
+    "Learning curve for advanced features",
+    "No true offline functionality",
+    "Time tracking only in Pro plan",
+    "Can become cluttered with many boards"
+  ],
+  "useCases": [
+    "Marketing campaign management",
+    "Product launches",
+    "Creative agency workflows",
+    "Sales pipeline tracking",
+    "HR onboarding processes",
+    "Event planning",
+    "Content calendars",
+    "Client project management",
+    "Remote team coordination",
+    "Operations management"
+  ],
+  "affiliateLink": "https://mondaycom.grsm.io/workflowautomation",
+  "affiliateCommission": "30% recurring",
+  "cookieDuration": "90 days",
+  "exclusiveDiscount": "WORKFLOW20",
+  "seo": {
+    "metaTitle": "Monday.com Review 2025: Pricing, Features & Honest Assessment",
+    "metaDescription": "In-depth Monday.com review after 90 days of testing. Visual project management at its best, but premium pricing. See if it's worth it for your team.",
+    "focusKeyword": "monday.com review",
+    "canonicalUrl": "https://workflowautomation.net/reviews/monday-com"
+  },
+  "reviewDate": "2025-09-02",
+  "lastReviewUpdate": "2025-09-02",
+  "lastUpdated": "2025-09-02"
+}

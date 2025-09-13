@@ -85,25 +85,37 @@ Building a comprehensive workflow automation website to replace workflowautomati
 - [x] Templates library
 - [x] Comparison page (`/reviews/compare`)
 
-### 8. **Design Components** ✅
+### 8. **Software Guides System (Top Software Lists)** ✅
+- [x] `/guides` listing page with guide cards
+- [x] `/guides/[slug]` individual guide pages
+- [x] GuideCard, GuideHero, GuideItem components
+- [x] Comparison tables for tools
+- [x] Buyer's guide sections
+- [x] FAQ sections per guide
+- [x] Table of contents with smooth scrolling
+- [x] 500+ word detailed reviews per tool
+- [x] Affiliate link tracking integration
+- [x] Related guides suggestions
+
+### 9. **Design Components** ✅
 - [x] ReviewPlaceholders.tsx - Visual placeholders for review pages
 - [x] BlogPlaceholders.tsx - Visual components for blog
 - [x] Responsive navigation
 - [x] Footer with links
 - [x] Loading states
 - [x] Error boundaries
+- [x] NewsletterCTA component
 
 ---
 
 ## 🚧 IN PROGRESS / NEEDS WORK
 
-### 1. **Listicle System** 🔄
-- [ ] Listicle schema in Sanity
-- [ ] `/listicles` listing page
-- [ ] `/listicles/[slug]` individual pages
-- [ ] Ranking system (1-50 items)
-- [ ] Integration with software reviews
-- [ ] Category pages for listicles
+### 1. **Content Population** 🔄
+- [ ] Add more software reviews to Sanity
+- [ ] Create 3-5 comprehensive Software Guides
+- [ ] Import existing content from WordPress
+- [ ] Add author profiles and bios
+- [ ] Create initial blog posts for SEO
 
 ### 2. **Search & Discovery** 🔄
 - [ ] Global search functionality
@@ -123,19 +135,20 @@ Building a comprehensive workflow automation website to replace workflowautomati
 ## 📋 TODO - Priority Order
 
 ### Phase 1: Content & Monetization (Week 1-2)
-1. **Listicle Articles System**
-   - [ ] Create Sanity schema for listicles
-   - [ ] Build listicle listing page
-   - [ ] Create individual listicle page template
-   - [ ] Add "Top 10" style templates
-   - [ ] Integrate with existing software reviews
+1. **Content Creation & Population**
+   - [ ] Add 10+ software reviews to Sanity CMS
+   - [ ] Create 3-5 comprehensive Software Guides
+   - [ ] Write SEO-optimized blog posts
+   - [ ] Add real testimonials and case studies
+   - [ ] Import/migrate WordPress content
 
-2. **Affiliate & Monetization**
-   - [ ] Deal/discount tracking in Sanity
-   - [ ] Special offers banner component
-   - [ ] Affiliate link click tracking
+2. **Affiliate & Monetization Enhancement**
+   - [x] Affiliate link tracking API endpoint
+   - [ ] Test affiliate tracking thoroughly
+   - [ ] Deal/discount badges in reviews
    - [ ] Conversion tracking setup
    - [ ] A/B testing for CTAs
+   - [ ] Special offers banner component
 
 3. **Email Marketing**
    - [ ] ConvertKit/Mailchimp integration
@@ -236,19 +249,19 @@ Building a comprehensive workflow automation website to replace workflowautomati
 
 ## 🎯 IMMEDIATE NEXT STEPS (This Week)
 
-1. **Content Migration**
-   - [ ] Export WordPress content
-   - [ ] Import into Sanity
-   - [ ] URL redirect mapping
-   - [ ] Image migration
-   - [ ] SEO preservation
+1. **Content & SEO**
+   - [ ] Add structured data for reviews
+   - [ ] Implement XML sitemap
+   - [ ] Create 5+ software reviews
+   - [ ] Write 3+ Software Guides
+   - [ ] Set up Google Analytics 4
 
-2. **Listicle Implementation**
-   - [ ] Create listicle schema
-   - [ ] Build listicle pages
-   - [ ] Create first 5 listicles
-   - [ ] Test affiliate links
-   - [ ] Optimize for SEO
+2. **Discovery & Navigation**
+   - [ ] Implement search functionality
+   - [ ] Create category hub pages
+   - [ ] Add filtering to reviews page
+   - [ ] Improve mobile navigation
+   - [ ] Add breadcrumbs
 
 3. **Production Readiness**
    - [ ] Environment variables setup
@@ -330,5 +343,13 @@ Building a comprehensive workflow automation website to replace workflowautomati
 
 ---
 
-Last Updated: December 2024
+Last Updated: January 2025
 Next Review: After Phase 1 completion
+
+## 📌 Key Clarifications
+
+- **Software Guides** = The primary "listicle" format (Top 10/25/50 lists)
+- **topSoftware** = Sanity schema type for Software Guides
+- Guides live at `/guides` not `/listicles`
+- Each guide contains detailed reviews with affiliate links
+- Comparison tables and buyer's guides are integrated into guide pages

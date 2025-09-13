@@ -2,10 +2,10 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { sanityFetch } from '@/lib/sanity/client'
 import { guideBySlugQuery, guideSlugsQuery } from '@/lib/sanity/queries/guides'
-import { GuideHero } from '@/components/guides/GuideHero'
+import { GuideHeroEnhanced } from '@/components/guides/GuideHeroEnhanced'
 import { GuideTableOfContents } from '@/components/guides/GuideTableOfContents'
 import { GuideIntroduction } from '@/components/guides/GuideIntroduction'
-import { GuideComparisonTable } from '@/components/guides/GuideComparisonTable'
+import { GuideComparisonTableEnhanced } from '@/components/guides/GuideComparisonTableEnhanced'
 import { GuideItem } from '@/components/guides/GuideItem'
 import { GuideItemEnhanced } from '@/components/guides/GuideItemEnhanced'
 import { GuideConclusion } from '@/components/guides/GuideConclusion'
@@ -126,7 +126,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
         <Breadcrumbs items={breadcrumbItems} />
       </div>
       
-      <GuideHero guide={guide} />
+      <GuideHeroEnhanced guide={guide} />
       
       <div className="container mx-auto px-4 py-8">
         <div className="grid lg:grid-cols-[1fr_300px] gap-12 max-w-7xl mx-auto">
@@ -212,7 +212,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
             {/* Quick Comparison Table */}
             {topItems.length > 0 && (
-              <GuideComparisonTable items={topItems} />
+              <GuideComparisonTableEnhanced items={topItems} />
             )}
 
             {/* Ranked List of Tools */}

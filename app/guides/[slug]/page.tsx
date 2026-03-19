@@ -1,9 +1,9 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { sanityFetch } from '@/lib/sanity/client'
-import { guideBySlugQueryEnhanced, guideSlugsQuery } from '@/lib/sanity/queries/guidesEnhanced'
+import { guideBySlugQueryEnhanced, guideSlugsQuery } from '@/lib/sanity/queries/guides'
 import { GuideHeroMinimal } from '@/components/guides/GuideHeroMinimal'
-import { GuideComparisonMinimal } from '@/components/guides/GuideComparisonMinimal'
+import { GuideComparisonEnhanced } from '@/components/guides/GuideComparisonEnhanced'
 import { GuideItemMinimal } from '@/components/guides/GuideItemMinimal'
 import { GuideStructuredData } from '@/components/seo/GuideStructuredData'
 import { BreadcrumbStructuredData } from '@/components/seo/BreadcrumbStructuredData'
@@ -31,10 +31,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: GuidePageProps): Promise<Metadata> {
+  const { slug } = await params
   try {
     const guide = await sanityFetch({
       query: guideBySlugQueryEnhanced,
-      params: { slug: params.slug },
+      params: { slug },
       tags: ['topSoftware'],
     })
 
@@ -74,12 +75,13 @@ export async function generateMetadata({ params }: GuidePageProps): Promise<Meta
 }
 
 export default async function GuidePageMinimal({ params }: GuidePageProps) {
+  const { slug } = await params
   let guide
-  
+
   try {
     guide = await sanityFetch({
       query: guideBySlugQueryEnhanced,
-      params: { slug: params.slug },
+      params: { slug },
       tags: ['topSoftware'],
     })
   } catch (error) {
@@ -91,7 +93,7 @@ export default async function GuidePageMinimal({ params }: GuidePageProps) {
     notFound()
   }
 
-  const guideUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/guides/${params.slug}`
+  const guideUrl = `${process.env.NEXT_PUBLIC_SITE_URL}/guides/${slug}`
   
   const breadcrumbData = [
     { name: 'Home', url: process.env.NEXT_PUBLIC_SITE_URL || 'https://workflowautomation.net' },
@@ -141,7 +143,7 @@ export default async function GuidePageMinimal({ params }: GuidePageProps) {
           {/* Comparison Table */}
           {guide.listItems && guide.listItems.length > 0 && (
             <div id="comparison">
-              <GuideComparisonMinimal items={guide.listItems} />
+              <GuideComparisonEnhanced items={guide.listItems} guideSlug={slug} />
             </div>
           )}
           

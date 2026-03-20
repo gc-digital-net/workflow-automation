@@ -92,6 +92,12 @@ function markdownToPortableText(markdown: string): any[] {
       continue
     }
 
+    // Skip "Last updated" metadata line
+    if (trimmedLine.startsWith('**Last updated') || trimmedLine.startsWith('\\*\\*Last updated')) {
+      i++
+      continue
+    }
+
     // Skip horizontal rules
     if (trimmedLine === '---') {
       i++
@@ -158,8 +164,11 @@ function markdownToPortableText(markdown: string): any[] {
     }
 
     // Visual/Screenshot placeholders -> infoBox
-    if (trimmedLine.startsWith('[VISUAL:') || trimmedLine.startsWith('[SCREENSHOT:')) {
-      const match = trimmedLine.match(/\[(VISUAL|SCREENSHOT):\s*([^\]]+)\]/)
+    // Handle both escaped (\[VISUAL:) and unescaped ([VISUAL:) formats
+    if (trimmedLine.startsWith('[VISUAL:') || trimmedLine.startsWith('[SCREENSHOT:') ||
+        trimmedLine.startsWith('\\[VISUAL:') || trimmedLine.startsWith('\\[SCREENSHOT:')) {
+      const cleanLine = trimmedLine.replace(/^\\\[/, '[').replace(/\\\]/g, ']')
+      const match = cleanLine.match(/\[(VISUAL|SCREENSHOT):\s*([^\]]+)\]/)
       if (match) {
         const type = match[1]
         const description = match[2].trim()
@@ -291,6 +300,8 @@ function markdownToPortableText(markdown: string): any[] {
           nextTrimmed.startsWith('|') ||
           nextTrimmed.startsWith('[VISUAL:') ||
           nextTrimmed.startsWith('[SCREENSHOT:') ||
+          nextTrimmed.startsWith('\\[VISUAL:') ||
+          nextTrimmed.startsWith('\\[SCREENSHOT:') ||
           nextTrimmed === '---') {
         break
       }
@@ -361,6 +372,7 @@ function markdownToPortableText(markdown: string): any[] {
 }
 
 // Review data interface
+// NOTE: Field names must match the Sanity schema in sanity-studio/schemaTypes/software.ts
 interface ReviewData {
   name: string
   slug: string
@@ -454,13 +466,18 @@ async function uploadReview(slug: string, reviewData: ReviewData) {
     cons: reviewData.cons
   }
 
+  // Pricing block for inline content uses string prices (pricingTable schema in content array)
+  // This is different from the top-level pricing field which uses numbers
   const pricingBlock = {
     _key: generateKey(),
     _type: 'pricingTable',
     title: `${reviewData.name} Pricing Plans`,
     plans: reviewData.pricing.map(p => ({
       _key: generateKey(),
-      ...p
+      name: p.name,
+      price: p.price,
+      features: p.features,
+      highlighted: p.highlighted || false,
     }))
   }
 
@@ -524,6 +541,43 @@ async function uploadReview(slug: string, reviewData: ReviewData) {
   console.log(`Final content: ${finalContent.length} blocks`)
 
   // Build the document
+  // Map scores to match Sanity schema field names (software.ts lines 472-514)
+  // Schema uses: easeOfUse, features, valueForMoney, customerSupport, integrations, support, value
+  const mappedScores: Record<string, number> = {
+    easeOfUse: reviewData.scores.easeOfUse,
+    features: reviewData.scores.features,
+    valueForMoney: reviewData.scores.value,       // ReviewData "value" -> schema "valueForMoney"
+    customerSupport: reviewData.scores.support,    // ReviewData "support" -> schema "customerSupport"
+    integrations: reviewData.scores.integrations,
+    // Also set the legacy field names for compatibility
+    value: reviewData.scores.value,
+    support: reviewData.scores.support,
+  }
+
+  // Map companyInfo.founded to number (schema expects number, not string)
+  const mappedCompanyInfo = {
+    ...reviewData.companyInfo,
+    founded: reviewData.companyInfo.founded ? parseInt(reviewData.companyInfo.founded, 10) || undefined : undefined,
+  }
+
+  // Map pricing: schema expects price as number, but ReviewData has it as string
+  // Parse price string to number (e.g., "$9/user/month" -> 9, "Free" -> 0, "Custom" -> undefined)
+  const mappedPricing = reviewData.pricing.map(p => {
+    const priceMatch = p.price.match(/\$?([\d.]+)/)
+    const priceNum = p.price.toLowerCase() === 'free' ? 0
+      : p.price.toLowerCase().includes('custom') ? undefined
+      : priceMatch ? parseFloat(priceMatch[1])
+      : undefined
+
+    return {
+      _key: generateKey(),
+      name: p.name,
+      price: priceNum,
+      features: p.features,
+      highlighted: p.highlighted || false,
+    }
+  })
+
   const review = {
     _type: 'software',
     name: reviewData.name,
@@ -531,16 +585,16 @@ async function uploadReview(slug: string, reviewData: ReviewData) {
     tagline: reviewData.tagline,
     excerpt: reviewData.excerpt,
     overallScore: reviewData.overallScore,
-    scores: reviewData.scores,
+    scores: mappedScores,
     content: finalContent,
     quickInfo: reviewData.quickInfo,
-    companyInfo: reviewData.companyInfo,
+    companyInfo: mappedCompanyInfo,
     supportInfo: reviewData.supportInfo,
     securityInfo: reviewData.securityInfo,
     popularIntegrations: reviewData.popularIntegrations,
     pros: reviewData.pros,
     cons: reviewData.cons,
-    pricing: reviewData.pricing,
+    pricing: mappedPricing,
     affiliateLink: reviewData.affiliateLink,
     lastUpdated: new Date().toISOString(),
     seo: {

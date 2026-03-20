@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client'
 import * as dotenv from 'dotenv'
+import { nanoid } from 'nanoid'
 
 dotenv.config({ path: '.env.local' })
 
@@ -10,6 +11,9 @@ const client = createClient({
   apiVersion: '2024-01-01',
   token: process.env.SANITY_API_TOKEN,
 })
+
+// Generate a unique key for Sanity array items
+const generateKey = () => nanoid(12)
 
 interface SoftwareReviewData {
   name: string
@@ -70,76 +74,96 @@ export async function createSoftwareReview(data: SoftwareReviewData) {
   console.log(`Creating review for ${data.name}...\n`)
   
   try {
-    // Build content structure
+    // Build content structure with proper _key values for Sanity
     const content = []
-    
+
     // Introduction
     content.push({
+      _key: generateKey(),
       _type: 'block',
       style: 'normal',
-      children: [{ _type: 'span', text: data.introduction }]
+      children: [{ _key: generateKey(), _type: 'span', text: data.introduction }]
     })
-    
+
     // Key Features Section
     if (data.keyFeatures.length > 0) {
       content.push({
+        _key: generateKey(),
         _type: 'block',
         style: 'h2',
-        children: [{ _type: 'span', text: '🎯 Key Features' }]
+        children: [{ _key: generateKey(), _type: 'span', text: '🎯 Key Features' }]
       })
-      
+
       content.push({
+        _key: generateKey(),
         _type: 'featureList',
         title: 'What Makes It Stand Out',
-        features: data.keyFeatures
+        features: data.keyFeatures.map(f => ({
+          _key: generateKey(),
+          name: f.name,
+          description: f.description
+        }))
       })
     }
-    
+
     // Pros and Cons
     if (data.pros.length > 0 && data.cons.length > 0) {
       content.push({
+        _key: generateKey(),
         _type: 'block',
         style: 'h2',
-        children: [{ _type: 'span', text: '⚖️ Pros & Cons' }]
+        children: [{ _key: generateKey(), _type: 'span', text: '⚖️ Pros & Cons' }]
       })
-      
+
       content.push({
+        _key: generateKey(),
         _type: 'prosConsBlock',
         pros: data.pros,
         cons: data.cons
       })
     }
-    
+
     // Pricing
     if (data.pricing.length > 0) {
       content.push({
+        _key: generateKey(),
         _type: 'block',
         style: 'h2',
-        children: [{ _type: 'span', text: '💰 Pricing Plans' }]
+        children: [{ _key: generateKey(), _type: 'span', text: '💰 Pricing Plans' }]
       })
-      
+
       content.push({
+        _key: generateKey(),
         _type: 'pricingTable',
         title: `${data.name} Pricing`,
-        plans: data.pricing
+        plans: data.pricing.map(p => ({
+          _key: generateKey(),
+          name: p.name,
+          price: p.price,
+          features: p.features,
+          highlighted: p.highlighted || false
+        }))
       })
     }
-    
+
     // Final Verdict
     content.push({
+      _key: generateKey(),
       _type: 'block',
       style: 'h2',
-      children: [{ _type: 'span', text: '🎯 Final Verdict' }]
+      children: [{ _key: generateKey(), _type: 'span', text: '🎯 Final Verdict' }]
     })
-    
+
     content.push({
+      _key: generateKey(),
       _type: 'block',
       style: 'normal',
-      children: [{ _type: 'span', text: data.finalVerdict }]
+      children: [{ _key: generateKey(), _type: 'span', text: data.finalVerdict }]
     })
-    
+
     // CTA
     content.push({
+      _key: generateKey(),
       _type: 'ctaBlock',
       title: `Ready to try ${data.name}?`,
       description: `Start your journey with ${data.name} today.`,

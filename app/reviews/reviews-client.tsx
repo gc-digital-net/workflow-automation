@@ -237,21 +237,21 @@ export default function ReviewsClient({ initialSoftware, initialCategories }: Re
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
                           {software.logo && (
-                            <div className="relative w-10 h-10 flex-shrink-0 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
+                            <div className="relative w-14 h-14 flex-shrink-0 rounded-xl overflow-hidden bg-gray-50 dark:bg-gray-700 flex items-center justify-center border border-gray-100 dark:border-gray-600">
                               <Image
-                                src={urlFor(software.logo).width(80).height(80).fit('max').url()}
+                                src={urlFor(software.logo).width(112).height(112).fit('max').url()}
                                 alt={software.name}
-                                width={40}
-                                height={40}
-                                className="object-contain w-8 h-8"
+                                width={56}
+                                height={56}
+                                className="object-contain w-10 h-10"
                               />
                             </div>
                           )}
                           <div>
-                            <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                            <h3 className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
                               {software.name}
                             </h3>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
+                            <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
                               {software.tagline || 'Business Software'}
                             </p>
                           </div>

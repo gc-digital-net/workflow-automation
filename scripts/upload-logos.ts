@@ -66,6 +66,26 @@ const softwareDomains: Record<string, string> = {
   'reply-io': 'reply.io',
   'outreach': 'outreach.io',
   'salesloft': 'salesloft.com',
+  // No-Code / Low-Code
+  'bubble': 'bubble.io',
+  'webflow': 'webflow.com',
+  'glide': 'glideapps.com',
+  'appgyver': 'sap.com',
+  'adalo': 'adalo.com',
+  'softr': 'softr.io',
+  'retool': 'retool.com',
+  'appsheet': 'appsheet.com',
+  'outsystems': 'outsystems.com',
+  'mendix': 'mendix.com',
+  'betty-blocks': 'bettyblocks.com',
+  'pory': 'pory.io',
+  'stacker': 'stackerhq.com',
+  'noloco': 'noloco.io',
+  'draftbit': 'draftbit.com',
+  'ui-bakery': 'uibakery.io',
+  'budibase': 'budibase.com',
+  'appsmith': 'appsmith.com',
+  'tooljet': 'tooljet.com',
 }
 
 async function fetchBrandIcon(domain: string): Promise<string | null> {

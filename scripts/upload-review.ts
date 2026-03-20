@@ -130,16 +130,30 @@ function markdownToPortableText(markdown: string): any[] {
       continue
     }
 
-    // Skip markdown tables
+    // Convert markdown tables to text blocks instead of skipping
     if (trimmedLine.startsWith('|')) {
-      i++
+      const tableRows: string[] = []
+      while (i < lines.length && lines[i].trim().startsWith('|')) {
+        const row = lines[i].trim()
+        // Skip separator rows (|---|---|)
+        if (!/^\|[\s-:|]+\|$/.test(row)) {
+          // Convert table row to readable text: "| A | B | C |" -> "A | B | C"
+          const cells = row.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim()).join(' | ')
+          tableRows.push(cells)
+        }
+        i++
+      }
+      // Create a block for each table row
+      for (const row of tableRows) {
+        blocks.push(createTextBlock(row, 'normal'))
+      }
       continue
     }
 
     // H2 headers
     if (line.startsWith('## ')) {
       let text = line.replace(/^## /, '').trim()
-      text = text.replace(/^\*\*/, '').replace(/\*\*$/, '')
+      text = text.replace(/\*\*([^*]*)\*\*/g, '$1')
 
       // Skip Quick Verdict section content (we handle it separately)
       if (text.toLowerCase().includes('quick verdict')) {
@@ -203,7 +217,8 @@ function markdownToPortableText(markdown: string): any[] {
     // H3 headers
     if (line.startsWith('### ')) {
       let text = line.replace(/^### /, '').trim()
-      text = text.replace(/^\*\*/, '').replace(/\*\*$/, '')
+      // Strip all bold markers from header text: **text** -> text
+      text = text.replace(/\*\*([^*]*)\*\*/g, '$1')
       blocks.push(createTextBlock(text, 'h3'))
       i++
       continue
@@ -212,7 +227,7 @@ function markdownToPortableText(markdown: string): any[] {
     // H4 headers
     if (line.startsWith('#### ')) {
       let text = line.replace(/^#### /, '').trim()
-      text = text.replace(/^\*\*/, '').replace(/\*\*$/, '')
+      text = text.replace(/\*\*([^*]*)\*\*/g, '$1')
       blocks.push(createTextBlock(text, 'h4'))
       i++
       continue

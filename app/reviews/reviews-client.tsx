@@ -237,12 +237,13 @@ export default function ReviewsClient({ initialSoftware, initialCategories }: Re
                       <div className="flex items-start justify-between mb-4">
                         <div className="flex items-center gap-3">
                           {software.logo && (
-                            <div className="relative w-10 h-10 rounded-lg overflow-hidden bg-white dark:bg-gray-800 p-1.5">
+                            <div className="relative w-10 h-10 flex-shrink-0 rounded-lg overflow-hidden bg-gray-50 dark:bg-gray-700 flex items-center justify-center">
                               <Image
-                                src={urlFor(software.logo).url()}
+                                src={urlFor(software.logo).width(80).height(80).fit('max').url()}
                                 alt={software.name}
-                                fill
-                                className="object-contain"
+                                width={40}
+                                height={40}
+                                className="object-contain w-8 h-8"
                               />
                             </div>
                           )}

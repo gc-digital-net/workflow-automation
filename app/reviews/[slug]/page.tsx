@@ -159,18 +159,15 @@ const portableTextComponents = {
                       </li>
                     ))}
                   </ul>
-                  <a
-                    href={software?.affiliateLink || '#'}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    className={`block w-full text-center py-3 px-4 rounded-lg font-semibold transition-colors ${
+                  <button
+                    className={`w-full text-center py-3 px-4 rounded-lg font-semibold transition-colors ${
                       plan.highlighted
                         ? 'bg-primary-600 text-white hover:bg-primary-700'
                         : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
                     }`}
                   >
                     {plan.price === 'Free' || plan.price === 0 ? 'Start Free' : plan.price === 'Custom' || plan.price === 'Custom pricing' ? 'Contact Sales' : 'Start Trial'}
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>

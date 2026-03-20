@@ -86,6 +86,23 @@ const softwareDomains: Record<string, string> = {
   'budibase': 'budibase.com',
   'appsmith': 'appsmith.com',
   'tooljet': 'tooljet.com',
+  // PM remaining
+  'height': 'height.app',
+  'plane': 'plane.so',
+  'proofhub': 'proofhub.com',
+  // Customer Support
+  'intercom': 'intercom.com',
+  'zendesk': 'zendesk.com',
+  'freshdesk': 'freshdesk.com',
+  'help-scout': 'helpscout.com',
+  'crisp': 'crisp.chat',
+  'tidio': 'tidio.com',
+  'gorgias': 'gorgias.com',
+  'front': 'front.com',
+  'drift': 'drift.com',
+  'dixa': 'dixa.com',
+  'kustomer': 'kustomer.com',
+  'reamaze': 'reamaze.com',
 }
 
 async function fetchBrandIcon(domain: string): Promise<string | null> {

@@ -50,6 +50,22 @@ const softwareDomains: Record<string, string> = {
   'integrately': 'integrately.com',
   'latenode': 'latenode.com',
   'relay-app': 'relay.app',
+  // CRM & Sales
+  'hubspot-crm': 'hubspot.com',
+  'salesforce': 'salesforce.com',
+  'pipedrive': 'pipedrive.com',
+  'zoho-crm': 'zoho.com',
+  'close': 'close.com',
+  'freshsales': 'freshworks.com',
+  'copper': 'copper.com',
+  'attio': 'attio.com',
+  'folk': 'folk.app',
+  'apollo': 'apollo.io',
+  'lemlist': 'lemlist.com',
+  'instantly': 'instantly.ai',
+  'reply-io': 'reply.io',
+  'outreach': 'outreach.io',
+  'salesloft': 'salesloft.com',
 }
 
 async function fetchBrandIcon(domain: string): Promise<string | null> {

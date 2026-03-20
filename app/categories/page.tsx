@@ -1,24 +1,30 @@
 import Link from 'next/link';
 import { client } from '@/lib/sanity';
 import {
-  CogIcon,
+  BoltIcon,
   ChartBarIcon,
-  ClipboardDocumentListIcon,
+  ClipboardDocumentCheckIcon,
   UserGroupIcon,
   CurrencyDollarIcon,
   MegaphoneIcon,
   DocumentTextIcon,
   ServerStackIcon,
-  BriefcaseIcon,
-  ChatBubbleBottomCenterTextIcon,
+  ChatBubbleLeftRightIcon,
   ShieldCheckIcon,
-  BeakerIcon,
-  BoltIcon,
+  ClockIcon,
+  CircleStackIcon,
+  EnvelopeIcon,
+  DocumentDuplicateIcon,
   CubeTransparentIcon,
-  CheckIcon,
+  PencilSquareIcon,
+  BookOpenIcon,
+  CameraIcon,
+  WrenchScrewdriverIcon,
   CommandLineIcon,
-  ArrowRightIcon
-} from '@heroicons/react/24/outline';
+  ArrowRightIcon,
+  CheckCircleIcon,
+  UsersIcon,
+} from '@heroicons/react/24/solid';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -28,22 +34,29 @@ export const metadata: Metadata = {
 
 export const revalidate = 1800
 
-// Map category slugs to icons
+// Map every category slug to a unique solid icon
 const categoryIcons: Record<string, any> = {
   'workflow-automation': BoltIcon,
   'project-management': ChartBarIcon,
-  'business-process-management': CubeTransparentIcon,
-  'task-management': CheckIcon,
-  'hr-automation': UserGroupIcon,
-  'sales-automation': CurrencyDollarIcon,
+  'task-management': ClipboardDocumentCheckIcon,
+  'team-collaboration': UsersIcon,
   'crm-software': UserGroupIcon,
+  'sales-automation': CurrencyDollarIcon,
   'marketing-automation': MegaphoneIcon,
-  'document-automation': DocumentTextIcon,
-  'it-process-automation': ServerStackIcon,
-  'finance-automation': BriefcaseIcon,
-  'customer-service': ChatBubbleBottomCenterTextIcon,
+  'email-marketing': EnvelopeIcon,
+  'customer-support': ChatBubbleLeftRightIcon,
+  'document-management': DocumentDuplicateIcon,
+  'knowledge-management': BookOpenIcon,
+  'hr-management': UserGroupIcon,
+  'time-tracking': ClockIcon,
+  'database-software': CircleStackIcon,
+  'no-code-platform': CubeTransparentIcon,
+  'integration-platform': ServerStackIcon,
+  'form-builder': PencilSquareIcon,
+  'note-taking': DocumentTextIcon,
+  'social-media-management': CameraIcon,
+  'business-process-management': WrenchScrewdriverIcon,
   'security-compliance': ShieldCheckIcon,
-  'testing-qa': BeakerIcon,
 };
 
 // Fetch categories with actual software counts
@@ -92,7 +105,7 @@ export default async function CategoriesPage() {
         </div>
       </section>
 
-      {/* Categories Grid - matching homepage design */}
+      {/* Categories Grid */}
       <section className="py-16 sm:py-20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {categories.length === 0 ? (
@@ -111,12 +124,12 @@ export default async function CategoriesPage() {
                     className="group bg-white dark:bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
                   >
                     <div className="flex items-start gap-4">
-                      <div className="p-3 rounded-lg bg-primary-50 dark:bg-primary-900/30 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 transition-colors">
-                        <Icon className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+                      <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/30 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
+                        <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center justify-between mb-2">
-                          <h3 className="text-base font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                          <h3 className="text-base font-semibold text-gray-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400">
                             {category.name}
                           </h3>
                           {category.softwareCount > 0 && (
@@ -135,7 +148,7 @@ export default async function CategoriesPage() {
                           </p>
                         )}
 
-                        <div className="flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
+                        <div className="flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium">
                           Explore tools
                           <ArrowRightIcon className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                         </div>
@@ -152,24 +165,24 @@ export default async function CategoriesPage() {
       {/* CTA Section */}
       <section className="py-16 sm:py-20 bg-white dark:bg-gray-800">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="bg-primary-600 rounded-2xl px-6 py-12 sm:px-12 sm:py-16 lg:px-16">
+          <div className="bg-blue-600 rounded-2xl px-6 py-12 sm:px-12 sm:py-16 lg:px-16">
             <div className="mx-auto max-w-2xl text-center">
               <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">
                 Not Sure Where to Start?
               </h2>
-              <p className="mt-4 text-lg text-primary-100">
+              <p className="mt-4 text-lg text-blue-100">
                 Compare tools side-by-side or browse all reviews to find the perfect software for your workflow.
               </p>
               <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   href="/reviews"
-                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-primary-600 bg-white hover:bg-gray-100 transition-colors"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-blue-600 bg-white hover:bg-gray-100 transition-colors"
                 >
                   View All Reviews
                 </Link>
                 <Link
                   href="/reviews/compare"
-                  className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-primary-700 transition-colors"
+                  className="inline-flex items-center justify-center px-6 py-3 border border-white text-base font-medium rounded-lg text-white hover:bg-blue-700 transition-colors"
                 >
                   Compare Software
                 </Link>

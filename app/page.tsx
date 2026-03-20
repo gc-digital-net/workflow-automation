@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
-import { 
-  StarIcon, 
-  SparklesIcon, 
+import {
+  StarIcon,
+  SparklesIcon,
   RocketLaunchIcon,
   ChartBarIcon,
   ArrowRightIcon,
@@ -10,14 +10,25 @@ import {
   ArrowTrendingUpIcon,
   CommandLineIcon,
   CubeTransparentIcon,
-  BoltIcon
-} from '@heroicons/react/24/solid'
-import { 
-  ClockIcon, 
+  BoltIcon,
+  ClockIcon,
   CurrencyDollarIcon,
   UserGroupIcon,
-  ShieldCheckIcon
-} from '@heroicons/react/24/outline'
+  ShieldCheckIcon,
+  ClipboardDocumentCheckIcon,
+  UsersIcon,
+  MegaphoneIcon,
+  EnvelopeIcon,
+  ChatBubbleLeftRightIcon,
+  DocumentDuplicateIcon,
+  BookOpenIcon,
+  CircleStackIcon,
+  ServerStackIcon,
+  PencilSquareIcon,
+  DocumentTextIcon,
+  CameraIcon,
+  WrenchScrewdriverIcon,
+} from '@heroicons/react/24/solid'
 import { client, urlFor } from '@/lib/sanity'
 import NewsletterCTA from '@/components/home/NewsletterCTA'
 
@@ -221,12 +232,26 @@ export default async function HomePage() {
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {categories.map((category) => {
               const icons: any = {
-                'project-management': ChartBarIcon,
                 'workflow-automation': BoltIcon,
-                'team-collaboration': UserGroupIcon,
+                'project-management': ChartBarIcon,
+                'task-management': ClipboardDocumentCheckIcon,
+                'team-collaboration': UsersIcon,
                 'crm-software': UserGroupIcon,
-                'business-process-management': CubeTransparentIcon,
-                'task-management': CheckIcon,
+                'sales-automation': CurrencyDollarIcon,
+                'marketing-automation': MegaphoneIcon,
+                'email-marketing': EnvelopeIcon,
+                'customer-support': ChatBubbleLeftRightIcon,
+                'document-management': DocumentDuplicateIcon,
+                'knowledge-management': BookOpenIcon,
+                'hr-management': UserGroupIcon,
+                'time-tracking': ClockIcon,
+                'database-software': CircleStackIcon,
+                'no-code-platform': CubeTransparentIcon,
+                'integration-platform': ServerStackIcon,
+                'form-builder': PencilSquareIcon,
+                'note-taking': DocumentTextIcon,
+                'social-media-management': CameraIcon,
+                'business-process-management': WrenchScrewdriverIcon,
               }
               const Icon = icons[category.slug?.current] || CommandLineIcon
               
@@ -237,17 +262,17 @@ export default async function HomePage() {
                   className="group bg-white dark:bg-gray-800 rounded-xl p-6 hover:shadow-lg transition-all border border-gray-200 dark:border-gray-700"
                 >
                   <div className="flex items-start gap-4">
-                    <div className={`p-3 rounded-lg bg-primary-50 dark:bg-primary-900/30 group-hover:bg-primary-100 dark:group-hover:bg-primary-900/50 transition-colors`}>
-                      <Icon className="h-6 w-6 text-primary-600 dark:text-primary-400" />
+                    <div className="p-3 rounded-lg bg-blue-50 dark:bg-blue-900/30 group-hover:bg-blue-100 dark:group-hover:bg-blue-900/50 transition-colors">
+                      <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
                     </div>
                     <div className="flex-1">
-                      <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                      <h3 className="text-base font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400">
                         {category.name}
                       </h3>
                       <p className="text-sm text-gray-600 dark:text-gray-400 line-clamp-2">
                         {category.description}
                       </p>
-                      <div className="mt-3 flex items-center text-primary-600 dark:text-primary-400 text-sm font-medium">
+                      <div className="mt-3 flex items-center text-blue-600 dark:text-blue-400 text-sm font-medium">
                         Explore tools
                         <ArrowRightIcon className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                       </div>

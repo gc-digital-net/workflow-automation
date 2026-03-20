@@ -33,6 +33,32 @@ const client = createClient({
 
 const generateKey = () => nanoid(12)
 
+// Helper to create a properly structured text block with markDefs and marks
+// Sanity Portable Text requires markDefs on blocks and marks on spans
+function createTextBlock(text: string, style: string = 'normal', listItem?: string, level?: number): any {
+  const block: any = {
+    _key: generateKey(),
+    _type: 'block',
+    style,
+    markDefs: [],
+    children: [{ _key: generateKey(), _type: 'span', marks: [], text }]
+  }
+  if (listItem) block.listItem = listItem
+  if (level) block.level = level
+  return block
+}
+
+// Helper to create infoBox content blocks (also need markDefs/marks)
+function createInfoBoxContentBlock(text: string): any {
+  return {
+    _key: generateKey(),
+    _type: 'block',
+    style: 'normal',
+    markDefs: [],
+    children: [{ _key: generateKey(), _type: 'span', marks: [], text }]
+  }
+}
+
 // Extract Quick Verdict data from markdown header
 function extractQuickVerdict(markdown: string): any {
   const lines = markdown.split('\n')
@@ -130,23 +156,13 @@ function markdownToPortableText(markdown: string): any[] {
       // FAQ section - skip content, use faqBlock
       if (text.toLowerCase().includes('frequently asked')) {
         inFAQSection = true
-        blocks.push({
-          _key: generateKey(),
-          _type: 'block',
-          style: 'h2',
-          children: [{ _key: generateKey(), _type: 'span', text }]
-        })
+        blocks.push(createTextBlock(text, 'h2'))
         i++
         continue
       }
 
       inFAQSection = false
-      blocks.push({
-        _key: generateKey(),
-        _type: 'block',
-        style: 'h2',
-        children: [{ _key: generateKey(), _type: 'span', text }]
-      })
+      blocks.push(createTextBlock(text, 'h2'))
       i++
       continue
     }
@@ -177,12 +193,7 @@ function markdownToPortableText(markdown: string): any[] {
           _type: 'infoBox',
           type: 'highlight',
           title: type === 'SCREENSHOT' ? '📸 Screenshot' : '🎨 Visual',
-          content: [{
-            _key: generateKey(),
-            _type: 'block',
-            style: 'normal',
-            children: [{ _key: generateKey(), _type: 'span', text: description }]
-          }]
+          content: [createInfoBoxContentBlock(description)]
         })
       }
       i++
@@ -193,12 +204,7 @@ function markdownToPortableText(markdown: string): any[] {
     if (line.startsWith('### ')) {
       let text = line.replace(/^### /, '').trim()
       text = text.replace(/^\*\*/, '').replace(/\*\*$/, '')
-      blocks.push({
-        _key: generateKey(),
-        _type: 'block',
-        style: 'h3',
-        children: [{ _key: generateKey(), _type: 'span', text }]
-      })
+      blocks.push(createTextBlock(text, 'h3'))
       i++
       continue
     }
@@ -207,12 +213,7 @@ function markdownToPortableText(markdown: string): any[] {
     if (line.startsWith('#### ')) {
       let text = line.replace(/^#### /, '').trim()
       text = text.replace(/^\*\*/, '').replace(/\*\*$/, '')
-      blocks.push({
-        _key: generateKey(),
-        _type: 'block',
-        style: 'h4',
-        children: [{ _key: generateKey(), _type: 'span', text }]
-      })
+      blocks.push(createTextBlock(text, 'h4'))
       i++
       continue
     }
@@ -226,12 +227,7 @@ function markdownToPortableText(markdown: string): any[] {
         i++
       }
       if (quoteText.trim()) {
-        blocks.push({
-          _key: generateKey(),
-          _type: 'block',
-          style: 'blockquote',
-          children: [{ _key: generateKey(), _type: 'span', text: quoteText.trim() }]
-        })
+        blocks.push(createTextBlock(quoteText.trim(), 'blockquote'))
       }
       continue
     }
@@ -248,14 +244,7 @@ function markdownToPortableText(markdown: string): any[] {
           .replace(/\*([^*]+)\*/g, '$1')
           .replace(/`([^`]+)`/g, '$1')
 
-        blocks.push({
-          _key: generateKey(),
-          _type: 'block',
-          style: 'normal',
-          listItem: 'bullet',
-          level: 1,
-          children: [{ _key: generateKey(), _type: 'span', text: itemText }]
-        })
+        blocks.push(createTextBlock(itemText, 'normal', 'bullet', 1))
         i++
       }
       continue
@@ -270,14 +259,7 @@ function markdownToPortableText(markdown: string): any[] {
           .replace(/\*([^*]+)\*/g, '$1')
           .replace(/`([^`]+)`/g, '$1')
 
-        blocks.push({
-          _key: generateKey(),
-          _type: 'block',
-          style: 'normal',
-          listItem: 'number',
-          level: 1,
-          children: [{ _key: generateKey(), _type: 'span', text: itemText }]
-        })
+        blocks.push(createTextBlock(itemText, 'normal', 'number', 1))
         i++
       }
       continue
@@ -345,12 +327,7 @@ function markdownToPortableText(markdown: string): any[] {
             _type: 'infoBox',
             type,
             title,
-            content: [{
-              _key: generateKey(),
-              _type: 'block',
-              style: 'normal',
-              children: [{ _key: generateKey(), _type: 'span', text: content }]
-            }]
+            content: [createInfoBoxContentBlock(content)]
           })
           isCallout = true
           break
@@ -358,12 +335,7 @@ function markdownToPortableText(markdown: string): any[] {
       }
 
       if (!isCallout) {
-        blocks.push({
-          _key: generateKey(),
-          _type: 'block',
-          style: 'normal',
-          children: [{ _key: generateKey(), _type: 'span', text: paragraphText }]
-        })
+        blocks.push(createTextBlock(paragraphText, 'normal'))
       }
     }
   }

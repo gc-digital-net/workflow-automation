@@ -5,6 +5,9 @@ import { MagnifyingGlassIcon } from '@heroicons/react/24/outline'
 import { client, urlFor } from '@/lib/sanity'
 import ReviewsClient from './reviews-client'
 
+// Revalidate every 30 minutes so new reviews appear without a full redeploy
+export const revalidate = 1800
+
 async function getReviewsData() {
   if (!client) {
     console.warn('Sanity client not initialized')

@@ -408,6 +408,57 @@ export default defineType({
           }
         },
 
+        // Comparison/Data Table
+        {
+          type: 'object',
+          name: 'comparisonTable',
+          title: 'Comparison Table',
+          fields: [
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+            },
+            {
+              name: 'headers',
+              title: 'Column Headers',
+              type: 'array',
+              of: [{ type: 'string' }]
+            },
+            {
+              name: 'rows',
+              title: 'Rows',
+              type: 'array',
+              of: [{
+                type: 'object',
+                fields: [
+                  {
+                    name: 'cells',
+                    title: 'Cells',
+                    type: 'array',
+                    of: [{ type: 'string' }]
+                  }
+                ],
+                preview: {
+                  select: { cells: 'cells' },
+                  prepare({ cells }) {
+                    return { title: cells ? cells.join(' | ') : 'Empty row' }
+                  }
+                }
+              }]
+            }
+          ],
+          preview: {
+            select: { title: 'title', headers: 'headers' },
+            prepare({ title, headers }) {
+              return {
+                title: title || 'Comparison Table',
+                subtitle: headers ? headers.join(', ') : ''
+              }
+            }
+          }
+        },
+
         // CTA Block for call-to-action buttons
         {
           type: 'object',

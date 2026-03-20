@@ -177,25 +177,29 @@ const portableTextComponents = {
     ),
     
     comparisonTable: ({ value }: any) => (
-      <div className="my-12">
-        <h3 className="text-2xl font-bold mb-6">{value.title || 'Comparison'}</h3>
-        <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-sm">
-            <thead>
-              <tr className="bg-gray-100 dark:bg-gray-700">
-                <th className="border border-gray-200 dark:border-gray-600 p-4 text-left font-semibold">Feature</th>
-                <th className="border border-gray-200 dark:border-gray-600 p-4 text-center font-semibold bg-blue-50 dark:bg-blue-900/30">ClickUp</th>
-                <th className="border border-gray-200 dark:border-gray-600 p-4 text-center font-semibold">{value.items?.[0]?.competitor1?.split(':')[0] || 'Competitor 1'}</th>
-                <th className="border border-gray-200 dark:border-gray-600 p-4 text-center font-semibold">{value.items?.[0]?.competitor2?.split(':')[0] || 'Competitor 2'}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {value.items?.map((item: any, idx: number) => (
-                <tr key={idx} className="hover:bg-gray-50 dark:hover:bg-gray-750">
-                  <td className="border border-gray-200 dark:border-gray-600 p-4 font-medium">{item.feature}</td>
-                  <td className="border border-gray-200 dark:border-gray-600 p-4 text-center bg-blue-50/50 dark:bg-blue-900/20 font-medium">{item.thisProduct}</td>
-                  <td className="border border-gray-200 dark:border-gray-600 p-4 text-center">{item.competitor1?.split(':')[1] || item.competitor1}</td>
-                  <td className="border border-gray-200 dark:border-gray-600 p-4 text-center">{item.competitor2?.split(':')[1] || item.competitor2}</td>
+      <div className="my-8">
+        {value.title && <h3 className="text-xl font-bold mb-4">{value.title}</h3>}
+        <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
+          <table className="min-w-full text-sm">
+            {value.headers && (
+              <thead>
+                <tr className="bg-gray-50 dark:bg-gray-800">
+                  {value.headers.map((header: string, idx: number) => (
+                    <th key={idx} className={`px-4 py-3 text-left font-semibold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-700 ${idx === 0 ? '' : 'text-center'}`}>
+                      {header}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+            )}
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+              {value.rows?.map((row: any, idx: number) => (
+                <tr key={row._key || idx} className="hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                  {row.cells?.map((cell: string, cellIdx: number) => (
+                    <td key={cellIdx} className={`px-4 py-3 text-gray-700 dark:text-gray-300 ${cellIdx === 0 ? 'font-medium text-gray-900 dark:text-white' : 'text-center'}`}>
+                      {cell}
+                    </td>
+                  ))}
                 </tr>
               ))}
             </tbody>

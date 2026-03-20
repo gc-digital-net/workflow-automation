@@ -130,22 +130,42 @@ function markdownToPortableText(markdown: string): any[] {
       continue
     }
 
-    // Convert markdown tables to text blocks instead of skipping
+    // Convert markdown tables to comparisonTable blocks
     if (trimmedLine.startsWith('|')) {
-      const tableRows: string[] = []
+      const headers: string[] = []
+      const rows: Array<{ _key: string, cells: string[] }> = []
+      let isFirstRow = true
+
       while (i < lines.length && lines[i].trim().startsWith('|')) {
         const row = lines[i].trim()
         // Skip separator rows (|---|---|)
-        if (!/^\|[\s-:|]+\|$/.test(row)) {
-          // Convert table row to readable text: "| A | B | C |" -> "A | B | C"
-          const cells = row.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c => c.trim()).join(' | ')
-          tableRows.push(cells)
+        if (/^\|[\s-:|]+\|$/.test(row)) {
+          i++
+          continue
+        }
+        const cells = row.replace(/^\|/, '').replace(/\|$/, '').split('|').map(c =>
+          c.trim()
+            .replace(/\*\*([^*]+)\*\*/g, '$1')
+            .replace(/\*([^*]+)\*/g, '$1')
+        )
+
+        if (isFirstRow) {
+          headers.push(...cells)
+          isFirstRow = false
+        } else {
+          rows.push({ _key: generateKey(), cells })
         }
         i++
       }
-      // Create a block for each table row
-      for (const row of tableRows) {
-        blocks.push(createTextBlock(row, 'normal'))
+
+      if (headers.length > 0) {
+        blocks.push({
+          _key: generateKey(),
+          _type: 'comparisonTable',
+          title: '',
+          headers,
+          rows,
+        })
       }
       continue
     }

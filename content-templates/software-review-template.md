@@ -528,3 +528,159 @@ Use these consistently throughout:
 - [ ] Clear verdict and recommendations
 - [ ] Affiliate disclosure included
 - [ ] Last updated date current
+
+---
+
+## SPECIAL CALLOUT PATTERNS
+
+The upload script automatically converts these patterns into styled info boxes:
+
+| Pattern | Style | Use For |
+|---------|-------|---------|
+| `**Pro Tip:**` | Purple tip box | Helpful advice and tricks |
+| `**Caution:**` | Amber warning box | Important warnings |
+| `**Warning:**` | Amber warning box | Critical warnings |
+| `**Hidden Costs:**` | Amber warning box | Unexpected expenses |
+| `**Reality Check:**` | Blue info box | Real-world experiences |
+| `**Note:**` | Gray note box | Side information |
+| `**Best For:**` | Green success box | Ideal user profiles |
+| `**What's Included:**` | Blue info box | Feature lists |
+| `**Key Limitations:**` | Amber warning box | Important restrictions |
+| `**Major Upgrades:**` | Green success box | Significant improvements |
+| `**Enterprise Exclusives:**` | Gradient highlight box | Premium features |
+
+**Example usage in markdown:**
+```markdown
+**Pro Tip:** Design Zaps with fewer actions to reduce task consumption.
+
+**Caution:** The 25-user cap catches some organizations off guard.
+
+**Best For:** Marketing teams, operations teams, and agencies.
+```
+
+---
+
+## UPLOAD PROCESS
+
+### Step 1: Save Markdown File
+Save your review as: `content-templates/reviews/<slug>.md`
+- Use lowercase slug (e.g., `zapier.md`, `monday.md`, `clickup.md`)
+
+### Step 2: Create Upload Script
+Create: `scripts/upload-<slug>-review.ts`
+
+Copy from an existing review script (e.g., `upload-zapier-full-review.ts`) and update:
+
+```typescript
+import { uploadReview, ReviewData } from './upload-review'
+
+const reviewData: ReviewData = {
+  name: 'Software Name',
+  slug: 'software-slug',
+  tagline: 'One-line value proposition',
+  excerpt: '2-3 sentence summary for SEO and previews',
+  overallScore: 8.5,  // 1-10 scale
+  scores: {
+    easeOfUse: 8.0,
+    features: 9.0,
+    value: 7.5,
+    support: 8.0,
+    integrations: 8.5
+  },
+  quickInfo: {
+    startingPrice: '$X/month',
+    freeTrial: 'Free plan / X-day trial',
+    bestFor: 'Target audience',
+    integrations: 'Number of integrations'
+  },
+  companyInfo: {
+    founded: 'Year',
+    headquarters: 'City, Country',
+    companySize: 'X employees',
+    funding: 'Funding info'
+  },
+  supportInfo: {
+    liveChat: true/false,
+    emailSupport: true/false,
+    knowledgeBase: true/false,
+    videoTutorials: true/false,
+    supportDetails: 'Support description by tier'
+  },
+  securityInfo: {
+    soc2: true/false,
+    gdpr: true/false,
+    ssl: true/false,
+    uptime: '99.X%',
+    otherCertifications: ['Cert 1', 'Cert 2']
+  },
+  popularIntegrations: ['App1', 'App2', ...],  // 15 apps
+  affiliateLink: 'https://...',
+  pros: ['Pro 1', 'Pro 2', ...],  // 8-10 items
+  cons: ['Con 1', 'Con 2', ...],  // 8-10 items
+  pricing: [
+    { name: 'Free', price: 'Free', features: [...] },
+    { name: 'Pro', price: '$X/mo', features: [...], highlighted: true },
+    { name: 'Team', price: '$X/mo', features: [...] },
+    { name: 'Enterprise', price: 'Custom', features: [...] }
+  ],
+  faqItems: [
+    { question: 'Question 1?', answer: 'Answer 1' },
+    { question: 'Question 2?', answer: 'Answer 2' },
+    // 10-12 FAQ items
+  ]
+}
+
+uploadReview('software-slug', reviewData)
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error)
+    process.exit(1)
+  })
+```
+
+### Step 3: Run Upload
+```bash
+npx tsx scripts/upload-<slug>-review.ts
+```
+
+### What Gets Auto-Generated:
+- **Quick Verdict Box** - Unified summary at top (extracted from markdown + ReviewData)
+- **Pros/Cons Block** - Styled comparison inserted after "The Good" section
+- **Pricing Table** - Card-based pricing inserted after Pricing section header
+- **FAQ Block** - Accordion-style FAQ (replaces markdown FAQ content)
+- **CTA Block** - Call-to-action at the end
+- **Screenshot/Visual Placeholders** - Converted to styled highlight boxes
+- **Callout Patterns** - Converted to colored info boxes
+
+### Content That Comes From Markdown:
+- All section headers (H2, H3, H4)
+- All paragraphs and body text
+- Bullet and numbered lists
+- Blockquotes
+- Visual/Screenshot placeholders
+
+### Content That Comes From ReviewData:
+- Software metadata (name, scores, company info)
+- Quick info sidebar data
+- Structured pros/cons arrays
+- Structured pricing table data
+- Structured FAQ items
+- SEO metadata
+
+---
+
+## FILE STRUCTURE
+
+```
+workflow-automation/
+├── content-templates/
+│   ├── software-review-template.md    # This template
+│   └── reviews/
+│       ├── zapier.md                  # Markdown content
+│       ├── monday.md
+│       └── clickup.md
+├── scripts/
+│   ├── upload-review.ts               # Generic upload module
+│   ├── upload-zapier-full-review.ts   # Zapier-specific data
+│   └── upload-monday-review.ts        # Monday-specific data
+```

@@ -2,8 +2,8 @@ import { notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
-import { StarIcon, CheckIcon, XMarkIcon, ArrowRightIcon, BuildingOfficeIcon, UsersIcon, CalendarIcon, ShieldCheckIcon, CurrencyDollarIcon } from '@heroicons/react/24/solid'
-import { ChartBarIcon, ClockIcon, GlobeAltIcon, DocumentTextIcon, ChatBubbleLeftRightIcon } from '@heroicons/react/24/outline'
+import { StarIcon, CheckIcon, XMarkIcon, ArrowRightIcon, BuildingOfficeIcon, UsersIcon, CalendarIcon, ShieldCheckIcon, CurrencyDollarIcon, CheckCircleIcon } from '@heroicons/react/24/solid'
+import { ChartBarIcon, ClockIcon, GlobeAltIcon, DocumentTextIcon, ChatBubbleLeftRightIcon, ExclamationTriangleIcon } from '@heroicons/react/24/outline'
 import { client, urlFor } from '@/lib/sanity'
 import { Metadata } from 'next'
 import ScreenshotGallery from '@/components/review/ScreenshotGallery'
@@ -206,6 +206,66 @@ const portableTextComponents = {
         </a>
       </div>
     ),
+
+    quickVerdictBox: ({ value }: any) => (
+      <div className="my-8 bg-gradient-to-br from-slate-50 to-blue-50 dark:from-slate-800 dark:to-blue-900/30 rounded-2xl p-6 md:p-8 border-2 border-blue-200 dark:border-blue-800 shadow-lg">
+        <div className="flex items-center gap-3 mb-6">
+          <div className="p-2 bg-blue-600 rounded-lg">
+            <CheckCircleIcon className="h-6 w-6 text-white" />
+          </div>
+          <h3 className="text-2xl font-bold text-gray-900 dark:text-white">Quick Verdict</h3>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {value.rating && (
+            <div className="flex items-center gap-4 bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm">
+              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400">
+                {value.rating.split('/')[0]}
+              </div>
+              <div>
+                <div className="text-sm text-gray-500 dark:text-gray-400">Overall Rating</div>
+                <div className="font-semibold text-gray-900 dark:text-white">out of {value.rating.split('/')[1] || '10'}</div>
+              </div>
+            </div>
+          )}
+
+          {value.price && (
+            <div className="bg-white dark:bg-slate-800 rounded-xl p-4 shadow-sm">
+              <div className="text-sm text-gray-500 dark:text-gray-400 mb-1">Pricing</div>
+              <div className="font-semibold text-gray-900 dark:text-white">{value.price}</div>
+            </div>
+          )}
+
+          {value.bestFor && (
+            <div className="bg-green-50 dark:bg-green-900/20 rounded-xl p-4 border border-green-200 dark:border-green-800">
+              <div className="flex items-center gap-2 text-green-700 dark:text-green-400 font-semibold mb-2">
+                <CheckCircleIcon className="h-5 w-5" />
+                Best For
+              </div>
+              <p className="text-green-800 dark:text-green-300 text-sm">{value.bestFor}</p>
+            </div>
+          )}
+
+          {value.skipIf && (
+            <div className="bg-amber-50 dark:bg-amber-900/20 rounded-xl p-4 border border-amber-200 dark:border-amber-800">
+              <div className="flex items-center gap-2 text-amber-700 dark:text-amber-400 font-semibold mb-2">
+                <ExclamationTriangleIcon className="h-5 w-5" />
+                Skip If
+              </div>
+              <p className="text-amber-800 dark:text-amber-300 text-sm">{value.skipIf}</p>
+            </div>
+          )}
+        </div>
+
+        {value.testingPeriod && (
+          <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              <span className="font-medium">Testing Period:</span> {value.testingPeriod}
+            </p>
+          </div>
+        )}
+      </div>
+    ),
     
     videoEmbed: ({ value }: any) => {
       const getVideoId = (url: string) => {
@@ -290,6 +350,34 @@ const portableTextComponents = {
     )
   },
   
+  list: {
+    bullet: ({ children }: any) => (
+      <ul className="my-5 space-y-2 list-none pl-0">
+        {children}
+      </ul>
+    ),
+    number: ({ children }: any) => (
+      <ol className="my-5 space-y-2 list-none pl-0 counter-reset-list">
+        {children}
+      </ol>
+    )
+  },
+
+  listItem: {
+    bullet: ({ children }: any) => (
+      <li className="flex items-start text-gray-700 dark:text-gray-300">
+        <span className="inline-block w-2 h-2 bg-blue-500 rounded-full mr-3 mt-2 flex-shrink-0"></span>
+        <span className="leading-relaxed">{children}</span>
+      </li>
+    ),
+    number: ({ children }: any) => (
+      <li className="flex items-start text-gray-700 dark:text-gray-300 counter-increment-list">
+        <span className="inline-flex items-center justify-center w-6 h-6 bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-400 rounded-full mr-3 mt-0.5 flex-shrink-0 text-sm font-semibold"></span>
+        <span className="leading-relaxed">{children}</span>
+      </li>
+    )
+  },
+
   block: {
     h2: ({ children }: any) => (
       <h2 className="text-2xl font-bold mt-10 mb-5 text-gray-900 dark:text-white break-words">

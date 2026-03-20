@@ -356,10 +356,103 @@ export default defineType({
               }
             }
           },
+        },
+
+        // Quick Verdict Box - unified summary at top of review
+        {
+          type: 'object',
+          name: 'quickVerdictBox',
+          title: 'Quick Verdict Box',
+          fields: [
+            {
+              name: 'rating',
+              title: 'Overall Rating',
+              type: 'string',
+              description: 'e.g., "4.3/5" or "8.6/10"'
+            },
+            {
+              name: 'bestFor',
+              title: 'Best For',
+              type: 'text',
+              rows: 2,
+              description: 'Who should use this tool'
+            },
+            {
+              name: 'skipIf',
+              title: 'Skip If',
+              type: 'text',
+              rows: 2,
+              description: 'Who should NOT use this tool'
+            },
+            {
+              name: 'price',
+              title: 'Price Summary',
+              type: 'string',
+              description: 'e.g., "Free plan available; Paid from $19.99/mo"'
+            },
+            {
+              name: 'testingPeriod',
+              title: 'Testing Period',
+              type: 'string',
+              description: 'e.g., "8+ months, 500+ Zaps, 50,000+ tasks"'
+            }
+          ],
+          preview: {
+            select: { rating: 'rating' },
+            prepare({ rating }) {
+              return {
+                title: 'Quick Verdict Box',
+                subtitle: rating || 'No rating set'
+              }
+            }
+          }
+        },
+
+        // CTA Block for call-to-action buttons
+        {
+          type: 'object',
+          name: 'ctaBlock',
+          title: 'Call to Action',
+          fields: [
+            {
+              name: 'title',
+              title: 'Title',
+              type: 'string',
+              description: 'e.g., "Ready to try Zapier?"'
+            },
+            {
+              name: 'description',
+              title: 'Description',
+              type: 'text',
+              rows: 2,
+              description: 'Short description or tagline'
+            },
+            {
+              name: 'buttonText',
+              title: 'Button Text',
+              type: 'string',
+              description: 'e.g., "Get Started Free"'
+            },
+            {
+              name: 'buttonUrl',
+              title: 'Button URL',
+              type: 'url',
+              description: 'Affiliate or signup link'
+            }
+          ],
+          preview: {
+            select: { title: 'title', buttonText: 'buttonText' },
+            prepare({ title, buttonText }) {
+              return {
+                title: title || 'Call to Action',
+                subtitle: buttonText || 'No button text'
+              }
+            }
+          }
         }
       ]
     }),
-    
+
     // ============================================
     // SCORING - Review scores and ratings
     // ============================================

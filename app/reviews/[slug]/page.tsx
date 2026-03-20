@@ -14,8 +14,8 @@ import InfoBox from '@/components/review/InfoBox'
 import ReviewSubmissionForm from '@/components/review/ReviewSubmissionForm'
 import PlatformsSidebar from '@/components/review/PlatformsSidebar'
 
-// Enable ISR - revalidate every hour
-export const revalidate = 3600
+// Enable ISR - revalidate every 60 seconds to pick up content changes quickly
+export const revalidate = 60
 
 // Props interface for the page
 interface Props {

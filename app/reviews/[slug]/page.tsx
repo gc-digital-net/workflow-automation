@@ -689,7 +689,7 @@ export default async function G2StyleReviewPage({ params }: Props) {
             </div>
             
             {/* Right Side Actions and Info */}
-            <div className="lg:w-80">
+            <div className="lg:w-80 lg:self-center">
               {/* CTA Buttons */}
               <div className="space-y-3">
                 {software.affiliateLink && (

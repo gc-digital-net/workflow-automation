@@ -248,7 +248,7 @@ export default function ReviewsClient({ initialSoftware, initialCategories }: Re
                             </div>
                           )}
                           <div>
-                            <h3 className="text-[0.938rem] font-semibold leading-tight text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
+                            <h3 className="!text-base font-semibold text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400">
                               {software.name}
                             </h3>
                             <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
